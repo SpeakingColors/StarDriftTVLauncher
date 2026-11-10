@@ -2,7 +2,7 @@
 
 ADB (Android Debug Bridge) is a command line tool that talks to your TV over your home network. You use it once to install the APK, and again for each update.
 
-The addresses below (`TV_IP`) are examples. Use your TV's own.
+In the commands below, replace `TV_IP:PORT` with your TV's own IP address and port, written as the IP address, a colon, then the port. `TV_IP` is the address from step 2. `PORT` is usually `5555` for the simple connect, or the port the TV shows for wireless debugging.
 
 ## 1. Get ADB on your computer
 
@@ -41,19 +41,19 @@ Pick the option your TV offers.
 adb connect TV_IP:PORT
 ```
 
-The first time, the TV shows **Allow USB debugging?** with your computer's fingerprint. Choose **Always allow** and confirm with OK. Then run `adb connect` again if the first try said it could not connect.
+The port is usually `5555`. The first time, the TV shows **Allow USB debugging?** with your computer's fingerprint. Choose **Always allow** and confirm with OK. Then run `adb connect` again if the first try said it could not connect.
 
 ### Option B: wireless debugging with pairing (Android 11 and newer)
 
 Some TVs and streaming devices use this. The port **changes** each time wireless debugging is restarted, so read it again from the TV when a connection stops working.
 
-1. On the TV: **Developer options**, **Wireless debugging**, switch on, then **Pair device with pairing code**. The TV shows an address with a port, for example `TV_IP:PAIRING_PORT`, and a 6 digit code.
+1. On the TV: **Developer options**, **Wireless debugging**, switch on, then **Pair device with pairing code**. The TV shows an address with a port, shown as `TV_IP:PAIRING_PORT`, and a 6 digit code.
 2. On the computer:
    ```
    adb pair TV_IP:PAIRING_PORT
    ```
    Type the 6 digit code when asked. You should see `Successfully paired`.
-3. Go back one screen on the TV. The main Wireless debugging screen shows **another** port (not the pairing port), for example `TV_IP:PORT`. Connect to that one:
+3. Go back one screen on the TV. The main Wireless debugging screen shows **another** port (not the pairing port), shown as `TV_IP:PORT`. Connect to that one:
    ```
    adb connect TV_IP:PORT
    ```
@@ -74,7 +74,7 @@ TV_IP:PORT    device
 
 ## 4. Install and open the launcher
 
-Run these in the folder where `tvlauncher.apk` is (or give the full path). Replace the address with the one you connected to:
+Run these in the folder where `tvlauncher.apk` is (or give the full path). Replace `TV_IP:PORT` with the address you connected to:
 
 ```
 adb -s TV_IP:PORT install -r tvlauncher.apk

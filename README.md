@@ -48,7 +48,7 @@ There is no ready made APK in this repository. You build your own, so it is sign
 
 Full steps with every command: [docs/BUILD.md](docs/BUILD.md)
 
-Install in short (replace the address with your TV's):
+Install in short. Replace `TV_IP:PORT` with your TV's IP address and port (see [docs/ADB.md](docs/ADB.md)):
 
 ```
 adb connect TV_IP:PORT

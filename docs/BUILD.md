@@ -78,12 +78,12 @@ If it is red, open the run, open the failed step and read the last lines. The us
 
 ## 5. Install on the TV
 
-Follow [ADB.md](ADB.md). Short version:
+Follow [ADB.md](ADB.md). Short version (replace `TV_IP:PORT` with your TV's IP address and port):
 
 ```
-adb connect TV_IP:5555
-adb -s TV_IP:5555 install -r tvlauncher.apk
-adb -s TV_IP:5555 shell am start -n dev.tvlauncher.home/.MainActivity
+adb connect TV_IP:PORT
+adb -s TV_IP:PORT install -r tvlauncher.apk
+adb -s TV_IP:PORT shell am start -n dev.tvlauncher.home/.MainActivity
 ```
 
 ## Updating later
