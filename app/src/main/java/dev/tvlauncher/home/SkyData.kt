@@ -1,0 +1,130 @@
+package dev.tvlauncher.home
+
+// Generated from the approved mockup (tile A and tile B). Do not edit by hand.
+object SkyData {
+    /** dx, dy: where this spot sits beside its galaxy on the home screen; the screensaver ignores them (spots on galaxies only). */
+    class Neb(val x: Float, val y: Float, val w: Float, val h: Float, val color: Int, val a: Float, val dx: Float = 0f, val dy: Float = 0f)
+    class Gal(val x: Float, val y: Float, val w: Float, val h: Float, val rot: Float, val pos: FloatArray, val col: IntArray)
+    class Band(val x: Float, val y: Float, val w: Float, val h: Float, val rot: Float)
+    class Tile(val neb: Array<Neb>, val gal: Array<Gal>, val band: Band)
+
+    val tiles: Array<Tile> = arrayOf(
+        Tile(arrayOf(
+            Neb(-53f, 256f, 275f, 178f, 0x6ED7FF.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(22f, 300f, 220f, 143f, 0xD72D1E.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(25f, 328f, 171f, 111f, 0x6ED7FF.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(306f, 647f, 289f, 187f, 0xFF826E.toInt() or 0xFF000000.toInt(), 0.42f, -159f, -51f),
+            Neb(393f, 698f, 211f, 137f, 0xAA193C.toInt() or 0xFF000000.toInt(), 0.48f, -150f, -118f),
+            Neb(382f, 717f, 188f, 122f, 0xFF826E.toInt() or 0xFF000000.toInt(), 0.34f, 149f, -118f),
+            Neb(685f, 410f, 264f, 171f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(758f, 453f, 213f, 138f, 0xC81E2D.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(738f, 466f, 209f, 135f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(996f, 159f, 284f, 184f, 0x6ED7FF.toInt() or 0xFF000000.toInt(), 0.42f, 210f, 88f),
+            Neb(1064f, 198f, 244f, 158f, 0xAA193C.toInt() or 0xFF000000.toInt(), 0.48f, -97f, 66f),
+            Neb(1069f, 227f, 190f, 123f, 0x6ED7FF.toInt() or 0xFF000000.toInt(), 0.34f, 152f, -97f),
+            Neb(1347f, 567f, 246f, 159f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(1390f, 591f, 255f, 165f, 0xD72D1E.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(1400f, 623f, 192f, 124f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(1634f, 319f, 256f, 166f, 0x6ED7FF.toInt() or 0xFF000000.toInt(), 0.42f, 142f, 111f),
+            Neb(1696f, 354f, 230f, 149f, 0xC81E2D.toInt() or 0xFF000000.toInt(), 0.48f, -202f, 50f),
+            Neb(1686f, 374f, 205f, 133f, 0x6ED7FF.toInt() or 0xFF000000.toInt(), 0.34f, -137f, 64f),
+            Neb(1990f, 63f, 290f, 188f, 0xFFBE6E.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(2062f, 105f, 243f, 157f, 0xAA193C.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(2058f, 129f, 207f, 134f, 0xFFBE6E.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(2296f, 466f, 269f, 174f, 0xFF78BE.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(2358f, 501f, 243f, 157f, 0xC81E2D.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(2376f, 539f, 162f, 105f, 0xFF78BE.toInt() or 0xFF000000.toInt(), 0.34f),
+        ), arrayOf(
+            Gal(11f, 328f, 191f, 58f, 61f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9DCFAFF.toInt(), 0x806ED7FF.toInt(), 0x40326EDC.toInt(), 0x00326EDC.toInt())),
+            Gal(339f, 711f, 267f, 83f, -52f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFE1D7.toInt(), 0x80FF826E.toInt(), 0x40C8323C.toInt(), 0x00C8323C.toInt())),
+            Gal(649f, 453f, 380f, 110f, -28f, floatArrayOf(0.00f, 0.14f, 0.40f, 0.72f), intArrayOf(0xF2FFE8FA.toInt(), 0x8CD68CFF.toInt(), 0x477850E6.toInt(), 0x007850E6.toInt())),
+            Gal(718f, 502f, 239f, 40f, -28f, floatArrayOf(0.00f, 0.70f), intArrayOf(0xCCFFFFFF.toInt(), 0x00FFFFFF.toInt())),
+            Gal(990f, 215f, 340f, 96f, 18f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9DCFAFF.toInt(), 0x806ED7FF.toInt(), 0x40326EDC.toInt(), 0x00326EDC.toInt())),
+            Gal(1351f, 617f, 282f, 84f, 68f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFE8FA.toInt(), 0x80D68CFF.toInt(), 0x407850E6.toInt(), 0x007850E6.toInt())),
+            Gal(1636f, 368f, 297f, 92f, 27f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9DCFAFF.toInt(), 0x806ED7FF.toInt(), 0x40326EDC.toInt(), 0x00326EDC.toInt())),
+            Gal(2062f, 145f, 190f, 49f, -41f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFF0D7.toInt(), 0x80FFBE6E.toInt(), 0x40C86E32.toInt(), 0x00C86E32.toInt())),
+            Gal(2358f, 537f, 190f, 56f, -12f, floatArrayOf(0.00f, 0.20f, 0.70f), intArrayOf(0xE6FFDCEB.toInt(), 0x73FF78BE.toInt(), 0x00FF78BE.toInt())),
+        ), Band(-200f, 180f, 3000f, 280f, -22f)),
+        Tile(arrayOf(
+            Neb(10f, 538f, 253f, 164f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(70f, 572f, 231f, 150f, 0xC81E2D.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(70f, 598f, 185f, 120f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(298f, 297f, 244f, 158f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(348f, 324f, 239f, 155f, 0xD72D1E.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(340f, 345f, 210f, 136f, 0xD68CFF.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(720f, 53f, 240f, 156f, 0xFF826E.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(782f, 89f, 212f, 137f, 0xD72D1E.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(762f, 101f, 208f, 135f, 0xFF826E.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(1022f, 434f, 286f, 185f, 0xAA8CFF.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(1102f, 481f, 220f, 143f, 0xD72D1E.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(1101f, 506f, 179f, 116f, 0xAA8CFF.toInt() or 0xFF000000.toInt(), 0.34f),
+            Neb(1301f, 194f, 273f, 177f, 0xFFBE6E.toInt() or 0xFF000000.toInt(), 0.42f, 167f, -77f),
+            Neb(1378f, 239f, 214f, 139f, 0xAA193C.toInt() or 0xFF000000.toInt(), 0.48f, 121f, 108f),
+            Neb(1362f, 254f, 204f, 132f, 0xFFBE6E.toInt() or 0xFF000000.toInt(), 0.34f, -188f, -101f),
+            Neb(1666f, 598f, 247f, 160f, 0xFF6EAA.toInt() or 0xFF000000.toInt(), 0.42f, 161f, 103f),
+            Neb(1718f, 626f, 239f, 155f, 0xAA193C.toInt() or 0xFF000000.toInt(), 0.48f, 50f, 80f),
+            Neb(1730f, 660f, 171f, 111f, 0xFF6EAA.toInt() or 0xFF000000.toInt(), 0.34f, 104f, -133f),
+            Neb(1927f, 344f, 275f, 178f, 0xAA8CFF.toInt() or 0xFF000000.toInt(), 0.42f, 191f, -74f),
+            Neb(2005f, 390f, 215f, 139f, 0xD72D1E.toInt() or 0xFF000000.toInt(), 0.48f, 163f, 111f),
+            Neb(2000f, 413f, 181f, 117f, 0xAA8CFF.toInt() or 0xFF000000.toInt(), 0.34f, 178f, 85f),
+            Neb(2257f, 99f, 275f, 178f, 0xFF6EAA.toInt() or 0xFF000000.toInt(), 0.42f),
+            Neb(2332f, 143f, 222f, 144f, 0xAA193C.toInt() or 0xFF000000.toInt(), 0.48f),
+            Neb(2338f, 173f, 165f, 107f, 0xFF6EAA.toInt() or 0xFF000000.toInt(), 0.34f),
+        ), arrayOf(
+            Gal(21f, 584f, 276f, 97f, -63f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFE8FA.toInt(), 0x80D68CFF.toInt(), 0x407850E6.toInt(), 0x007850E6.toInt())),
+            Gal(318f, 355f, 247f, 65f, -19f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFE8FA.toInt(), 0x80D68CFF.toInt(), 0x407850E6.toInt(), 0x007850E6.toInt())),
+            Gal(774f, 118f, 177f, 50f, -48f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFE1D7.toInt(), 0x80FF826E.toInt(), 0x40C8323C.toInt(), 0x00C8323C.toInt())),
+            Gal(1069f, 498f, 235f, 81f, 14f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9F0E1FF.toInt(), 0x80AA8CFF.toInt(), 0x405A3CC8.toInt(), 0x005A3CC8.toInt())),
+            Gal(1313f, 258f, 293f, 73f, -42f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFF0D7.toInt(), 0x80FFBE6E.toInt(), 0x40C86E32.toInt(), 0x00C86E32.toInt())),
+            Gal(1677f, 643f, 269f, 94f, 47f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFD7EB.toInt(), 0x80FF6EAA.toInt(), 0x40BE286E.toInt(), 0x00BE286E.toInt())),
+            Gal(1938f, 396f, 297f, 99f, 54f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9F0E1FF.toInt(), 0x80AA8CFF.toInt(), 0x405A3CC8.toInt(), 0x005A3CC8.toInt())),
+            Gal(2299f, 160f, 235f, 81f, 24f, floatArrayOf(0.00f, 0.16f, 0.42f, 0.72f), intArrayOf(0xD9FFD7EB.toInt(), 0x80FF6EAA.toInt(), 0x40BE286E.toInt(), 0x00BE286E.toInt())),
+        ), Band(-200f, 240f, 3000f, 280f, -22f)),
+    )
+
+    // star layers: radius, x, y, r, g, b, alpha, cellW, cellH (cell sizes divide 2600 so the field wraps)
+    val starLayers: Array<FloatArray> = arrayOf(
+        floatArrayOf(1f, 12f, 20f, 255f, 255f, 255f, 0.9f, 104f, 97f),
+        floatArrayOf(1f, 61f, 77f, 207f, 224f, 255f, 0.9f, 100f, 127f),
+        floatArrayOf(1f, 30f, 90f, 255f, 217f, 242f, 0.85f, 130f, 109f),
+        floatArrayOf(1f, 97f, 41f, 255f, 255f, 255f, 0.85f, 104f, 167f),
+        floatArrayOf(1f, 140f, 120f, 255f, 255f, 255f, 0.9f, 130f, 139f),
+        floatArrayOf(1f, 22f, 133f, 207f, 224f, 255f, 0.85f, 200f, 211f),
+        floatArrayOf(1f, 170f, 60f, 255f, 233f, 200f, 0.85f, 200f, 181f),
+        floatArrayOf(1f, 88f, 190f, 255f, 255f, 255f, 0.9f, 260f, 263f),
+        floatArrayOf(1f, 210f, 150f, 255f, 217f, 242f, 0.85f, 260f, 233f),
+        floatArrayOf(1f, 45f, 230f, 255f, 255f, 255f, 0.85f, 325f, 293f),
+        floatArrayOf(1f, 260f, 90f, 207f, 224f, 255f, 0.9f, 325f, 317f),
+        floatArrayOf(1f, 150f, 280f, 255f, 255f, 255f, 0.85f, 325f, 347f),
+        floatArrayOf(1.5f, 300f, 200f, 255f, 255f, 255f, 0.95f, 520f, 383f),
+        floatArrayOf(1.5f, 120f, 330f, 207f, 224f, 255f, 0.95f, 520f, 457f),
+        floatArrayOf(1.5f, 400f, 150f, 255f, 233f, 200f, 0.95f, 520f, 487f),
+        floatArrayOf(2f, 330f, 310f, 255f, 255f, 255f, 0.95f, 650f, 569f),
+        floatArrayOf(2.5f, 470f, 400f, 255f, 255f, 255f, 0.95f, 650f, 719f),
+        floatArrayOf(1f, 13f, 29f, 255f, 255f, 255f, 0.85f, 65f, 73f),
+        floatArrayOf(1f, 40f, 11f, 207f, 224f, 255f, 0.85f, 52f, 89f),
+    )
+
+    /** Where each dense star layer is visible: blobs of (cx, cy, rx, ry). Empty = everywhere. Matches the mask in the mockup. */
+    val starBlobs: Array<FloatArray> = arrayOf(
+        floatArrayOf(1389f, 477f, 807f, 332f, 2265f, 282f, 905f, 474f, 109f, 884f, 982f, 463f, 1600f, 142f, 508f, 428f),
+        floatArrayOf(851f, 623f, 800f, 498f, 2361f, 553f, 760f, 459f, 1299f, 596f, 729f, 358f, 2594f, 896f, 920f, 478f),
+        floatArrayOf(2584f, 434f, 515f, 438f, 1106f, 611f, 693f, 548f, 2203f, 0f, 605f, 535f, 1222f, 882f, 699f, 300f),
+        floatArrayOf(1109f, 565f, 668f, 367f, 1501f, 579f, 559f, 349f, 263f, 54f, 899f, 330f, 1454f, 403f, 595f, 485f),
+        floatArrayOf(1120f, 444f, 697f, 557f, 1015f, 655f, 902f, 365f, 2301f, 190f, 697f, 519f, 1669f, 90f, 995f, 340f),
+        floatArrayOf(2060f, 469f, 915f, 388f, 889f, 516f, 622f, 448f, 966f, 408f, 980f, 415f, 1494f, 780f, 591f, 323f),
+        floatArrayOf(1399f, 396f, 595f, 487f, 1108f, 664f, 941f, 449f, 1096f, 93f, 519f, 550f, 620f, 634f, 628f, 511f),
+        floatArrayOf(1314f, 510f, 965f, 554f, 986f, 507f, 926f, 452f, 729f, 826f, 602f, 285f, 700f, 401f, 530f, 329f),
+        floatArrayOf(2425f, 600f, 546f, 319f, 139f, 486f, 846f, 444f, 365f, 32f, 509f, 535f, 1823f, 866f, 511f, 458f),
+        floatArrayOf(2100f, 361f, 568f, 300f, 2435f, 515f, 950f, 486f, 1830f, 714f, 958f, 379f, 1781f, 811f, 936f, 397f),
+        floatArrayOf(1431f, 512f, 812f, 387f, 979f, 348f, 545f, 312f, 669f, 375f, 665f, 542f, 1805f, 412f, 731f, 432f),
+        floatArrayOf(1496f, 333f, 801f, 415f, 1496f, 347f, 890f, 465f, 1264f, 807f, 684f, 320f, 1591f, 467f, 877f, 376f),
+        floatArrayOf(),
+        floatArrayOf(),
+        floatArrayOf(),
+        floatArrayOf(),
+        floatArrayOf(),
+        floatArrayOf(2402f, 352f, 489f, 265f, 1279f, 594f, 627f, 378f, 2235f, 556f, 437f, 244f),
+        floatArrayOf(5f, 534f, 572f, 391f, 2596f, 313f, 507f, 387f, 2332f, 435f, 561f, 349f),
+    )
+}
