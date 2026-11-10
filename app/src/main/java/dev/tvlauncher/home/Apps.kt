@@ -11,18 +11,81 @@ import android.graphics.drawable.Drawable
 
 class AppEntry(val pkg: String, val label: String, val component: ComponentName, val icon: Drawable?, val custom: Bitmap? = null) {
     val tileColor: Int by lazy { dominant(icon) }
-    val art: IconArt? by lazy {
-        if (custom != null) IconArt(custom, android.graphics.Rect(0, 0, custom.width, custom.height), 0xFF000000.toInt(), 0f)
-        else IconArt.build(icon, when (pkg) {
-        "com.netflix.ninja" -> Recolor(0xFFE50914.toInt(), 0xFF000000.toInt())
-        "com.spotify.tv.android" -> Recolor(0xFF1DB954.toInt(), 0xFF000000.toInt(), true, 0xFF1DB954.toInt())
-        else -> null
-    }, pkg == "com.android.vending", darkBg = label.lowercase() in DARK_BG_LABELS || pkg == "com.google.android.videos" || pkg == "com.google.android.play.games")
+
+    /** Tile look chosen from the long press menu: "original", "black" (logo on black) or "white" (logo in the app's colour on a light tile). */
+    var look: String = "original"
+        set(v) { if (field != v) { field = v; artCache = null; artBuilt = false } }
+    private var artCache: IconArt? = null
+    private var artBuilt = false
+    val art: IconArt?
+        get() {
+            if (!artBuilt) { artCache = buildArt(); artBuilt = true }
+            return artCache
+        }
+
+    private fun buildArt(): IconArt? {
+        if (custom != null) return IconArt(custom, android.graphics.Rect(0, 0, custom.width, custom.height), 0xFF000000.toInt(), 0f)
+        val isPlay = pkg == "com.android.vending"
+        if (!isPlay && look == "black") IconArt.build(icon, null, false, darkBg = true)?.let { return it }
+        if (!isPlay && look == "white") {
+            val brand = brandColor(pkg, icon)
+            IconArt.build(icon, Recolor(brand, brand, false, LIGHT_TILE), false, darkBg = true, rejectFull = true)?.let { return it }
+        }
+        return IconArt.build(icon, when (pkg) {
+            "com.netflix.ninja" -> Recolor(0xFFE50914.toInt(), 0xFF000000.toInt())
+            "com.spotify.tv.android" -> Recolor(0xFF1DB954.toInt(), 0xFF000000.toInt(), true, 0xFF1DB954.toInt())
+            else -> null
+        }, isPlay, darkBg = label.lowercase() in DARK_BG_LABELS || pkg == "com.google.android.videos" || pkg == "com.google.android.play.games")
     }
 
     companion object {
         /** Apps whose icon is shown without its light background, on black. */
         val DARK_BG_LABELS = setOf("settings", "play movies & tv", "google play movies & tv", "play movies")
+
+        private const val LIGHT_TILE = 0xFFF1F3F4.toInt()
+        private const val DARK_LOGO = 0xFF1A1C24.toInt()
+
+        /** Logo colours for the "white" look. Other apps take the colour of their own icon. */
+        private val BRAND = mapOf(
+            "com.netflix.ninja" to 0xFFE50914.toInt(),
+            "com.google.android.youtube.tv" to 0xFFFF0000.toInt(),
+            "com.spotify.tv.android" to 0xFF1DB954.toInt(),
+            "com.crunchyroll.crunchyroid" to 0xFFF47521.toInt(),
+            "com.disney.disneyplus" to 0xFF113CCF.toInt(),
+            "com.amazon.amazonvideo.livingroom" to 0xFF00A8E1.toInt(),
+            "com.valvesoftware.steamlink" to 0xFF1B2838.toInt()
+        )
+
+        /** Average colour of the visible pixels of a drawable, or null when it is nearly empty. */
+        private fun avgOpaque(d: Drawable?): Int? {
+            if (d == null) return null
+            return try {
+                val n = 16
+                val b = Bitmap.createBitmap(n, n, Bitmap.Config.ARGB_8888)
+                d.setBounds(0, 0, n, n)
+                d.draw(Canvas(b))
+                var r = 0L; var g = 0L; var bl = 0L; var cnt = 0L
+                for (y in 0 until n) for (x in 0 until n) {
+                    val p = b.getPixel(x, y)
+                    if (Color.alpha(p) > 200) { r += Color.red(p); g += Color.green(p); bl += Color.blue(p); cnt++ }
+                }
+                b.recycle()
+                if (cnt < n * n / 10) null else Color.rgb((r / cnt).toInt(), (g / cnt).toInt(), (bl / cnt).toInt())
+            } catch (e: Throwable) { null }
+        }
+
+        private fun luma(c: Int): Double = (0.299 * Color.red(c) + 0.587 * Color.green(c) + 0.114 * Color.blue(c)) / 255.0
+
+        /** The colour a logo gets on the light tile: a known brand colour, else the app icon's own background colour, else dark. */
+        fun brandColor(pkg: String, d: Drawable?): Int {
+            BRAND[pkg]?.let { return it }
+            val layers = if (d is android.graphics.drawable.AdaptiveIconDrawable) listOf(d.background, d.foreground) else listOf(d)
+            for (l in layers) {
+                val c = avgOpaque(l)
+                if (c != null && luma(c) < 0.75) return c
+            }
+            return DARK_LOGO
+        }
 
         fun dominant(d: Drawable?): Int {
             if (d == null) return 0xFF323A4E.toInt()
@@ -94,7 +157,8 @@ class AppsRepo(private val context: Context, private val prefs: SharedPreference
                 }
                 map[ai.packageName] = AppEntry(ai.packageName, label,
                     ComponentName(ai.packageName, ai.name), try { ri.loadIcon(pm) } catch (e: Throwable) { null },
-                    if (custom != 0) android.graphics.BitmapFactory.decodeResource(context.resources, custom) else null)
+                    if (custom != 0) android.graphics.BitmapFactory.decodeResource(context.resources, custom) else null
+                ).also { it.look = prefs.getString("look_" + ai.packageName, "original") ?: "original" }
             }
         }
         val sorted = map.values.sortedBy { it.label.lowercase() }

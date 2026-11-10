@@ -24,7 +24,7 @@ class IconArt(val bmp: Bitmap, val src: Rect, val bg: Int, val inset: Float, val
         private const val LIGHT = 0xFFF1F3F4.toInt()
         private const val DARK = 0xFF1A1C24.toInt()
 
-        fun build(d: Drawable?, rc: Recolor? = null, wantQuad: Boolean = false, darkBg: Boolean = false): IconArt? {
+        fun build(d: Drawable?, rc: Recolor? = null, wantQuad: Boolean = false, darkBg: Boolean = false, rejectFull: Boolean = false): IconArt? {
             if (d == null) return null
             return try {
                 val bmp = Bitmap.createBitmap(N, N, Bitmap.Config.ARGB_8888)
@@ -78,6 +78,8 @@ class IconArt(val bmp: Bitmap, val src: Rect, val bg: Int, val inset: Float, val
                 val sl = (cx - side / 2).coerceIn(0, N - side)
                 val st = (cy - side / 2).coerceIn(0, N - side)
                 val src = Rect(sl, st, sl + side, st + side)
+                // rejectFull: a flat recolour of an icon that fills its whole square would be just a coloured square
+                if (rejectFull && coverage >= 0.85) return null
                 if (rc != null && rc.bg != 0) return IconArt(bmp, src, rc.bg, 0.16f)
                 if (darkBg) return IconArt(bmp, src, 0xFF000000.toInt(), 0.14f)
                 var quad: QuadColors? = null

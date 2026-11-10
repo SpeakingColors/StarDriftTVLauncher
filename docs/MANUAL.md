@@ -8,6 +8,7 @@ How the launcher works and how to use it. Everything is done with the TV remote:
 - [The home screen](#the-home-screen)
 - [Name and weather](#name-and-weather)
 - [Apps (the dock)](#apps-the-dock)
+- [Home rows: show, hide, order](#home-rows-show-hide-order)
 - [Picks and New series](#picks-and-new-series)
 - [Continue watching](#continue-watching)
 - [Top icons](#top-icons)
@@ -55,10 +56,16 @@ The dock shows the apps you want, in your order. The last tile, **+**, opens **A
   - **Remove from dock**: it goes to All apps; add it back from All apps with **Add to dock**
   - **Hide**: hides it from the dock and All apps; undo in Settings, Hidden apps
   - **Uninstall**: Android asks you to confirm
-- **Play Store** has one more entry, **Icon look**. Each press changes the tile between **Colors**, **Black** and **White**, and the menu stays open so you can compare.
+- **Icon look** (every app): each press changes the tile and the menu stays open so you can compare. **Original** is the app's own icon, **Black** puts the logo on black, **White** puts the logo in the app's colour on a light tile. Icons that are one flat picture, without a separate logo, keep their original look when you pick White. The Play Store cycles **Colors**, **Black**, **White**.
 - In **All apps**, press and hold an app to add it to or remove it from the dock, open its App info, and so on.
 
 The dock has no app names under the tiles, on purpose.
+
+## Home rows: show, hide, order
+
+The three rows (Apps, Picks and New series, Continue watching) can each be shown or hidden, and put in any order. Open **Settings**, then **Home rows**. OK on a row opens a small menu: **Hide this row** (or **Show this row**), **Move up**, **Move down**. A row that is hidden takes no space; the others move up. A hidden row comes back from the same place.
+
+The greeting, clock, date and weather stay at the top.
 
 ## Picks and New series
 
@@ -96,7 +103,7 @@ The round icons at the top right open popups on the right side of the screen:
 - **All TV settings**: opens Android's own settings
 - **Quick actions**: **Close background apps** (best effort, Android decides what it allows) and **Clear cache** (asks Android to clear it; it says how much it cleared)
 - **Shortcuts**: Apps, Display, Sound, Storage (straight to those Android pages)
-- **Launcher**: **Hidden apps** (to show an app again)
+- **Launcher**: **Home rows** (show, hide and reorder the rows) and **Hidden apps** (to show an app again)
 
 ## Sound
 

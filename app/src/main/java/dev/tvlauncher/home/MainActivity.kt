@@ -50,6 +50,7 @@ class MainActivity : Activity() {
     private lateinit var wxCity: TextView
     private lateinit var dockHolder: LinearLayout
     private lateinit var dockScroll: HorizontalScrollView
+    private lateinit var dockLabel: TextView
     private var overlay: FrameLayout? = null
     private var overlayKind = ""
     private var overlayReturn: View? = null
@@ -191,6 +192,7 @@ class MainActivity : Activity() {
         buildDock()
         buildPicks()
         buildContinue()
+        applyRows()
     }
 
     // ---------- header: greeting, clock, date, weather, top buttons ----------
@@ -370,10 +372,10 @@ class MainActivity : Activity() {
     // ---------- dock ----------
 
     private fun buildDock() {
-        val label = text(20f, Ui.TEXT2)
-        label.text = "Apps"
-        content.addView(label)
-        Ui.place(label, 88f, 230f)
+        dockLabel = text(20f, Ui.TEXT2)
+        dockLabel.text = "Apps"
+        content.addView(dockLabel)
+        Ui.place(dockLabel, 88f, HomeRows.y(prefs, HomeRows.APPS))
 
         dockScroll = HorizontalScrollView(this)
         dockScroll.isHorizontalScrollBarEnabled = false
@@ -386,7 +388,7 @@ class MainActivity : Activity() {
         dockHolder.clipChildren = false
         dockScroll.addView(dockHolder)
         content.addView(dockScroll)
-        Ui.place(dockScroll, 48f, 228f, 1504f, tileU + 80f)
+        Ui.place(dockScroll, 48f, HomeRows.y(prefs, HomeRows.APPS) - 2f, 1504f, tileU + 80f)
     }
 
     private fun tileParams(last: Boolean, label: Boolean = true): LinearLayout.LayoutParams {
@@ -439,7 +441,7 @@ class MainActivity : Activity() {
 
     /** Only the Play Store tile has a look choice: Colors, Black or White. The menu stays open so it can be cycled quickly. */
     private fun playToggle(a: AppEntry, at: Int): MenuToggle? {
-        if (a.pkg != "com.android.vending") return null
+        if (a.pkg != "com.android.vending") return lookToggle(a, at)
         return MenuToggle({ "Icon look: " + nextPlayStyle().replaceFirstChar { it.uppercase() } }, at) {
             val next = nextPlayStyle()
             IconStyle.play = next
@@ -447,6 +449,17 @@ class MainActivity : Activity() {
             refreshTiles(window.decorView)
         }
     }
+
+    private fun nextLook(l: String): String = when (l) { "original" -> "black"; "black" -> "white"; else -> "original" }
+
+    /** Every other app has a look too: Original, Black (logo on black) or White (logo in its own colour on a light tile). */
+    private fun lookToggle(a: AppEntry, at: Int): MenuToggle =
+        MenuToggle({ "Icon look: " + nextLook(a.look).replaceFirstChar { it.uppercase() } }, at) {
+            val next = nextLook(a.look)
+            a.look = next
+            prefs.edit().putString("look_" + a.pkg, next).apply()
+            refreshTiles(window.decorView)
+        }
 
     /** The Play Store look is read when a tile draws, so redrawing is enough: no rebuild, focus stays where it is. */
     private fun refreshTiles(v: View) {
@@ -459,6 +472,60 @@ class MainActivity : Activity() {
         rebuildDock(null)
         if (overlayKind == "apps") { closeOverlay(false); openAllApps() }
         toast("Hidden. Show it again in Settings, Hidden apps")
+    }
+
+    /** Puts the three rows where the saved order and switches say, and hides the ones that are off. */
+    private fun applyRows() {
+        val vis = HomeRows.visible(prefs)
+        val appsOn = HomeRows.APPS in vis
+        dockLabel.visibility = if (appsOn) View.VISIBLE else View.GONE
+        dockScroll.visibility = if (appsOn) View.VISIBLE else View.GONE
+        if (appsOn) {
+            val y = HomeRows.y(prefs, HomeRows.APPS)
+            Ui.place(dockLabel, 88f, y)
+            Ui.place(dockScroll, 48f, y - 2f, 1504f, tileU + 80f)
+        }
+        val contOn = HomeRows.CONTINUE in vis
+        cwLabel.visibility = if (contOn) View.VISIBLE else View.GONE
+        if (contOn) Ui.place(cwLabel, 88f, HomeRows.y(prefs, HomeRows.CONTINUE))
+        buildPicks()
+        showContinue()
+    }
+
+    /** Settings, Home rows: show or hide each row and choose the order. This is also where a hidden row comes back. */
+    private fun openHomeRows() {
+        val col = LinearLayout(this)
+        col.orientation = LinearLayout.VERTICAL
+        val order = HomeRows.order(prefs)
+        var first: View? = null
+        for ((i, id) in order.withIndex()) {
+            val on = HomeRows.isOn(prefs, id)
+            val row = focusableRow()
+            row.setPadding(Ui.pxi(26f), 0, Ui.pxi(26f), 0)
+            val t = text(24f, if (on) Ui.TEXT else Ui.TEXT3)
+            t.text = HomeRows.name(id)
+            row.addView(t, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            val s = text(20f, if (on) Ui.ACCENT else Ui.TEXT3)
+            s.text = if (on) "Shown" else "Hidden"
+            row.addView(s)
+            row.setOnClickListener {
+                val items = ArrayList<Pair<String, () -> Unit>>()
+                items.add((if (on) "Hide this row" else "Show this row") to {
+                    HomeRows.setOn(prefs, id, !on); applyRows(); closeOverlay(false); openHomeRows()
+                })
+                if (i > 0) items.add("Move up" to { HomeRows.move(prefs, id, -1); applyRows(); closeOverlay(false); openHomeRows() })
+                if (i < order.size - 1) items.add("Move down" to { HomeRows.move(prefs, id, 1); applyRows(); closeOverlay(false); openHomeRows() })
+                showMenu(this, HomeRows.name(id), items)
+            }
+            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(84f))
+            lp.bottomMargin = Ui.pxi(12f)
+            col.addView(row, lp)
+            if (first == null) first = row
+        }
+        val hint = text(18f, Ui.TEXT3)
+        hint.text = "Rows are listed top to bottom. A hidden row comes back here."
+        col.addView(hint)
+        showOverlay("rows", "Home rows", scrollBody(col), 790f, first)
     }
 
     private fun openHiddenApps() {
@@ -569,8 +636,9 @@ class MainActivity : Activity() {
             Sfx.play(Sfx.CLOSE)
             quietFocus = true
             val r = overlayReturn
-            if (r != null && r.isAttachedToWindow) r.requestFocus()
-            else dockHolder.getChildAt(dockHolder.childCount - 1)?.requestFocus()
+            if (r != null && r.isAttachedToWindow && r.isShown) r.requestFocus()
+            else if (dockScroll.visibility == View.VISIBLE) dockHolder.getChildAt(dockHolder.childCount - 1)?.requestFocus()
+            else clockView?.requestFocus()
             quietFocus = false
         }
     }
@@ -713,6 +781,7 @@ class MainActivity : Activity() {
         }
 
         paneLabel(col, "Launcher")
+        paneRow(col, "Home rows", null, false, R.drawable.ic_apps) { closeOverlay(false); openHomeRows() }
         paneRow(col, "Hidden apps", null, false, R.drawable.ic_hidden) { closeOverlay(false); openHiddenApps() }
         showPane("settings", "Settings", col, all)
     }
@@ -1143,6 +1212,8 @@ class MainActivity : Activity() {
         picks.clear()
         val on = visibleCats()
         shownCats = on.map { it.id }
+        if (HomeRows.PICKS !in HomeRows.visible(prefs)) return
+        val py = HomeRows.y(prefs, HomeRows.PICKS)
         if (on.isEmpty()) {
             val hint = text(20f, Ui.TEXT2)
             hint.text = "No feed sources are on. Press OK here to choose some."
@@ -1152,7 +1223,7 @@ class MainActivity : Activity() {
             Ui.focusable(hint, 1.03f)
             hint.setOnClickListener { openSources() }
             content.addView(hint)
-            Ui.place(hint, 88f, 434f, 1424f, 156f)
+            Ui.place(hint, 88f, py, 1424f, 156f)
             pickViews.add(hint)
             return
         }
@@ -1168,7 +1239,7 @@ class MainActivity : Activity() {
                 true
             }
             content.addView(c)
-            Ui.place(c, 88f + i * (cardW + 20f), 434f, cardW, 156f)
+            Ui.place(c, 88f + i * (cardW + 20f), py, cardW, 156f)
             picks.add(c)
             pickViews.add(c)
         }
@@ -1493,7 +1564,7 @@ class MainActivity : Activity() {
         cwLabel = text(20f, Ui.TEXT2)
         cwLabel.text = "Continue watching"
         content.addView(cwLabel)
-        Ui.place(cwLabel, 88f, 618f)
+        Ui.place(cwLabel, 88f, HomeRows.y(prefs, HomeRows.CONTINUE))
         if (checkSelfPermission(WatchNext.PERMISSION) != android.content.pm.PackageManager.PERMISSION_GRANTED &&
             !prefs.getBoolean("asked_listings", false)) {
             prefs.edit().putBoolean("asked_listings", true).apply()
@@ -1526,6 +1597,8 @@ class MainActivity : Activity() {
     private fun showContinue() {
         for (v in cwViews) content.removeView(v)
         cwViews.clear()
+        if (HomeRows.CONTINUE !in HomeRows.visible(prefs)) return
+        val cy = HomeRows.y(prefs, HomeRows.CONTINUE) + 36f
         val rows = (cwRows ?: emptyList()).filter { CwApps.isOn(prefs, it.pkg) }
         val cards = ArrayList<View>()
         if (rows.isNotEmpty()) {
@@ -1567,7 +1640,7 @@ class MainActivity : Activity() {
                     else openChooseApps()
                 }
                 content.addView(box)
-                Ui.place(box, 88f, 654f, 1424f, 176f)
+                Ui.place(box, 88f, cy, 1424f, 176f)
                 cwViews.add(box)
             }
         }
@@ -1579,7 +1652,7 @@ class MainActivity : Activity() {
                 true
             }
             content.addView(card)
-            Ui.place(card, 88f + i * (w + 20f), 654f, w, 176f)
+            Ui.place(card, 88f + i * (w + 20f), cy, w, 176f)
             cwViews.add(card)
         }
     }

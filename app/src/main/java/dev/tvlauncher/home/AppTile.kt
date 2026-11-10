@@ -56,7 +56,7 @@ class AppTile(context: Context, val app: AppEntry?, private val tileU: Float, pr
             c.drawLine(cx - a, cy, cx + a, cy, plus); c.drawLine(cx, cy - a, cx, cy + a, plus)
         } else {
             val art = app.art
-            if (app.pkg == "com.google.android.youtube.tv") {
+            if (app.pkg == "com.google.android.youtube.tv" && app.look == "original") {
                 // The app ships a white icon; the launcher shows it as a solid YouTube red tile with a white play mark.
                 tilePaint.color = 0xFFFF0000.toInt()
                 c.drawRoundRect(rect.also { it.set(0f, 0f, width.toFloat(), t) }, r, r, tilePaint)

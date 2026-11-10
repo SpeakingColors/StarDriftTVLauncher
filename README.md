@@ -26,13 +26,13 @@ Made for Google TV and Android TV devices.
 ## Features
 
 - Greeting with your name, clock, date, weather (city chosen by name search, no IP lookup)
-- App dock: reorder, add, remove, hide, All apps list
+- App dock: reorder, add, remove, hide, All apps list, and an icon look per app (Original, Black, White)
+- Home rows: show, hide and reorder Apps, Picks and Continue watching from Settings
 - Picks row: news from RSS feeds with preview images (anime, games, and more), feeds editable on the TV or added from your phone
 - New series row and Continue watching row (reads the Google TV rows when your apps share them, otherwise your recently opened apps)
 - Settings, Network (with a speed test), Inputs and Sound popups under the top icons
 - Ambient home music and soft interface sounds, each with its own switch and volume
 - Stardrift screensaver: same sky, 24 hour clock, date, Wi-Fi icon
-- Play Store tile with three looks: Colors, Black, White
 - Quick actions: close background apps, clear cache
 
 How to use all of it: [docs/MANUAL.md](docs/MANUAL.md)
