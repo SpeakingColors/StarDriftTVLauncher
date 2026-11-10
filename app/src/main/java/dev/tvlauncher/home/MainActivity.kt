@@ -881,8 +881,8 @@ class MainActivity : Activity() {
             adbView = paneRow(col, "ADB (USB debugging)", null, false, R.drawable.ic_adb) { adbClick() }.first
         }
         paintSw = {
-            adbView.alpha = if (adbOn()) 1f else 0.5f
-            keysView?.alpha = if (quickKeyOn()) 1f else 0.5f
+            dimContent(adbView, adbOn())
+            keysView?.let { dimContent(it, quickKeyOn()) }
         }
         paintSw()
         showPane("settings", "Settings", col, all)
@@ -1875,6 +1875,12 @@ class MainActivity : Activity() {
 
     private fun uninstall(pkg: String) =
         startSafe(Intent(Intent.ACTION_DELETE, Uri.parse("package:$pkg")))
+
+    /** Off looks dimmed, but only the icon and label: dimming the whole row would also dim its focus ring and glow. */
+    private fun dimContent(row: View, on: Boolean) {
+        val g = row as? ViewGroup ?: return
+        for (i in 0 until g.childCount) g.getChildAt(i).alpha = if (on) 1f else 0.5f
+    }
 
     private fun adbOn(): Boolean = try { Settings.Global.getInt(contentResolver, "adb_enabled", 0) == 1 } catch (e: Throwable) { false }
 
