@@ -63,7 +63,10 @@ The dock has no app names under the tiles, on purpose.
 
 ## Home rows: show, hide, order
 
-The three rows (Apps, Picks and New series, Continue watching) can each be shown or hidden, and put in any order. Open **Settings**, then **Home rows**. OK on a row opens a small menu: **Hide this row** (or **Show this row**), **Move up**, **Move down**. A row that is hidden takes no space; the others move up. A hidden row comes back from the same place.
+The three rows (Apps, Picks and New series, Continue watching) can each be shown or hidden, and put in any order. Open **Settings**, then **Home rows**. The home screen behind the list updates as you go.
+
+- **Show or hide:** press OK on a row. It switches between *Shown* and *Hidden*. A hidden row takes no space and the others move up. It comes back from the same list.
+- **Reorder:** choose **Reorder**. Press OK on a row to pick it up (it says *Moving*), press Up or Down to move it, press OK to drop it. Pick up another one if you like, then choose **Done** (the check mark). Back also returns to the list.
 
 The greeting, clock, date and weather stay at the top.
 

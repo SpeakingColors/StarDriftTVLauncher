@@ -61,6 +61,8 @@ class MainActivity : Activity() {
     private var cwRows: List<CwItem>? = null
     private var weather: Weather? = null
     private var reorderPkg: String? = null
+    private var rowsCol: LinearLayout? = null
+    private var rowsGrab: String? = null   // the row picked up on the Reorder rows screen
     private var quietFocus = false   // no move blip while a popup opens or closes and sets the focus itself
     private var clockView: View? = null
 
@@ -492,40 +494,85 @@ class MainActivity : Activity() {
         showContinue()
     }
 
-    /** Settings, Home rows: show or hide each row and choose the order. This is also where a hidden row comes back. */
-    private fun openHomeRows() {
+    /**
+     * Settings, Home rows: OK shows or hides a row right here (the rows behind update at once), Reorder opens the
+     * reorder screen. A hidden row comes back from this list.
+     */
+    private fun openHomeRows(reorder: Boolean = false, focusKey: String? = null) {
+        val ret = if (overlayKind == "rows" || overlayKind == "rowsorder") overlayReturn else null
         val col = LinearLayout(this)
         col.orientation = LinearLayout.VERTICAL
-        val order = HomeRows.order(prefs)
+        val first = fillRows(col, reorder, focusKey)
+        showPane(if (reorder) "rowsorder" else "rows", if (reorder) "Reorder rows" else "Home rows", col, first)
+        rowsCol = col
+        rowsGrab = null
+        if (ret != null) overlayReturn = ret
+    }
+
+    /** Fills the Home rows list in place, so the pane does not close and reopen on every change. Returns the view to focus. */
+    private fun fillRows(col: LinearLayout, reorder: Boolean, focusKey: String?): View? {
+        col.removeAllViews()
+        var target: View? = null
         var first: View? = null
-        for ((i, id) in order.withIndex()) {
+        for (id in HomeRows.order(prefs)) {
             val on = HomeRows.isOn(prefs, id)
-            val row = focusableRow()
-            row.setPadding(Ui.pxi(26f), 0, Ui.pxi(26f), 0)
-            val t = text(24f, if (on) Ui.TEXT else Ui.TEXT3)
+            val grabbed = rowsGrab == id
+            val row = focusableRow(grabbed)
+            row.setPadding(Ui.pxi(20f), 0, Ui.pxi(20f), 0)
+            val t = text(20f, if (on) Ui.TEXT else Ui.TEXT3)
             t.text = HomeRows.name(id)
             row.addView(t, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-            val s = text(20f, if (on) Ui.ACCENT else Ui.TEXT3)
-            s.text = if (on) "Shown" else "Hidden"
+            val s = text(16f, if (grabbed || on) Ui.ACCENT else Ui.TEXT3)
+            s.text = if (grabbed) "Moving" else if (on) "Shown" else "Hidden"
             row.addView(s)
             row.setOnClickListener {
-                val items = ArrayList<Pair<String, () -> Unit>>()
-                items.add((if (on) "Hide this row" else "Show this row") to {
-                    HomeRows.setOn(prefs, id, !on); applyRows(); closeOverlay(false); openHomeRows()
-                })
-                if (i > 0) items.add("Move up" to { HomeRows.move(prefs, id, -1); applyRows(); closeOverlay(false); openHomeRows() })
-                if (i < order.size - 1) items.add("Move down" to { HomeRows.move(prefs, id, 1); applyRows(); closeOverlay(false); openHomeRows() })
-                showMenu(this, HomeRows.name(id), items)
+                if (reorder) {
+                    if (rowsGrab == null) { rowsGrab = id; refreshRows(true, id) }
+                } else {
+                    HomeRows.setOn(prefs, id, !on)
+                    applyRows()
+                    refreshRows(false, id)
+                }
             }
-            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(84f))
-            lp.bottomMargin = Ui.pxi(12f)
+            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(56f))
+            lp.bottomMargin = Ui.pxi(8f)
             col.addView(row, lp)
             if (first == null) first = row
+            if (id == focusKey) target = row
         }
-        val hint = text(18f, Ui.TEXT3)
-        hint.text = "Rows are listed top to bottom. A hidden row comes back here."
+        val (action, _) = if (reorder)
+            paneRow(col, "Done", null, true, R.drawable.ic_check) { openHomeRows(false, "reorder") }
+        else
+            paneRow(col, "Reorder", null, false, R.drawable.ic_reorder) { openHomeRows(true, HomeRows.order(prefs).first()) }
+        (action.layoutParams as LinearLayout.LayoutParams).topMargin = Ui.pxi(8f)
+        if (focusKey == "reorder") target = action
+        val hint = text(15f, Ui.TEXT3)
+        hint.text = if (reorder) "OK picks a row up. Up and Down move it. OK drops it. Choose Done when it looks right."
+                    else "OK shows or hides a row. Reorder changes the order."
         col.addView(hint)
-        showOverlay("rows", "Home rows", scrollBody(col), 790f, first)
+        (hint.layoutParams as LinearLayout.LayoutParams).apply { topMargin = Ui.pxi(6f); leftMargin = Ui.pxi(8f) }
+        return target ?: first
+    }
+
+    private fun refreshRows(reorder: Boolean, focusKey: String?) {
+        val col = rowsCol ?: return
+        val target = fillRows(col, reorder, focusKey)
+        quietFocus = true
+        target?.requestFocus()
+        quietFocus = false
+    }
+
+    private fun moveRow(delta: Int) {
+        val id = rowsGrab ?: return
+        HomeRows.move(prefs, id, delta)
+        applyRows()
+        refreshRows(true, id)
+    }
+
+    private fun dropRow() {
+        val id = rowsGrab ?: return
+        rowsGrab = null
+        refreshRows(true, id)
     }
 
     private fun openHiddenApps() {
@@ -617,6 +664,8 @@ class MainActivity : Activity() {
 
     private fun closeOverlay(restoreFocus: Boolean = true) {
         val l = overlay ?: return
+        rowsGrab = null
+        rowsCol = null
         val wasSources = overlayKind == "sources" || overlayKind == "newseries"
         if (overlayKind == "network") speedCancel?.set(true)
         if (overlayKind == "name") {
@@ -1824,6 +1873,14 @@ class MainActivity : Activity() {
     }
 
     override fun dispatchKeyEvent(e: KeyEvent): Boolean {
+        if (rowsGrab != null && overlayKind == "rowsorder" && e.action == KeyEvent.ACTION_DOWN) {
+            when (e.keyCode) {
+                KeyEvent.KEYCODE_DPAD_UP -> { moveRow(-1); return true }
+                KeyEvent.KEYCODE_DPAD_DOWN -> { moveRow(1); return true }
+                KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> return true
+                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BACK -> { dropRow(); return true }
+            }
+        }
         if (reorderPkg != null && e.action == KeyEvent.ACTION_DOWN) {
             when (e.keyCode) {
                 KeyEvent.KEYCODE_DPAD_LEFT -> { moveInDock(-1); return true }
@@ -1861,6 +1918,7 @@ class MainActivity : Activity() {
     // A home screen must not exit on Back. Back closes the apps list.
     @Deprecated("Home screen stays open")
     override fun onBackPressed() {
+        if (overlayKind == "rowsorder") { openHomeRows(false, "reorder"); return }
         if (overlay != null) closeOverlay()
     }
 }
