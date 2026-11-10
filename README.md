@@ -98,3 +98,7 @@ Stardrift is an independent hobby project. It is not affiliated with, endorsed b
 Copyright (C) 2026 SpeakingColors
 
 Stardrift TV Launcher is free software: you can redistribute it and modify it under the terms of the [GNU General Public License version 3](LICENSE). It is distributed without any warranty. If you share a modified version, share its source under the same license.
+
+## As is
+
+Stardrift is a hobby project, made and tested mostly on one TV. It comes as is: no promises that it works on your TV, no support, no guaranteed updates. Use it at your own risk. If something does not work on your model, you are welcome to fork it and fix it yourself. Pull requests and issues are not being reviewed.
