@@ -26,7 +26,7 @@ Made for Google TV and Android TV devices.
 ## Features
 
 - Greeting with your name, clock, date, weather (city chosen by name search, no IP lookup)
-- App dock: reorder, add, remove, hide, All apps list, and an icon look per app (Original, Black, White)
+- App dock: reorder, add, remove, hide, All apps list, and an optional icon look (Original, Black, White) that works on most apps, depending on how each app draws its icon
 - Home rows: show, hide and reorder Apps, Picks and Continue watching from Settings
 - Picks row: news from RSS feeds with preview images (anime, games, and more), feeds editable on the TV or added from your phone
 - New series row and Continue watching row (reads the Google TV rows when your apps share them, otherwise your recently opened apps)

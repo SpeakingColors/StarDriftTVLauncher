@@ -56,7 +56,7 @@ The dock shows the apps you want, in your order. The last tile, **+**, opens **A
   - **Remove from dock**: it goes to All apps; add it back from All apps with **Add to dock**
   - **Hide**: hides it from the dock and All apps; undo in Settings, Hidden apps
   - **Uninstall**: Android asks you to confirm
-- **Icon look** (every app): each press changes the tile and the menu stays open so you can compare. **Original** is the app's own icon, **Black** puts the logo on black, **White** puts the logo in the app's colour on a light tile. Icons that are one flat picture, without a separate logo, keep their original look when you pick White. The Play Store cycles **Colors**, **Black**, **White**.
+- **Icon look** (most apps): each press changes the tile and the menu stays open so you can compare. How well Black and White work depends on the app's own icon; if a look does not suit an app, go back to Original. **Original** is the app's own icon, **Black** puts the logo on black, **White** puts the logo in the app's colour on a light tile. Icons that are one flat picture, without a separate logo, keep their original look when you pick White. The Play Store cycles **Colors**, **Black**, **White**.
 - In **All apps**, press and hold an app to add it to or remove it from the dock, open its App info, and so on.
 
 The dock has no app names under the tiles, on purpose.
