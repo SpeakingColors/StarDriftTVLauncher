@@ -19,7 +19,7 @@ object HomeRows {
     private fun height(id: String): Float = when (id) {
         APPS -> 204f
         PICKS -> 184f
-        else -> 212f
+        else -> 240f
     }
 
     fun name(id: String): String = when (id) {

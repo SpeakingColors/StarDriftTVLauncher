@@ -2,6 +2,7 @@ package dev.tvlauncher.home
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -765,6 +766,34 @@ class MainActivity : Activity() {
         (l.layoutParams as LinearLayout.LayoutParams).apply { topMargin = Ui.pxi(10f); bottomMargin = Ui.pxi(8f); leftMargin = Ui.pxi(8f) }
     }
 
+    private fun pairRow(col: LinearLayout, aName: String, aIcon: Int, aClick: () -> Unit,
+                        bName: String, bIcon: Int, bClick: () -> Unit): Pair<View, View> {
+        val line = LinearLayout(this)
+        line.orientation = LinearLayout.HORIZONTAL
+        line.clipChildren = false
+        fun cell(name: String, icon: Int, click: () -> Unit, first: Boolean): View {
+            val row = focusableRow()
+            row.setPadding(Ui.pxi(12f), 0, Ui.pxi(10f), 0)
+            val box = iconBox(icon, 34f, 10f, 0x1AFFFFFF, 20f)
+            row.addView(box)
+            (box.layoutParams as LinearLayout.LayoutParams).rightMargin = Ui.pxi(10f)
+            val n = text(18f, Ui.TEXT)
+            n.text = name
+            n.maxLines = 1
+            row.addView(n)
+            row.setOnClickListener { click() }
+            row.id = View.generateViewId()
+            val lp = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+            if (first) lp.rightMargin = Ui.pxi(10f)
+            line.addView(row, lp)
+            return row
+        }
+        val l = cell(aName, aIcon, aClick, true)
+        val r = cell(bName, bIcon, bClick, false)
+        col.addView(line, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(52f)).also { it.bottomMargin = Ui.pxi(8f) })
+        return l to r
+    }
+
     private fun paneRow(col: LinearLayout, name: String, sub: String?, accent: Boolean, icon: Int = 0, onClick: () -> Unit): Pair<LinearLayout, TextView> {
         val row = focusableRow(accent)
         row.setPadding(Ui.pxi(if (icon != 0) 14f else 20f), 0, Ui.pxi(20f), 0)
@@ -815,23 +844,47 @@ class MainActivity : Activity() {
         cacheTile.nextFocusUpId = all.id
 
         paneLabel(col, "Shortcuts")
-        val shortcuts = listOf(
-            Triple("Apps", Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS, R.drawable.ic_apps),
-            Triple("Display", Settings.ACTION_DISPLAY_SETTINGS, R.drawable.ic_display),
-            Triple("Sound", Settings.ACTION_SOUND_SETTINGS, R.drawable.ic_sound),
-            Triple("Storage", Settings.ACTION_INTERNAL_STORAGE_SETTINGS, R.drawable.ic_storage)
-        )
-        for ((i, sc) in shortcuts.withIndex()) {
-            val (name, action, icon) = sc
+        val (shA, shB) = pairRow(col,
+            "Apps", R.drawable.ic_apps, { closeOverlay(false); startSafe(Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS)) },
             // some TVs have no separate Display screen: it lives on the Display & Sound page
-            val fallback = if (action == Settings.ACTION_DISPLAY_SETTINGS) Intent(Settings.ACTION_SOUND_SETTINGS) else null
-            val (srow, _) = paneRow(col, name, null, false, icon) { closeOverlay(false); startSafe(Intent(action), fallback) }
-            if (i == 0) srow.nextFocusUpId = closeTile.id
-        }
+            "Display", R.drawable.ic_display, { closeOverlay(false); startSafe(Intent(Settings.ACTION_DISPLAY_SETTINGS), Intent(Settings.ACTION_SOUND_SETTINGS)) })
+        pairRow(col,
+            "Sound", R.drawable.ic_sound, { closeOverlay(false); startSafe(Intent(Settings.ACTION_SOUND_SETTINGS)) },
+            "Storage", R.drawable.ic_storage, { closeOverlay(false); startSafe(Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS)) })
+        shA.nextFocusUpId = closeTile.id
+        shB.nextFocusUpId = cacheTile.id
 
         paneLabel(col, "Launcher")
-        paneRow(col, "Home rows", null, false, R.drawable.ic_apps) { closeOverlay(false); openHomeRows() }
-        paneRow(col, "Hidden apps", null, false, R.drawable.ic_hidden) { closeOverlay(false); openHiddenApps() }
+        pairRow(col,
+            "Home rows", R.drawable.ic_apps, { closeOverlay(false); openHomeRows() },
+            "Hidden apps", R.drawable.ic_hidden, { closeOverlay(false); openHiddenApps() })
+
+        // Switches that need the one-time grant (docs/ADB.md). Bright = on, dimmed = off.
+        var paintSw: () -> Unit = {}
+        val needGrant = "Needs a one-time grant: adb shell pm grant dev.tvlauncher.home android.permission.WRITE_SECURE_SETTINGS"
+        val adbClick = {
+            if (setAdb(!adbOn())) paintSw()
+            else android.widget.Toast.makeText(this, needGrant, android.widget.Toast.LENGTH_LONG).show()
+        }
+        val keysClick = {
+            val want = !quickKeyOn()
+            if (setQuickKey(want)) { prefs.edit().putBoolean("quick_key", want).apply(); paintSw() }
+            else android.widget.Toast.makeText(this, needGrant, android.widget.Toast.LENGTH_LONG).show()
+        }
+        val adbView: View
+        var keysView: View? = null
+        if (quickBarInstalled()) {
+            val (a2, k2) = pairRow(col, "ADB", R.drawable.ic_adb, { adbClick() }, "Quick Settings key", R.drawable.ic_tune, { keysClick() })
+            adbView = a2
+            keysView = k2
+        } else {
+            adbView = paneRow(col, "ADB (USB debugging)", null, false, R.drawable.ic_adb) { adbClick() }.first
+        }
+        paintSw = {
+            adbView.alpha = if (adbOn()) 1f else 0.5f
+            keysView?.alpha = if (quickKeyOn()) 1f else 0.5f
+        }
+        paintSw()
         showPane("settings", "Settings", col, all)
     }
 
@@ -1822,6 +1875,35 @@ class MainActivity : Activity() {
 
     private fun uninstall(pkg: String) =
         startSafe(Intent(Intent.ACTION_DELETE, Uri.parse("package:$pkg")))
+
+    private fun adbOn(): Boolean = try { Settings.Global.getInt(contentResolver, "adb_enabled", 0) == 1 } catch (e: Throwable) { false }
+
+    /** Switches USB debugging. Needs WRITE_SECURE_SETTINGS, granted once over adb (docs/ADB.md). */
+    private fun setAdb(on: Boolean): Boolean = try {
+        Settings.Global.putInt(contentResolver, "adb_enabled", if (on) 1 else 0)
+    } catch (e: Throwable) { false }
+
+    /** True on TVs that have their own Quick Settings bar (QuickKeyService opens it from the remote key). */
+    private fun quickBarInstalled(): Boolean = try {
+        packageManager.getPackageInfo(QuickKeyService.BAR_PACKAGE, 0); true
+    } catch (e: Throwable) { false }
+
+    private fun quickKeyComponent(): String = ComponentName(this, QuickKeyService::class.java).flattenToString()
+
+    private fun quickKeyOn(): Boolean = try {
+        (Settings.Secure.getString(contentResolver, "enabled_accessibility_services") ?: "").split(':').contains(quickKeyComponent())
+    } catch (e: Throwable) { false }
+
+    /** Turns the Quick Settings key helper (an accessibility service) on or off. Needs WRITE_SECURE_SETTINGS. */
+    private fun setQuickKey(on: Boolean): Boolean = try {
+        val me = quickKeyComponent()
+        val list = (Settings.Secure.getString(contentResolver, "enabled_accessibility_services") ?: "")
+            .split(':').filter { it.isNotEmpty() && it != me }.toMutableList()
+        if (on) list.add(me)
+        Settings.Secure.putString(contentResolver, "enabled_accessibility_services", list.joinToString(":"))
+        if (on) Settings.Secure.putInt(contentResolver, "accessibility_enabled", 1)
+        true
+    } catch (e: Throwable) { false }
 
     private fun startSafe(i: Intent, fallback: Intent? = null) {
         try {

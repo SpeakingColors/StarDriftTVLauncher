@@ -34,6 +34,7 @@ Made for Google TV and Android TV devices.
 - Ambient home music and soft interface sounds, each with its own switch and volume
 - Stardrift screensaver: same sky, 24 hour clock, date, Wi-Fi icon
 - Quick actions: close background apps, clear cache
+- ADB (USB debugging) switch in Settings (needs a one-time permission, see [docs/ADB.md](docs/ADB.md))
 
 How to use all of it: [docs/MANUAL.md](docs/MANUAL.md)
 
@@ -80,6 +81,7 @@ Steam new releases is off by default (its updates are irregular); the others are
 
 - **Govee lights:** there is no custom light control. Lights open through the Govee app tile in the dock.
 - **Privacy:** the launcher only talks to the weather service and to the feeds and images you enabled. Add feeds from your phone is a small web page on your home network, protected by a PIN, and only runs while that screen is open on the TV.
+- **Quick Settings key (optional, experimental):** on some Google TV models the remote's Quick Settings key stops answering, or only answers in some apps. If your TV has that key and its own Quick Settings bar, Settings shows a **Quick Settings key** switch that opens the bar from the key in any app. It is off by default and needs the one-time permission in [docs/ADB.md](docs/ADB.md). It only watches which window is on screen: it never reads or records key presses. Tested on one TV model only; it depends on that bar's internals, so another model or a TV update can break it.
 - **Building locally** (without GitHub) is not documented here. The GitHub Actions workflow is the tested way to build.
 
 ## Credits

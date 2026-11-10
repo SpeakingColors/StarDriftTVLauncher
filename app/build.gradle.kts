@@ -11,8 +11,8 @@ android {
         applicationId = "dev.tvlauncher.home"
         minSdk = 26
         targetSdk = 34
-        versionCode = 61
-        versionName = "0.9.38"
+        versionCode = 62
+        versionName = "0.9.39"
     }
 
     // Fixed key so every build can update the previous install.

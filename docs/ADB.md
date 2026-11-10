@@ -133,3 +133,14 @@ Switch **USB debugging** and **Wireless debugging** off again in Developer optio
 - Official download and release notes for platform-tools: [developer.android.com/tools/releases/platform-tools](https://developer.android.com/tools/releases/platform-tools)
 - Community help for Android TV and Google TV devices: [r/AndroidTV](https://www.reddit.com/r/AndroidTV/) and the [XDA forums](https://xdaforums.com/)
 - Problem with this launcher itself: open an [issue](https://github.com/SpeakingColors/StarDriftTvLauncher/issues) in this repository. Include your TV model, what you ran, and the exact message you got.
+
+## Optional: switches in Settings
+
+Settings has an **ADB** switch (USB debugging on or off), and on TVs that have their own Quick Settings bar a **Quick Settings key** switch. Both need one permission that Android only allows to be given over ADB. Give it once:
+
+```
+adb -s TV_IP:PORT shell pm grant dev.tvlauncher.home android.permission.WRITE_SECURE_SETTINGS
+```
+
+Until then the switches show a message with this command. Bright means on, dimmed means off.
+
