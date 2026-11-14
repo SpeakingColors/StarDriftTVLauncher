@@ -1,0 +1,105 @@
+<h1 align="center">Stardrift TV Launcher</h1>
+
+<p align="center">
+A calm, ad free home screen for Google TV.<br>
+A slowly drifting night sky, your apps, your news, your shows. Nothing else.
+</p>
+
+<p align="center">
+  <img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-blue">
+  <img alt="Platform: Google TV / Android TV" src="https://img.shields.io/badge/platform-Google%20TV-black">
+  <img alt="Android 8.0+" src="https://img.shields.io/badge/android-8.0%2B-green">
+</p>
+
+![Stardrift home screen](docs/home.png)
+
+*Design mockup with sample content. The real launcher is built to match it.*
+
+## What it is
+
+Stardrift replaces the Google TV home screen with something quieter. The background is a black sky that drifts left to right (one full turn in 20 minutes), with galaxies, coloured stars, a rare satellite and a quiet nova. On top of it you get a greeting, the clock, the weather, your app dock, a row of news picks and a Continue watching row.
+
+No ads, no suggestions, no sponsored items, no tracking. Only what you pick shows on Home.
+
+Made for Google TV and Android TV devices.
+
+## Features
+
+- Greeting with your name, clock, date, weather (city chosen by name search, no IP lookup)
+- App dock: reorder, add, remove, hide, All apps list, and an optional icon look (Original, Black, White) that only works on some apps: it depends on how each app draws its icon, and many apps keep their original look
+- Home rows: show, hide and reorder Apps, Picks and Continue watching from Settings
+- Picks row: headlines from RSS feeds you choose, with preview images. It starts empty: add feeds on the TV or from your phone ([how to find a feed](docs/MANUAL.md#finding-an-rss-feed), also with your AI assistant)
+- New series row and Continue watching row (reads the Google TV rows when your apps share them, otherwise your recently opened apps)
+- Settings, Network (with a speed test), Inputs and Sound popups under the top icons
+- Ambient home music and soft interface sounds, each with its own switch and volume
+- Stardrift screensaver: same sky, 24 hour clock, date, Wi-Fi icon
+- Quick actions: close background apps and clear cache (through the TV's own debugging service, see [docs/ADB.md](docs/ADB.md))
+- ADB (USB debugging) switch in Settings (needs a one-time permission, see [docs/ADB.md](docs/ADB.md))
+- Update button in Settings (builds made by GitHub Actions in your own fork update from your fork's releases, see [docs/BUILD.md](docs/BUILD.md#update-from-the-tv-update-button))
+
+How to use all of it: [docs/MANUAL.md](docs/MANUAL.md)
+
+Making it your Home screen and fixing remote buttons: [docs/HOME.md](docs/HOME.md)
+
+What the launcher asks for (permissions, the ADB prompt, the internet connections), why, and how to check it yourself: [docs/PERMISSIONS.md](docs/PERMISSIONS.md)
+
+Cleaning up the TV (what is installed, what starts at boot, ads and telemetry), safely and step by step: [docs/TV-TUNING.md](docs/TV-TUNING.md). You can hand this page to an AI assistant and ask it to review your TV.
+
+Want other music or interface sounds in your copy: [docs/CUSTOMIZE.md](docs/CUSTOMIZE.md)
+
+Want to continue the project yourself (code map, build, ADB commands, performance tips, notes for AI assistants): [docs/DEVELOPING.md](docs/DEVELOPING.md) and [AGENTS.md](AGENTS.md)
+
+## Get it on your TV
+
+There is no ready made APK in this repository. You build your own, so it is signed with **your** key (a TV only accepts an update signed with the same key as the installed version). GitHub builds it for you, you do not need Android Studio.
+
+1. **Fork** this repository (or use it as a template).
+2. **Create a keystore** (your signing key) and add two secrets to your fork: `KEYSTORE_B64` and `KEYSTORE_PASSWORD`.
+3. **Run the build**: Actions tab, *Build APK*, *Run workflow*. When it is green, download `tvlauncher.apk` from the *Releases* page of your fork (the `latest` release).
+4. **Install it on the TV** with ADB.
+
+Full steps with every command: [docs/BUILD.md](docs/BUILD.md)
+
+Install in short. Replace `TV_IP:PORT` with your TV's IP address and port (see [docs/ADB.md](docs/ADB.md)):
+
+```
+adb connect TV_IP:PORT
+adb -s TV_IP:PORT install -r tvlauncher.apk
+adb -s TV_IP:PORT shell am start -n dev.tvlauncher.home/.MainActivity
+```
+
+New to ADB, or something does not connect: [docs/ADB.md](docs/ADB.md)
+
+## Network (DNS filters)
+
+If your network filters DNS (an ad blocker, for example), allow these hosts so the launcher works:
+
+- `api.open-meteo.com` and `geocoding-api.open-meteo.com` (weather)
+- the hosts of the feeds you use (the host is the first part of a feed's web address) and the image hosts those feeds use
+
+Feeds change or disappear; a feed that stops working can be replaced in Edit sources on the TV.
+
+## Notes
+
+- **Privacy:** the launcher only talks to the weather service and to the feeds and images you enabled. Add feeds from your phone is a small web page on your home network, protected by a PIN, and only runs while that screen is open on the TV.
+- **Quick Settings key (optional, experimental):** on some Google TV models the remote's Quick Settings key stops answering, or only answers in some apps. If your TV has that key and its own Quick Settings bar, Settings shows a **Quick Settings key** switch that opens the bar from the key in any app. It is off by default and needs the one-time permission in [docs/ADB.md](docs/ADB.md). It only watches which window is on screen: it never reads or records key presses. Tested on one TV model only; it depends on that bar's internals, so another model or a TV update can break it.
+- **Building locally** (without GitHub): the Gradle wrapper is included, see [docs/DEVELOPING.md](docs/DEVELOPING.md#2-building). The GitHub Actions workflow is the tested way to build.
+
+## Credits
+
+- Weather data by [Open-Meteo](https://open-meteo.com/) (CC BY 4.0)
+- The ambient song and the interface sounds were made for this project and are part of it, under the same license
+
+## Not affiliated
+
+Stardrift is an independent hobby project. It is not affiliated with, endorsed by or sponsored by Google, or by any maker of the apps, services, feeds or devices it works with. Google TV and Android TV are trademarks of Google LLC. All other product names, logos and trademarks belong to their owners and are used only to say what the launcher works with. App icons on your TV come from the apps you installed. News and images in the feeds belong to their publishers.
+
+## License
+
+Copyright (C) 2026 SpeakingColors
+
+Stardrift TV Launcher is free software: you can redistribute it and modify it under the terms of the [GNU General Public License version 3](LICENSE). It is distributed without any warranty. If you share a modified version, share its source under the same license.
+
+## As is
+
+Stardrift is a hobby project, made and tested mostly on one TV. It comes as is: no promises that it works on your TV, no support, no guaranteed updates. Use it at your own risk. If something does not work on your model, you are welcome to fork it and fix it yourself. Issues and pull requests are turned off on this repository. Fork it and make it yours; your AI assistant can start from [AGENTS.md](AGENTS.md).
