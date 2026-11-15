@@ -1,0 +1,1744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stardrift mockup</title>
+<script src="./support.js"></script>
+<script src="./audio-asset.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+button.nav{font-family:inherit;color:inherit;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, background .15s ease}
+button.nav:focus-visible{outline:none;transform:scale(1.06);box-shadow:0 0 0 3px rgba(255,255,255,0.8), 0 0 32px 4px color-mix(in srgb, var(--glow) 50%, transparent)}
+button.nav:hover{transform:scale(1.03)}
+.shoot{position:absolute;left:0;top:0;height:2px;border-radius:2px;background:linear-gradient(to right, rgba(255,255,255,0), #ffffff);opacity:0;will-change:transform,opacity}
+@keyframes twinkle{from{opacity:.78}to{opacity:1}}
+[data-saveron="1"] [data-aside]{transform:none !important}
+@keyframes driftX{from{transform:translateX(-480px)}to{transform:translateX(480px)}}
+@keyframes driftY{from{transform:translateY(-240px)}to{transform:translateY(240px)}}
+@media (prefers-reduced-motion: reduce){.shoot,[data-fx]{display:none}}
+</style>
+</helmet>
+<div data-root="1" data-saveron="{{saverFlag}}" onKeyDown="{{onKey}}" onFocus="{{onFocus}}" onBlur="{{onBlur}}" onMouseMove="{{onMove}}" style="--glow: {{accent}}; position: relative; isolation: isolate; width: 1600px; height: 900px; box-sizing: border-box; padding: 28px 88px; background: #000000; color: #eef0f7; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; gap: 26px; overflow: hidden">
+
+  <!-- SPACE BACKGROUND -->
+  <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 1600px; height: 900px; z-index: -1; overflow: hidden; pointer-events: none; background: #000000">
+    <div style="position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform: translateX({{pxFar}}px); transition: transform .9s ease-out">
+    <div data-sway="far0" style="position: absolute; left: -500px; top: -280px; width: 2600px; height: 1500px; will-change: transform; transform: translateX(0px)">
+    <div style="position: absolute; left: -53px; top: 536px; width: 275px; height: 178px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.42), rgba(110, 215, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 22px; top: 580px; width: 220px; height: 143px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 25px; top: 608px; width: 171px; height: 111px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.34), rgba(110, 215, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 306px; top: 927px; width: 289px; height: 187px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.42), rgba(255, 130, 110, 0) 66%); transform: translate(-159px, -51px)"></div>
+    <div data-aside="1" style="position: absolute; left: 393px; top: 978px; width: 211px; height: 137px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(-150px, -118px)"></div>
+    <div data-aside="1" style="position: absolute; left: 382px; top: 997px; width: 188px; height: 122px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.34), rgba(255, 130, 110, 0) 66%); transform: translate(149px, -118px)"></div>
+    <div style="position: absolute; left: 685px; top: 690px; width: 264px; height: 171px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 758px; top: 733px; width: 213px; height: 138px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%)"></div>
+    <div style="position: absolute; left: 738px; top: 746px; width: 209px; height: 135px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 996px; top: 439px; width: 284px; height: 184px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.42), rgba(110, 215, 255, 0) 66%); transform: translate(210px, 88px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1064px; top: 478px; width: 244px; height: 158px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(-97px, 66px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1069px; top: 507px; width: 190px; height: 123px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.34), rgba(110, 215, 255, 0) 66%); transform: translate(152px, -97px)"></div>
+    <div style="position: absolute; left: 1347px; top: 847px; width: 246px; height: 159px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 1390px; top: 871px; width: 255px; height: 165px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 1400px; top: 903px; width: 192px; height: 124px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 1634px; top: 599px; width: 256px; height: 166px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.42), rgba(110, 215, 255, 0) 66%); transform: translate(142px, 111px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1696px; top: 634px; width: 230px; height: 149px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%); transform: translate(-202px, 50px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1686px; top: 654px; width: 205px; height: 133px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.34), rgba(110, 215, 255, 0) 66%); transform: translate(-137px, 64px)"></div>
+    <div style="position: absolute; left: 1990px; top: 343px; width: 290px; height: 188px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.42), rgba(255, 190, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 2062px; top: 385px; width: 243px; height: 157px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%)"></div>
+    <div style="position: absolute; left: 2058px; top: 409px; width: 207px; height: 134px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.34), rgba(255, 190, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 2296px; top: 746px; width: 269px; height: 174px; background: radial-gradient(ellipse at center, rgba(255, 120, 190, 0.42), rgba(255, 120, 190, 0) 66%)"></div>
+    <div style="position: absolute; left: 2358px; top: 781px; width: 243px; height: 157px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%)"></div>
+    <div style="position: absolute; left: 2376px; top: 819px; width: 162px; height: 105px; background: radial-gradient(ellipse at center, rgba(255, 120, 190, 0.34), rgba(255, 120, 190, 0) 66%)"></div>
+    <!-- milky way band: one per tile, soft ends, passes left to right -->
+    <div style="position: absolute; left: -200px; top: 460px; width: 3000px; height: 280px; transform: rotate(-22deg); -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent)">
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; filter: blur(16px); background: linear-gradient(to bottom, rgba(150, 110, 230, 0), rgba(150, 110, 230, 0.13) 35%, rgba(255, 200, 215, 0.12) 50%, rgba(100, 150, 255, 0.11) 65%, rgba(100, 150, 255, 0))"></div>
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); background-image:
+      radial-gradient(1px 1px at 7px 11px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 19px 5px, #ffd9f2 55%, transparent 100%),
+      radial-gradient(1px 1px at 3px 27px, #cfe0ff 55%, transparent 100%),
+      radial-gradient(1px 1px at 31px 17px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 13px 41px, #ffffff 55%, transparent 100%);
+      background-size: 37px 43px, 41px 47px, 47px 53px, 53px 59px, 59px 61px"></div>
+    </div>
+    <div style="position: absolute; left: 11px; top: 608px; width: 191px; height: 58px; border-radius: 50%; transform: rotate(61deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(220,250,255, 0.85) 0%, rgba(110,215,255, 0.5) 16%, rgba(50,110,220, 0.25) 42%, rgba(50,110,220, 0) 72%)"></div>
+    <div style="position: absolute; left: 339px; top: 991px; width: 267px; height: 83px; border-radius: 50%; transform: rotate(-52deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,225,215, 0.85) 0%, rgba(255,130,110, 0.5) 16%, rgba(200,50,60, 0.25) 42%, rgba(200,50,60, 0) 72%)"></div>
+    <div style="position: absolute; left: 649px; top: 733px; width: 380px; height: 110px; border-radius: 50%; transform: rotate(-28deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255, 232, 250, 0.95) 0%, rgba(214, 140, 255, 0.55) 14%, rgba(120, 80, 230, 0.28) 40%, rgba(120, 80, 230, 0) 72%)"></div>
+    <div style="position: absolute; left: 718px; top: 782px; width: 239px; height: 40px; border-radius: 50%; transform: rotate(-28deg); filter: blur(3px); background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 70%)"></div>
+    <div style="position: absolute; left: 990px; top: 495px; width: 340px; height: 96px; border-radius: 50%; transform: rotate(18deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(220, 250, 255, 0.9) 0%, rgba(110, 215, 255, 0.5) 16%, rgba(50, 110, 220, 0.25) 42%, rgba(50, 110, 220, 0) 72%)"></div>
+    <div style="position: absolute; left: 1351px; top: 897px; width: 282px; height: 84px; border-radius: 50%; transform: rotate(68deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,232,250, 0.85) 0%, rgba(214,140,255, 0.5) 16%, rgba(120,80,230, 0.25) 42%, rgba(120,80,230, 0) 72%)"></div>
+    <div style="position: absolute; left: 1636px; top: 648px; width: 297px; height: 92px; border-radius: 50%; transform: rotate(27deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(220,250,255, 0.85) 0%, rgba(110,215,255, 0.5) 16%, rgba(50,110,220, 0.25) 42%, rgba(50,110,220, 0) 72%)"></div>
+    <div style="position: absolute; left: 2062px; top: 425px; width: 190px; height: 49px; border-radius: 50%; transform: rotate(-41deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,240,215, 0.85) 0%, rgba(255,190,110, 0.5) 16%, rgba(200,110,50, 0.25) 42%, rgba(200,110,50, 0) 72%)"></div>
+    <div style="position: absolute; left: 2358px; top: 817px; width: 190px; height: 56px; border-radius: 50%; transform: rotate(-12deg); filter: blur(1px); background: radial-gradient(ellipse at center, rgba(255, 220, 235, 0.9) 0%, rgba(255, 120, 190, 0.45) 20%, rgba(255, 120, 190, 0) 70%)"></div>
+    </div>
+    <div data-sway="far1" style="position: absolute; left: -500px; top: -280px; width: 2600px; height: 1500px; will-change: transform; transform: translateX(2600px)">
+    <div style="position: absolute; left: 10px; top: 818px; width: 253px; height: 164px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 70px; top: 852px; width: 231px; height: 150px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%)"></div>
+    <div style="position: absolute; left: 70px; top: 878px; width: 185px; height: 120px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 298px; top: 577px; width: 244px; height: 158px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 348px; top: 604px; width: 239px; height: 155px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 340px; top: 625px; width: 210px; height: 136px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 720px; top: 333px; width: 240px; height: 156px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.42), rgba(255, 130, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 782px; top: 369px; width: 212px; height: 137px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 762px; top: 381px; width: 208px; height: 135px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.34), rgba(255, 130, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 1022px; top: 714px; width: 286px; height: 185px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.42), rgba(170, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 1102px; top: 761px; width: 220px; height: 143px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 1101px; top: 786px; width: 179px; height: 116px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.34), rgba(170, 140, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 1301px; top: 474px; width: 273px; height: 177px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.42), rgba(255, 190, 110, 0) 66%); transform: translate(167px, -77px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1378px; top: 519px; width: 214px; height: 139px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(121px, 108px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1362px; top: 534px; width: 204px; height: 132px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.34), rgba(255, 190, 110, 0) 66%); transform: translate(-188px, -101px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1666px; top: 878px; width: 247px; height: 160px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.42), rgba(255, 110, 170, 0) 66%); transform: translate(161px, 103px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1718px; top: 906px; width: 239px; height: 155px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(50px, 80px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1730px; top: 940px; width: 171px; height: 111px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.34), rgba(255, 110, 170, 0) 66%); transform: translate(104px, -133px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1927px; top: 624px; width: 275px; height: 178px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.42), rgba(170, 140, 255, 0) 66%); transform: translate(191px, -74px)"></div>
+    <div data-aside="1" style="position: absolute; left: 2005px; top: 670px; width: 215px; height: 139px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%); transform: translate(163px, 111px)"></div>
+    <div data-aside="1" style="position: absolute; left: 2000px; top: 693px; width: 181px; height: 117px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.34), rgba(170, 140, 255, 0) 66%); transform: translate(178px, 85px)"></div>
+    <div style="position: absolute; left: 2257px; top: 379px; width: 275px; height: 178px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.42), rgba(255, 110, 170, 0) 66%)"></div>
+    <div style="position: absolute; left: 2332px; top: 423px; width: 222px; height: 144px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%)"></div>
+    <div style="position: absolute; left: 2338px; top: 453px; width: 165px; height: 107px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.34), rgba(255, 110, 170, 0) 66%)"></div>
+    <!-- milky way band: one per tile, soft ends, passes left to right -->
+    <div style="position: absolute; left: -200px; top: 520px; width: 3000px; height: 280px; transform: rotate(-22deg); -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent)">
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; filter: blur(16px); background: linear-gradient(to bottom, rgba(150, 110, 230, 0), rgba(150, 110, 230, 0.13) 35%, rgba(255, 200, 215, 0.12) 50%, rgba(100, 150, 255, 0.11) 65%, rgba(100, 150, 255, 0))"></div>
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); background-image:
+      radial-gradient(1px 1px at 7px 11px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 19px 5px, #ffd9f2 55%, transparent 100%),
+      radial-gradient(1px 1px at 3px 27px, #cfe0ff 55%, transparent 100%),
+      radial-gradient(1px 1px at 31px 17px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 13px 41px, #ffffff 55%, transparent 100%);
+      background-size: 37px 43px, 41px 47px, 47px 53px, 53px 59px, 59px 61px"></div>
+    </div>
+    <div style="position: absolute; left: 21px; top: 864px; width: 276px; height: 97px; border-radius: 50%; transform: rotate(-63deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,232,250, 0.85) 0%, rgba(214,140,255, 0.5) 16%, rgba(120,80,230, 0.25) 42%, rgba(120,80,230, 0) 72%)"></div>
+    <div style="position: absolute; left: 318px; top: 635px; width: 247px; height: 65px; border-radius: 50%; transform: rotate(-19deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,232,250, 0.85) 0%, rgba(214,140,255, 0.5) 16%, rgba(120,80,230, 0.25) 42%, rgba(120,80,230, 0) 72%)"></div>
+    <div style="position: absolute; left: 774px; top: 398px; width: 177px; height: 50px; border-radius: 50%; transform: rotate(-48deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,225,215, 0.85) 0%, rgba(255,130,110, 0.5) 16%, rgba(200,50,60, 0.25) 42%, rgba(200,50,60, 0) 72%)"></div>
+    <div style="position: absolute; left: 1069px; top: 778px; width: 235px; height: 81px; border-radius: 50%; transform: rotate(14deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(240,225,255, 0.85) 0%, rgba(170,140,255, 0.5) 16%, rgba(90,60,200, 0.25) 42%, rgba(90,60,200, 0) 72%)"></div>
+    <div style="position: absolute; left: 1313px; top: 538px; width: 293px; height: 73px; border-radius: 50%; transform: rotate(-42deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,240,215, 0.85) 0%, rgba(255,190,110, 0.5) 16%, rgba(200,110,50, 0.25) 42%, rgba(200,110,50, 0) 72%)"></div>
+    <div style="position: absolute; left: 1677px; top: 923px; width: 269px; height: 94px; border-radius: 50%; transform: rotate(47deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,215,235, 0.85) 0%, rgba(255,110,170, 0.5) 16%, rgba(190,40,110, 0.25) 42%, rgba(190,40,110, 0) 72%)"></div>
+    <div style="position: absolute; left: 1938px; top: 676px; width: 297px; height: 99px; border-radius: 50%; transform: rotate(54deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(240,225,255, 0.85) 0%, rgba(170,140,255, 0.5) 16%, rgba(90,60,200, 0.25) 42%, rgba(90,60,200, 0) 72%)"></div>
+    <div style="position: absolute; left: 2299px; top: 440px; width: 235px; height: 81px; border-radius: 50%; transform: rotate(24deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,215,235, 0.85) 0%, rgba(255,110,170, 0.5) 16%, rgba(190,40,110, 0.25) 42%, rgba(190,40,110, 0) 72%)"></div>
+    </div>
+    <div data-sway="far2" style="position: absolute; left: -500px; top: -280px; width: 2600px; height: 1500px; will-change: transform; transform: translateX(-5200px)">
+    <div style="position: absolute; left: -53px; top: 536px; width: 275px; height: 178px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.42), rgba(110, 215, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 22px; top: 580px; width: 220px; height: 143px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 25px; top: 608px; width: 171px; height: 111px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.34), rgba(110, 215, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 306px; top: 927px; width: 289px; height: 187px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.42), rgba(255, 130, 110, 0) 66%); transform: translate(-159px, -51px)"></div>
+    <div data-aside="1" style="position: absolute; left: 393px; top: 978px; width: 211px; height: 137px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(-150px, -118px)"></div>
+    <div data-aside="1" style="position: absolute; left: 382px; top: 997px; width: 188px; height: 122px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.34), rgba(255, 130, 110, 0) 66%); transform: translate(149px, -118px)"></div>
+    <div style="position: absolute; left: 685px; top: 690px; width: 264px; height: 171px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 758px; top: 733px; width: 213px; height: 138px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%)"></div>
+    <div style="position: absolute; left: 738px; top: 746px; width: 209px; height: 135px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 996px; top: 439px; width: 284px; height: 184px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.42), rgba(110, 215, 255, 0) 66%); transform: translate(210px, 88px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1064px; top: 478px; width: 244px; height: 158px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(-97px, 66px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1069px; top: 507px; width: 190px; height: 123px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.34), rgba(110, 215, 255, 0) 66%); transform: translate(152px, -97px)"></div>
+    <div style="position: absolute; left: 1347px; top: 847px; width: 246px; height: 159px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 1390px; top: 871px; width: 255px; height: 165px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 1400px; top: 903px; width: 192px; height: 124px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 1634px; top: 599px; width: 256px; height: 166px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.42), rgba(110, 215, 255, 0) 66%); transform: translate(142px, 111px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1696px; top: 634px; width: 230px; height: 149px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%); transform: translate(-202px, 50px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1686px; top: 654px; width: 205px; height: 133px; background: radial-gradient(ellipse at center, rgba(110, 215, 255, 0.34), rgba(110, 215, 255, 0) 66%); transform: translate(-137px, 64px)"></div>
+    <div style="position: absolute; left: 1990px; top: 343px; width: 290px; height: 188px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.42), rgba(255, 190, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 2062px; top: 385px; width: 243px; height: 157px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%)"></div>
+    <div style="position: absolute; left: 2058px; top: 409px; width: 207px; height: 134px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.34), rgba(255, 190, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 2296px; top: 746px; width: 269px; height: 174px; background: radial-gradient(ellipse at center, rgba(255, 120, 190, 0.42), rgba(255, 120, 190, 0) 66%)"></div>
+    <div style="position: absolute; left: 2358px; top: 781px; width: 243px; height: 157px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%)"></div>
+    <div style="position: absolute; left: 2376px; top: 819px; width: 162px; height: 105px; background: radial-gradient(ellipse at center, rgba(255, 120, 190, 0.34), rgba(255, 120, 190, 0) 66%)"></div>
+    <!-- milky way band: one per tile, soft ends, passes left to right -->
+    <div style="position: absolute; left: -200px; top: 460px; width: 3000px; height: 280px; transform: rotate(-22deg); -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent)">
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; filter: blur(16px); background: linear-gradient(to bottom, rgba(150, 110, 230, 0), rgba(150, 110, 230, 0.13) 35%, rgba(255, 200, 215, 0.12) 50%, rgba(100, 150, 255, 0.11) 65%, rgba(100, 150, 255, 0))"></div>
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); background-image:
+      radial-gradient(1px 1px at 7px 11px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 19px 5px, #ffd9f2 55%, transparent 100%),
+      radial-gradient(1px 1px at 3px 27px, #cfe0ff 55%, transparent 100%),
+      radial-gradient(1px 1px at 31px 17px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 13px 41px, #ffffff 55%, transparent 100%);
+      background-size: 37px 43px, 41px 47px, 47px 53px, 53px 59px, 59px 61px"></div>
+    </div>
+    <div style="position: absolute; left: 11px; top: 608px; width: 191px; height: 58px; border-radius: 50%; transform: rotate(61deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(220,250,255, 0.85) 0%, rgba(110,215,255, 0.5) 16%, rgba(50,110,220, 0.25) 42%, rgba(50,110,220, 0) 72%)"></div>
+    <div style="position: absolute; left: 339px; top: 991px; width: 267px; height: 83px; border-radius: 50%; transform: rotate(-52deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,225,215, 0.85) 0%, rgba(255,130,110, 0.5) 16%, rgba(200,50,60, 0.25) 42%, rgba(200,50,60, 0) 72%)"></div>
+    <div style="position: absolute; left: 649px; top: 733px; width: 380px; height: 110px; border-radius: 50%; transform: rotate(-28deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255, 232, 250, 0.95) 0%, rgba(214, 140, 255, 0.55) 14%, rgba(120, 80, 230, 0.28) 40%, rgba(120, 80, 230, 0) 72%)"></div>
+    <div style="position: absolute; left: 718px; top: 782px; width: 239px; height: 40px; border-radius: 50%; transform: rotate(-28deg); filter: blur(3px); background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 70%)"></div>
+    <div style="position: absolute; left: 990px; top: 495px; width: 340px; height: 96px; border-radius: 50%; transform: rotate(18deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(220, 250, 255, 0.9) 0%, rgba(110, 215, 255, 0.5) 16%, rgba(50, 110, 220, 0.25) 42%, rgba(50, 110, 220, 0) 72%)"></div>
+    <div style="position: absolute; left: 1351px; top: 897px; width: 282px; height: 84px; border-radius: 50%; transform: rotate(68deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,232,250, 0.85) 0%, rgba(214,140,255, 0.5) 16%, rgba(120,80,230, 0.25) 42%, rgba(120,80,230, 0) 72%)"></div>
+    <div style="position: absolute; left: 1636px; top: 648px; width: 297px; height: 92px; border-radius: 50%; transform: rotate(27deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(220,250,255, 0.85) 0%, rgba(110,215,255, 0.5) 16%, rgba(50,110,220, 0.25) 42%, rgba(50,110,220, 0) 72%)"></div>
+    <div style="position: absolute; left: 2062px; top: 425px; width: 190px; height: 49px; border-radius: 50%; transform: rotate(-41deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,240,215, 0.85) 0%, rgba(255,190,110, 0.5) 16%, rgba(200,110,50, 0.25) 42%, rgba(200,110,50, 0) 72%)"></div>
+    <div style="position: absolute; left: 2358px; top: 817px; width: 190px; height: 56px; border-radius: 50%; transform: rotate(-12deg); filter: blur(1px); background: radial-gradient(ellipse at center, rgba(255, 220, 235, 0.9) 0%, rgba(255, 120, 190, 0.45) 20%, rgba(255, 120, 190, 0) 70%)"></div>
+    </div>
+    <div data-sway="far3" style="position: absolute; left: -500px; top: -280px; width: 2600px; height: 1500px; will-change: transform; transform: translateX(-2600px)">
+    <div style="position: absolute; left: 10px; top: 818px; width: 253px; height: 164px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 70px; top: 852px; width: 231px; height: 150px; background: radial-gradient(ellipse at center, rgba(200, 30, 45, 0.48), rgba(200, 30, 45, 0) 66%)"></div>
+    <div style="position: absolute; left: 70px; top: 878px; width: 185px; height: 120px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 298px; top: 577px; width: 244px; height: 158px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.42), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 348px; top: 604px; width: 239px; height: 155px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 340px; top: 625px; width: 210px; height: 136px; background: radial-gradient(ellipse at center, rgba(214, 140, 255, 0.34), rgba(214, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 720px; top: 333px; width: 240px; height: 156px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.42), rgba(255, 130, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 782px; top: 369px; width: 212px; height: 137px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 762px; top: 381px; width: 208px; height: 135px; background: radial-gradient(ellipse at center, rgba(255, 130, 110, 0.34), rgba(255, 130, 110, 0) 66%)"></div>
+    <div style="position: absolute; left: 1022px; top: 714px; width: 286px; height: 185px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.42), rgba(170, 140, 255, 0) 66%)"></div>
+    <div style="position: absolute; left: 1102px; top: 761px; width: 220px; height: 143px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%)"></div>
+    <div style="position: absolute; left: 1101px; top: 786px; width: 179px; height: 116px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.34), rgba(170, 140, 255, 0) 66%)"></div>
+    <div data-aside="1" style="position: absolute; left: 1301px; top: 474px; width: 273px; height: 177px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.42), rgba(255, 190, 110, 0) 66%); transform: translate(167px, -77px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1378px; top: 519px; width: 214px; height: 139px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(121px, 108px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1362px; top: 534px; width: 204px; height: 132px; background: radial-gradient(ellipse at center, rgba(255, 190, 110, 0.34), rgba(255, 190, 110, 0) 66%); transform: translate(-188px, -101px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1666px; top: 878px; width: 247px; height: 160px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.42), rgba(255, 110, 170, 0) 66%); transform: translate(161px, 103px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1718px; top: 906px; width: 239px; height: 155px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%); transform: translate(50px, 80px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1730px; top: 940px; width: 171px; height: 111px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.34), rgba(255, 110, 170, 0) 66%); transform: translate(104px, -133px)"></div>
+    <div data-aside="1" style="position: absolute; left: 1927px; top: 624px; width: 275px; height: 178px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.42), rgba(170, 140, 255, 0) 66%); transform: translate(191px, -74px)"></div>
+    <div data-aside="1" style="position: absolute; left: 2005px; top: 670px; width: 215px; height: 139px; background: radial-gradient(ellipse at center, rgba(215, 45, 30, 0.48), rgba(215, 45, 30, 0) 66%); transform: translate(163px, 111px)"></div>
+    <div data-aside="1" style="position: absolute; left: 2000px; top: 693px; width: 181px; height: 117px; background: radial-gradient(ellipse at center, rgba(170, 140, 255, 0.34), rgba(170, 140, 255, 0) 66%); transform: translate(178px, 85px)"></div>
+    <div style="position: absolute; left: 2257px; top: 379px; width: 275px; height: 178px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.42), rgba(255, 110, 170, 0) 66%)"></div>
+    <div style="position: absolute; left: 2332px; top: 423px; width: 222px; height: 144px; background: radial-gradient(ellipse at center, rgba(170, 25, 60, 0.48), rgba(170, 25, 60, 0) 66%)"></div>
+    <div style="position: absolute; left: 2338px; top: 453px; width: 165px; height: 107px; background: radial-gradient(ellipse at center, rgba(255, 110, 170, 0.34), rgba(255, 110, 170, 0) 66%)"></div>
+    <!-- milky way band: one per tile, soft ends, passes left to right -->
+    <div style="position: absolute; left: -200px; top: 520px; width: 3000px; height: 280px; transform: rotate(-22deg); -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent)">
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; filter: blur(16px); background: linear-gradient(to bottom, rgba(150, 110, 230, 0), rgba(150, 110, 230, 0.13) 35%, rgba(255, 200, 215, 0.12) 50%, rgba(100, 150, 255, 0.11) 65%, rgba(100, 150, 255, 0))"></div>
+    <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); background-image:
+      radial-gradient(1px 1px at 7px 11px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 19px 5px, #ffd9f2 55%, transparent 100%),
+      radial-gradient(1px 1px at 3px 27px, #cfe0ff 55%, transparent 100%),
+      radial-gradient(1px 1px at 31px 17px, #ffffff 55%, transparent 100%),
+      radial-gradient(1px 1px at 13px 41px, #ffffff 55%, transparent 100%);
+      background-size: 37px 43px, 41px 47px, 47px 53px, 53px 59px, 59px 61px"></div>
+    </div>
+    <div style="position: absolute; left: 21px; top: 864px; width: 276px; height: 97px; border-radius: 50%; transform: rotate(-63deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,232,250, 0.85) 0%, rgba(214,140,255, 0.5) 16%, rgba(120,80,230, 0.25) 42%, rgba(120,80,230, 0) 72%)"></div>
+    <div style="position: absolute; left: 318px; top: 635px; width: 247px; height: 65px; border-radius: 50%; transform: rotate(-19deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,232,250, 0.85) 0%, rgba(214,140,255, 0.5) 16%, rgba(120,80,230, 0.25) 42%, rgba(120,80,230, 0) 72%)"></div>
+    <div style="position: absolute; left: 774px; top: 398px; width: 177px; height: 50px; border-radius: 50%; transform: rotate(-48deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,225,215, 0.85) 0%, rgba(255,130,110, 0.5) 16%, rgba(200,50,60, 0.25) 42%, rgba(200,50,60, 0) 72%)"></div>
+    <div style="position: absolute; left: 1069px; top: 778px; width: 235px; height: 81px; border-radius: 50%; transform: rotate(14deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(240,225,255, 0.85) 0%, rgba(170,140,255, 0.5) 16%, rgba(90,60,200, 0.25) 42%, rgba(90,60,200, 0) 72%)"></div>
+    <div style="position: absolute; left: 1313px; top: 538px; width: 293px; height: 73px; border-radius: 50%; transform: rotate(-42deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,240,215, 0.85) 0%, rgba(255,190,110, 0.5) 16%, rgba(200,110,50, 0.25) 42%, rgba(200,110,50, 0) 72%)"></div>
+    <div style="position: absolute; left: 1677px; top: 923px; width: 269px; height: 94px; border-radius: 50%; transform: rotate(47deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,215,235, 0.85) 0%, rgba(255,110,170, 0.5) 16%, rgba(190,40,110, 0.25) 42%, rgba(190,40,110, 0) 72%)"></div>
+    <div style="position: absolute; left: 1938px; top: 676px; width: 297px; height: 99px; border-radius: 50%; transform: rotate(54deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(240,225,255, 0.85) 0%, rgba(170,140,255, 0.5) 16%, rgba(90,60,200, 0.25) 42%, rgba(90,60,200, 0) 72%)"></div>
+    <div style="position: absolute; left: 2299px; top: 440px; width: 235px; height: 81px; border-radius: 50%; transform: rotate(24deg); filter: blur(2px); background: radial-gradient(ellipse at center, rgba(255,215,235, 0.85) 0%, rgba(255,110,170, 0.5) 16%, rgba(190,40,110, 0.25) 42%, rgba(190,40,110, 0) 72%)"></div>
+    </div>
+    </div>
+    <!-- dark see-through filter: dims nebulas and galaxies, colors stay vivid -->
+    <div style="position: absolute; left: 0; top: 0; width: 1600px; height: 900px; background: rgba(0, 0, 0, 0.62)"></div>
+    <!-- dense star field: many tiles of different sizes overlap into a random-looking sea of stars -->
+    <div style="position: absolute; left: 0; top: 0; width: 1600px; height: 900px; opacity: 0.9; transform: translateX({{pxNear}}px); transition: transform .9s ease-out">
+    <div data-sway="sg0" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; animation: twinkle 6s ease-in-out infinite alternate;"><div data-stars="sg0" style="position: absolute; left: 0; top: 0; width: 5200px; height: 900px; background-repeat: repeat-x; background-size: 2600px 900px"></div></div>
+    <div data-sway="sg1" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; animation: twinkle 8s ease-in-out infinite alternate;"><div data-stars="sg1" style="position: absolute; left: 0; top: 0; width: 5200px; height: 900px; background-repeat: repeat-x; background-size: 2600px 900px"></div></div>
+    <div data-sway="sg2" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; animation: twinkle 10s ease-in-out infinite alternate;"><div data-stars="sg2" style="position: absolute; left: 0; top: 0; width: 5200px; height: 900px; background-repeat: repeat-x; background-size: 2600px 900px"></div></div>
+    <div data-sway="sg3" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; animation: twinkle 12s ease-in-out infinite alternate;"><div data-stars="sg3" style="position: absolute; left: 0; top: 0; width: 5200px; height: 900px; background-repeat: repeat-x; background-size: 2600px 900px"></div></div>
+    <div data-sway="sg4" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; animation: twinkle 14s ease-in-out infinite alternate;"><div data-stars="sg4" style="position: absolute; left: 0; top: 0; width: 5200px; height: 900px; background-repeat: repeat-x; background-size: 2600px 900px"></div></div>
+    <div data-sway="near" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; animation: twinkle 7s ease-in-out infinite alternate;">
+      <div style="position: absolute; left: 0; top: 0; width: 5200px; height: 900px; background-image: radial-gradient(1.5px 1.5px at 2406px 703px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2166px 310px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1080px 332px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1550px 287px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 1824px 385px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1764px 875px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 997px 126px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 349px 520px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(2.5px 2.5px at 789px 643px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 316px 359px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2377px 542px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 2388px 354px, rgba(255,176,96, 1) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 412px 409px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2484px 66px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 239px 250px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 593px 97px, rgba(255,122,112, 1) 50%, transparent 100%), radial-gradient(2px 2px at 1595px 46px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2140px 559px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2173px 378px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2545px 763px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.8px 1.8px at 1587px 680px, rgba(255,226,140, 1) 50%, transparent 100%), radial-gradient(1.8px 1.8px at 350px 150px, rgba(255,176,96, 1) 50%, transparent 100%), radial-gradient(2px 2px at 1201px 493px, rgba(150,205,255, 1) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 731px 80px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(2.5px 2.5px at 1321px 613px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1680px 818px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 562px 840px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 798px 41px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1212px 809px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 1729px 656px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 343px 762px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 2328px 612px, rgba(150,205,255, 1) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 738px 330px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1917px 469px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2147px 166px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1440px 227px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(2.5px 2.5px at 786px 210px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 945px 446px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 2284px 674px, rgba(255,217,242, 0.95) 50%, transparent 100%), radial-gradient(2.2px 2.2px at 1060px 28px, rgba(196,156,255, 1) 50%, transparent 100%), radial-gradient(2px 2px at 1194px 232px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 41px 297px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 679px 737px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(2px 2px at 1985px 727px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1653px 560px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(1.5px 1.5px at 1342px 863px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(11px 11px at 1824px 385px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(11px 11px at 997px 126px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(14px 14px at 789px 643px, rgba(200,220,255, 0.2), transparent 100%), radial-gradient(11px 11px at 2388px 354px, rgba(255,176,96, 0.24), transparent 100%), radial-gradient(11px 11px at 239px 250px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(11px 11px at 593px 97px, rgba(255,122,112, 0.24), transparent 100%), radial-gradient(11px 11px at 1595px 46px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(11px 11px at 1587px 680px, rgba(255,226,140, 0.24), transparent 100%), radial-gradient(11px 11px at 350px 150px, rgba(255,176,96, 0.24), transparent 100%), radial-gradient(11px 11px at 1201px 493px, rgba(150,205,255, 0.24), transparent 100%), radial-gradient(14px 14px at 1321px 613px, rgba(200,220,255, 0.2), transparent 100%), radial-gradient(11px 11px at 1729px 656px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(11px 11px at 2328px 612px, rgba(150,205,255, 0.24), transparent 100%), radial-gradient(14px 14px at 786px 210px, rgba(200,220,255, 0.2), transparent 100%), radial-gradient(11px 11px at 945px 446px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(11px 11px at 1060px 28px, rgba(196,156,255, 0.24), transparent 100%), radial-gradient(11px 11px at 1194px 232px, rgba(200,220,255, 0.16), transparent 100%), radial-gradient(11px 11px at 1985px 727px, rgba(200,220,255, 0.16), transparent 100%); background-size: 2600px 900px; background-repeat: repeat-x"></div>
+    </div>
+    <div data-sway="quick" style="position: absolute; left: -2600px; top: 0; width: 5200px; height: 900px; will-change: transform; background-image: radial-gradient(1.6px 1.6px at 1923px 133px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.6px 1.6px at 925px 810px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(2.2px 2.2px at 534px 310px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(1.8px 1.8px at 1332px 71px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.6px 1.6px at 45px 37px, rgba(207,224,255, 0.95) 50%, transparent 100%), radial-gradient(1.8px 1.8px at 2303px 26px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(2.2px 2.2px at 2373px 875px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(2.2px 2.2px at 1441px 494px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.8px 1.8px at 1052px 622px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.8px 1.8px at 115px 858px, rgba(255,255,255, 0.95) 50%, transparent 100%), radial-gradient(1.6px 1.6px at 83px 700px, rgba(255,233,200, 0.95) 50%, transparent 100%), radial-gradient(10px 10px at 1923px 133px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 925px 810px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 534px 310px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 1332px 71px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 45px 37px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 2303px 26px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 2373px 875px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 1441px 494px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 1052px 622px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 115px 858px, rgba(210,225,255, 0.16), transparent 100%), radial-gradient(10px 10px at 83px 700px, rgba(210,225,255, 0.16), transparent 100%); background-size: 2600px 900px; background-repeat: repeat-x"></div>
+    </div>
+    <div class="shoot" data-shoot="0"></div>
+    <div class="shoot" data-shoot="1"></div>
+    <div class="shoot" data-shoot="2"></div>
+    <div class="shoot" data-shoot="3"></div>
+    <div class="shoot" data-shoot="4"></div>
+    <div class="shoot" data-shoot="5"></div>
+    <!-- rare sky events: a satellite and a quiet nova -->
+    <div data-fx="sat" style="position: absolute; left: 0; top: 0; width: 3px; height: 3px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 6px 1px rgba(255,255,255,0.75); opacity: 0; will-change: transform, opacity; pointer-events: none"></div>
+    <div data-fx="nova" style="position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none">
+      <div data-fx="novaHalo" style="position: absolute; left: -50px; top: -50px; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(190,215,255,0.55) 0%, rgba(150,185,255,0.2) 35%, transparent 70%); transform: scale(0.1)"></div>
+      <div data-fx="novaCore" style="position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 10px 3px rgba(220,235,255,0.9)"></div>
+    </div>
+  </div>
+
+  <!-- SCREENSAVER PREVIEW (mockup only, not part of the launcher) -->
+  <div data-skyprev="1" style="position: absolute; right: 14px; bottom: 8px; z-index: 50; display: flex; gap: 6px; align-items: center; font: 500 11px Inter, sans-serif; color: rgba(255,255,255,0.55)">
+    <span>Screensaver preview</span>
+    <span data-saverprev="on" onClick="{{saverOn}}" style="cursor: pointer; padding: 3px 8px; border-radius: 10px; background: rgba(255,255,255,0.1)">Online</span>
+    <span data-saverprev="off" onClick="{{saverOff}}" style="cursor: pointer; padding: 3px 8px; border-radius: 10px; background: rgba(255,255,255,0.1)">Offline</span>
+  </div>
+
+  <!-- SCREENSAVER (idle): the same sky with a slowly drifting clock, so no pixel stays lit; any button wakes it -->
+  <sc-if value="{{isSaver}}" hint-placeholder-val="{{ false }}">
+  <div data-saver="1" tabindex="-1" onClick="{{saverExit}}" style="position: absolute; left: 0; top: 0; width: 1600px; height: 900px; z-index: 30; outline: none; overflow: hidden; cursor: none">
+    <div style="position: absolute; left: 600px; top: 340px; width: 400px; animation: driftX 300s ease-in-out infinite alternate; will-change: transform">
+      <div style="animation: driftY 220s ease-in-out infinite alternate; will-change: transform; display: flex; flex-direction: column; align-items: center; gap: 6px; text-shadow: 0 2px 24px rgba(0,0,0,0.6)">
+        <div style="font-size: 96px; line-height: 1; font-weight: 200; letter-spacing: -1px; color: #eef0f7; font-variant-numeric: tabular-nums">{{clock}}</div>
+        <div style="display: flex; align-items: center; gap: 14px; font-size: 24px; color: #c3cad9">
+          <span>{{dateText}}</span>
+          <sc-if value="{{online}}" hint-placeholder-val="{{ true }}">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6ee7a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Connected"><path d="{{icWifi}}"></path></svg>
+          </sc-if>
+          <sc-if value="{{offline}}" hint-placeholder-val="{{ false }}">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="No internet"><path d="{{icWifi}}"></path><path d="M3 3l18 18"></path></svg>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- HOME -->
+  <sc-if value="{{isHome}}" hint-placeholder-val="{{ true }}">
+  
+
+  <!-- MY PICKS: each card flips through its own items -->
+  
+
+  <!-- APP DOCK -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start">
+    
+    <div style="display: flex; align-items: center; gap: 20px">
+      <button class="nav" data-key="clock" aria-label="Greeting, clock and date, press to set your name" onClick="{{nameOpen}}" style="background: none; border: none; color: inherit; text-align: left; display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; margin: -12px -16px; border-radius: 14px">
+        <div style="font-size: 24px; color: #c3cad9">{{greeting}}{{nameSuffix}}</div>
+        <div style="font-size: 78px; font-weight: 200; letter-spacing: -2px; line-height: 1; width: 210px; height: 77px; color: #eef0f7">{{clock}}</div>
+        <div style="font-size: 22px; color: #c3cad9">{{dateText}}</div>
+      </button>
+      <div style="display: flex; align-items: center; gap: 16px; padding-left: 22px; border-left: 1px solid rgba(255, 255, 255, 0.2)">
+        <sc-if value="{{wxSun}}" hint-placeholder-val="{{ false }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Clear sky"><circle cx="32" cy="32" r="11" fill="{{sunColor}}"></circle><g stroke="{{sunColor}}" stroke-width="3.5" stroke-linecap="round"><path d="M32 8v7M32 49v7M8 32h7M49 32h7M15 15l5 5M44 44l5 5M49 15l-5 5M20 44l-5 5"></path></g></svg>
+        </sc-if>
+        <sc-if value="{{wxMoon}}" hint-placeholder-val="{{ false }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Clear night"><g transform="translate(32 32)"><circle r="20" fill="{{moonDark}}"></circle><path d="{{moonPath}}" fill="{{moonLit}}"></path></g></svg>
+        </sc-if>
+        <sc-if value="{{wxPartly}}" hint-placeholder-val="{{ false }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Partly cloudy"><circle cx="24" cy="24" r="9" fill="{{sunColor}}"></circle><g stroke="{{sunColor}}" stroke-width="3" stroke-linecap="round"><path d="M24 7v5M7 24h5M12 12l4 4M36 12l-4 4"></path></g><path d="M22 52a10 10 0 0 1 0-20 13 13 0 0 1 25-3 10.5 10.5 0 0 1 1 23z" fill="{{cloudColor}}"></path></svg>
+        </sc-if>
+        <sc-if value="{{wxPartlyNight}}" hint-placeholder-val="{{ false }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Partly cloudy night"><g transform="translate(25 23) scale(0.7)"><circle r="20" fill="{{moonDark}}"></circle><path d="{{moonPath}}" fill="{{moonLit}}"></path></g><path d="M22 52a10 10 0 0 1 0-20 13 13 0 0 1 25-3 10.5 10.5 0 0 1 1 23z" fill="{{cloudColor}}"></path></svg>
+        </sc-if>
+        <sc-if value="{{wxCloud}}" hint-placeholder-val="{{ true }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Cloudy"><path d="M18 50a11 11 0 0 1 0-22 15 15 0 0 1 29-4 12 12 0 0 1 1 26z" fill="{{cloudColor}}"></path></svg>
+        </sc-if>
+        <sc-if value="{{wxRain}}" hint-placeholder-val="{{ false }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Rain"><path d="M18 40a10 10 0 0 1 0-20 14 14 0 0 1 27-3 11 11 0 0 1 1 23z" fill="{{cloudColor}}"></path><g stroke="#7aa2ff" stroke-width="3.5" stroke-linecap="round"><path d="M22 47l-3 8M33 47l-3 8M44 47l-3 8"></path></g></svg>
+        </sc-if>
+        <sc-if value="{{wxSnow}}" hint-placeholder-val="{{ false }}">
+          <svg width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Snow"><path d="M18 40a10 10 0 0 1 0-20 14 14 0 0 1 27-3 11 11 0 0 1 1 23z" fill="{{cloudColor}}"></path><g fill="#ffffff"><circle cx="21" cy="49" r="3"></circle><circle cx="32" cy="55" r="3"></circle><circle cx="43" cy="49" r="3"></circle></g></svg>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          
+          <div style="font-size: 44px; font-weight: 200; line-height: 1">{{temp}}</div><div style="font-size: 20px; color: #c3cad9">{{wxText}}</div>
+          <div style="font-size: 17px; color: #c3cad9">Feels like {{feels}}</div>
+          <div style="font-size: 17px; color: #aeb6c7">[Your city] (sample)</div>
+        </div>
+      </div>
+    </div><div style="display: flex; gap: 14px; align-items: center">
+      <sc-for list="{{topIcons}}" as="ic" hint-placeholder-count="4">
+        <button class="nav" onClick="{{ic.act}}" aria-label="{{ic.label}}" style="width: 60px; height: 60px; padding: 0; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.72); display: flex; align-items: center; justify-content: center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ic.d}}"></path></svg>
+        </button>
+      </sc-for>
+    </div>
+  </div><div style="display: {{rowA.display}}; flex-direction: column; gap: 14px; margin-top: {{rowA.mt}}; order: {{rowA.order}}">
+    <div style="font-size: 20px; color: #c3cad9">Apps</div>
+    <div style="display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 20px">
+      <sc-for list="{{dock}}" as="app" hint-placeholder-count="8">
+        <button class="nav" data-id="{{app.id}}" onClick="{{app.open}}" onPointerDown="{{app.down}}" onPointerUp="{{app.up}}" onPointerLeave="{{app.up}}" aria-label="{{app.name}}" style="width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0; background: none; border: none; border-radius: 30px">
+          <span style="width: 100%; aspect-ratio: 1 / 1; border-radius: 30px; background: {{app.bg}}; display: flex; align-items: center; justify-content: center; font-size: {{app.fs}}; font-weight: 600; color: {{app.fg}}; background-image: {{app.img}}; background-repeat: no-repeat; background-position: center; background-size: {{app.bgs}}; box-shadow: {{app.glow}}; transform: {{app.lift}}; transition: transform .15s ease, box-shadow .15s ease">{{app.letter}}</span>
+        </button>
+      </sc-for>
+    </div>
+  </div><div style="display: {{rowP.display}}; gap: 28px; margin-top: {{rowP.mt}}; order: {{rowP.order}}">
+    <div style="display: flex; flex-direction: column; gap: 14px; flex-grow: 1; min-width: 0">
+      <div style="display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 20px">
+        <sc-if value="{{noFeeds}}" hint-placeholder-val="{{ false }}">
+          <button class="nav" data-card="1" data-key="pick-empty" onClick="{{addFeed}}" style="width: 100%; height: 156px; box-sizing: border-box; padding: 12px 28px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); color: #c3cad9; font-size: 22px; text-align: left; display: flex; align-items: center">No feeds yet. Press OK here to add one.</button>
+        </sc-if>
+        <sc-for list="{{feed}}" as="f" hint-placeholder-count="3">
+          <button class="nav" data-card="1" data-menu="pick" data-key="{{f.key}}" onClick="{{f.open}}" onPointerDown="{{f.down}}" onPointerUp="{{f.up}}" onPointerLeave="{{f.up}}" style="width: 100%; height: 156px; box-sizing: border-box; padding: 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; gap: 16px; align-items: stretch; text-align: left">
+            <span style="flex: 0 0 150px; box-sizing: border-box; border-radius: 12px; background: {{f.thumb}}; display: flex; align-items: flex-end; padding: 8px 10px; font-size: 13px; color: rgba(255, 255, 255, 0.85)">{{f.label}}</span>
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 2px 6px 2px 0">
+              <span style="width: 100%; display: flex; justify-content: space-between; align-items: center">
+                <span style="font-size: 16px; font-weight: 600; color: {{f.tagColor}}">{{f.tag}}</span>
+                <span style="display: flex; gap: 5px">
+                  <sc-for list="{{f.dots}}" as="dt" hint-placeholder-count="3">
+                    <span style="width: 7px; height: 7px; border-radius: 4px; background: {{dt.c}}"></span>
+                  </sc-for>
+                </span>
+              </span>
+              <span style="font-size: 20px; font-weight: 500; line-height: 1.25; color: #eef0f7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{f.title}}</span>
+              <span style="font-size: 15px; color: #b4bccb">{{f.meta}}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div><div style="display: {{rowC.display}}; flex-direction: column; gap: 14px; margin-top: {{rowC.mt}}; order: {{rowC.order}}">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="font-size: 20px; color: #c3cad9">Continue watching</div>
+    </div>
+    <sc-if value="{{cwEmpty}}" hint-placeholder-val="{{ false }}">
+      <div style="height: 176px; display: flex; align-items: center; font-size: 20px; color: #b4bccb">No apps selected. Hold a card or open Settings to choose apps.</div>
+    </sc-if>
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px">
+      <sc-for list="{{cwCards}}" as="m" hint-placeholder-count="6">
+        <button class="nav" data-menu="cw" data-key="{{m.key}}" onClick="{{m.open}}" onPointerDown="{{m.down}}" onPointerUp="{{m.up}}" onPointerLeave="{{m.up}}" style="width: 100%; height: 176px; box-sizing: border-box; padding: 14px 18px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: {{m.cardBg}}; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; text-align: left">
+          <span style="font-size: 15px; font-weight: 600; color: {{m.textColor}}">{{m.tag}}</span>
+          <span style="display: flex; flex-direction: column; gap: 6px; width: 100%">
+            <span style="font-size: 19px; font-weight: 500; line-height: 1.2; color: #eef0f7">{{m.title}}</span>
+            <span style="font-size: 14px; color: #b4bccb">{{m.meta}}</span>
+            <span style="display: block; width: 100%; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.18)"><span style="display: block; height: 4px; border-radius: 2px; width: {{m.pct}}%; background: {{m.tagColor}}"></span></span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- LIBRARY ROW -->
+  
+  </sc-if>
+
+  <!-- ALL APPS -->
+  <sc-if value="{{isApps}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; align-items: center; gap: 24px">
+    <button class="nav" onClick="{{go_home}}" style="height: 52px; padding: 0 24px; border-radius: 26px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.72); font-size: 20px">Back</button>
+    <div style="font-size: 40px; font-weight: 500">All apps</div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px">
+    <sc-for list="{{library}}" as="app" hint-placeholder-count="12">
+      <button class="nav" onClick="{{app.open}}" aria-label="{{app.name}}" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 0; background: none; border: none">
+        <span style="width: 110px; height: 110px; border-radius: 24px; background: {{app.bg}}; display: flex; align-items: center; justify-content: center; font-size: {{app.fs}}; font-weight: 600; color: {{app.fg}}; background-image: {{app.img}}; background-repeat: no-repeat; background-position: center; background-size: {{app.bgs}}">{{app.letter}}</span>
+        <span style="font-size: 20px; color: #eef0f7">{{app.name}}</span>
+      </button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- CONTINUE WATCHING APPS -->
+  <sc-if value="{{isChooser}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; align-items: center; gap: 24px">
+    <button class="nav" onClick="{{go_home}}" style="height: 52px; padding: 0 24px; border-radius: 26px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.72); font-size: 20px">Back</button>
+    <div style="font-size: 40px; font-weight: 500">Continue watching apps</div>
+  </div>
+  <div style="font-size: 20px; color: #c3cad9; max-width: 1000px">Only the apps you switch on show in the row. An app also has to share its resume info with the TV, to be tested per app.</div>
+  <div style="display: flex; flex-direction: column; gap: 12px; width: 900px">
+    <sc-for list="{{cwSources}}" as="s" hint-placeholder-count="6">
+      <button class="nav" onClick="{{s.toggle}}" aria-pressed="{{s.on}}" style="height: 76px; box-sizing: border-box; padding: 0 28px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; justify-content: space-between; align-items: center; text-align: left">
+        <span style="font-size: 24px; font-weight: 500; color: {{s.tagColor}}">{{s.name}}</span>
+        <span style="width: 90px; height: 40px; border-radius: 20px; background: {{s.trackBg}}; color: {{s.trackFg}}; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600">{{s.state}}</span>
+      </button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- CATEGORY LIST -->
+  <sc-if value="{{isCategory}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; align-items: center; gap: 24px">
+    <button class="nav" onClick="{{go_home}}" style="height: 52px; padding: 0 24px; border-radius: 26px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.72); font-size: 20px">Back</button>
+    <div style="font-size: 40px; font-weight: 500">{{catName}}</div>
+  </div>
+  <div style="font-size: 20px; color: #c3cad9">Sample items. The real list scrolls through everything new from your sources.</div>
+  <div style="display: flex; flex-direction: column; gap: 14px; width: 900px">
+    <sc-for list="{{catItems}}" as="c" hint-placeholder-count="3">
+      <button class="nav" onClick="{{c.open}}" style="min-height: 100px; box-sizing: border-box; padding: 12px 28px 12px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; flex-direction: row; align-items: center; text-align: left; gap: 20px">
+        <span style="flex: 0 0 150px; height: 76px; border-radius: 10px; background: {{c.thumb}}"></span>
+        <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+          <span style="font-size: 24px; font-weight: 500">{{c.title}}</span>
+          <span style="font-size: 17px; color: #b4bccb">{{c.meta}}</span>
+        </span>
+      </button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- APP DETAILS (preview of Android's own App info screen) -->
+  <sc-if value="{{isDetails}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; align-items: center; gap: 24px">
+    <button class="nav" onClick="{{go_home}}" style="height: 52px; padding: 0 24px; border-radius: 26px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.72); font-size: 20px">Back</button>
+    <div style="font-size: 40px; font-weight: 500">{{detailName}}</div>
+  </div>
+  <div style="font-size: 20px; color: #c3cad9; max-width: 1000px">Settings, Apps, {{detailName}}. In the real launcher this opens Android's own App info page. The launcher cannot clear cache or data by itself.</div>
+  <div style="display: flex; flex-direction: column; gap: 14px; width: 640px">
+    <button class="nav" onClick="{{d_open}}" style="height: 72px; box-sizing: border-box; padding: 0 28px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); font-size: 22px; text-align: left">Open</button>
+    <button class="nav" onClick="{{d_cache}}" style="height: 72px; box-sizing: border-box; padding: 0 28px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); font-size: 22px; text-align: left">Clear cache</button>
+    <button class="nav" onClick="{{d_data}}" style="height: 72px; box-sizing: border-box; padding: 0 28px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); font-size: 22px; text-align: left">Clear data</button>
+    <button class="nav" onClick="{{d_stop}}" style="height: 72px; box-sizing: border-box; padding: 0 28px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); font-size: 22px; text-align: left">Force stop</button>
+    <button class="nav" onClick="{{d_uninstall}}" style="height: 72px; box-sizing: border-box; padding: 0 28px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); font-size: 22px; text-align: left; color: #ffb4a8">Uninstall</button>
+  </div>
+  </sc-if>
+
+  <!-- FEED SOURCES -->
+  <sc-if value="{{isFeeds}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; align-items: center; gap: 24px">
+    <button class="nav" onClick="{{go_home}}" style="height: 52px; padding: 0 24px; border-radius: 26px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.72); font-size: 20px">Back</button>
+    <div style="font-size: 40px; font-weight: 500">Feed sources</div>
+  </div>
+  <div style="font-size: 20px; color: #c3cad9; max-width: 900px">Only what you pick shows on Home. No suggestions, no sponsored items.</div>
+  <div style="display: flex; flex-direction: column; gap: 14px; width: 900px">
+    <sc-for list="{{sources}}" as="s" hint-placeholder-count="4">
+      <button class="nav" onClick="{{s.toggle}}" aria-pressed="{{s.on}}" style="height: 84px; box-sizing: border-box; padding: 0 28px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; justify-content: space-between; align-items: center; text-align: left">
+        <span style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 24px; font-weight: 500">{{s.name}}</span>
+          <span style="font-size: 17px; color: #b4bccb">{{s.desc}}</span>
+        </span>
+        <span style="width: 90px; height: 40px; border-radius: 20px; background: {{s.trackBg}}; color: {{s.trackFg}}; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600">{{s.state}}</span>
+      </button>
+    </sc-for>
+      <button class="nav" onClick="{{phoneAct}}" style="height: 84px; box-sizing: border-box; padding: 0 28px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; align-items: center; text-align: left; font-size: 24px; font-weight: 500; color: {{accent}}">Add feeds from your phone</button>
+      <button class="nav" onClick="{{webAct}}" style="height: 84px; box-sizing: border-box; padding: 0 28px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; align-items: center; text-align: left; font-size: 24px; font-weight: 500; color: {{accent}}">Add a feed by web address</button>
+  </div>
+  </sc-if>
+
+
+  <!-- RIGHT PANE: settings, inputs, app options -->
+  <sc-if value="{{hasPane}}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="true" onClick="{{pane_close}}" style="position: absolute; z-index: 9; left: 0; top: 0; width: 1600px; height: 900px"></div>
+  <div data-pane="1" style="position: absolute; z-index: 10; right: {{paneRight}}px; top: 98px; width: 460px; max-height: 780px; box-sizing: border-box; padding: 14px; border-radius: 22px; background: rgba(10, 8, 26, 0.97); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 8px; overflow: hidden">
+    <div style="padding: 2px 8px 0; font-size: 16px; color: #b4bccb">{{paneTitle}}</div>
+
+    <sc-if value="{{paneSettings}}" hint-placeholder-val="{{ false }}">
+      <button class="nav" onClick="{{allTvAct}}" style="height: 68px; box-sizing: border-box; padding: 0 18px; border-radius: 18px; border: 1px solid rgba(182, 156, 255, 0.45); background: rgba(182, 156, 255, 0.14); display: flex; align-items: center; gap: 16px; font-size: 21px; font-weight: 500; text-align: left">
+        <span style="width: 42px; height: 42px; border-radius: 13px; background: rgba(182, 156, 255, 0.24); display: flex; align-items: center; justify-content: center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icAll}}"></path></svg>
+        </span>
+        All TV settings
+      </button>
+      <div style="font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: #b4bccb; margin-top: 10px">Quick actions</div>
+      <div style="display: flex; gap: 14px">
+        <sc-for list="{{quick}}" as="r" hint-placeholder-count="2">
+          <button class="nav" onClick="{{r.act}}" style="flex: 1; height: 128px; box-sizing: border-box; padding: 14px 16px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; text-align: left">
+            <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.d}}"></path></svg>
+            </span>
+            <span style="display: flex; flex-direction: column; gap: 1px">
+              <span style="font-size: 18px; font-weight: 500; line-height: 1.15">{{r.name}}</span>
+              <span style="font-size: 14px; color: #b4bccb">{{r.sub}}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: #b4bccb; margin-top: 10px">Shortcuts</div>
+      <sc-for list="{{shortcuts}}" as="r" hint-placeholder-count="5">
+        <button class="nav" onClick="{{r.act}}" style="height: 56px; box-sizing: border-box; padding: 0 14px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; gap: 16px; font-size: 20px; text-align: left">
+          <span style="width: 36px; height: 36px; border-radius: 11px; background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.d}}"></path></svg>
+          </span>
+          {{r.name}}
+        </button>
+      </sc-for>
+      <div style="font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: #b4bccb; margin-top: 10px">Launcher</div>
+      <sc-for list="{{launcherRows}}" as="r" hint-placeholder-count="2">
+        <button class="nav" onClick="{{r.act}}" style="height: 56px; box-sizing: border-box; padding: 0 14px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; gap: 16px; font-size: 20px; text-align: left">
+          <span style="width: 36px; height: 36px; border-radius: 11px; background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.d}}"></path></svg>
+          </span>
+          {{r.name}}
+        </button>
+      </sc-for>
+      <sc-for list="{{extraRows}}" as="r" hint-placeholder-count="2">
+        <button class="nav" onClick="{{r.act}}" style="min-height: 64px; box-sizing: border-box; padding: 8px 14px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; gap: 16px; font-size: 20px; text-align: left">
+          <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 11px; background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.d}}"></path></svg>
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 1px">
+            <span>{{r.name}}</span>
+            <span style="font-size: 14px; color: #b4bccb">{{r.sub}}</span>
+          </span>
+        </button>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{paneNetwork}}" hint-placeholder-val="{{ false }}">
+      <div style="font-size: 16px; color: #b4bccb; margin-top: 4px">Live values come from the TV (sample). The network name is never shown.</div>
+      <sc-for list="{{netRows}}" as="r" hint-placeholder-count="6">
+        <div style="height: 60px; box-sizing: border-box; padding: 0 22px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); display: flex; justify-content: space-between; align-items: center; font-size: 20px">
+          <span style="color: #b4bccb">{{r.k}}</span>
+          <span style="color: #eef0f7; font-weight: 500">{{r.v}}</span>
+        </div>
+      </sc-for>
+      <button class="nav" onClick="{{speedAct}}" style="height: 72px; box-sizing: border-box; padding: 0 22px; border-radius: 16px; border: 1px solid rgba(182, 156, 255, 0.45); background: rgba(182, 156, 255, 0.14); display: flex; flex-direction: column; justify-content: center; gap: 2px; text-align: left; margin-top: 6px">
+        <span style="font-size: 20px; font-weight: 500; color: {{accent}}">Run speed test</span>
+        <span style="font-size: 15px; color: #b4bccb">Download, about 12 seconds</span>
+      </button>
+      <div style="font-size: 20px; color: #eef0f7; white-space: pre-line; padding: 0 4px">{{speedText}}</div>
+      <button class="nav" onClick="{{netSettingsAct}}" style="height: 60px; box-sizing: border-box; padding: 0 22px; border-radius: 16px; border: 1px solid rgba(182, 156, 255, 0.45); background: rgba(182, 156, 255, 0.14); color: {{accent}}; font-size: 20px; font-weight: 500; text-align: left; margin-top: 6px">Network settings</button>
+    </sc-if>
+
+    <sc-if value="{{paneRows}}" hint-placeholder-val="{{ false }}">
+      <div style="font-size: 16px; color: #b4bccb; margin-top: 4px">{{rowHint}}</div>
+      <sc-for list="{{rowList}}" as="r" hint-placeholder-count="3">
+        <button class="nav" data-key="row-{{r.id}}" onClick="{{r.act}}" style="height: 72px; box-sizing: border-box; padding: 0 26px; border-radius: 16px; border: 1px solid {{r.bd}}; background: {{r.bg}}; display: flex; align-items: center; justify-content: space-between; text-align: left; font-size: 22px">
+          <span style="font-weight: 500; color: {{r.nameColor}}">{{r.name}}</span>
+          <span style="font-size: 18px; color: {{r.stateColor}}">{{r.state}}</span>
+        </button>
+      </sc-for>
+      <button class="nav" data-key="act" onClick="{{rowAct}}" style="height: 68px; box-sizing: border-box; padding: 0 22px; border-radius: 16px; border: 1px solid rgba(182, 156, 255, 0.45); background: rgba(182, 156, 255, 0.14); display: flex; align-items: center; gap: 14px; text-align: left; margin-top: 6px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{rowActIcon}}"></path></svg>
+        <span style="font-size: 21px; font-weight: 500; color: {{accent}}">{{rowActLabel}}</span>
+      </button>
+    </sc-if>
+
+    <sc-if value="{{paneInputs}}" hint-placeholder-val="{{ false }}">
+      <div style="font-size: 16px; color: #b4bccb; margin-top: 4px">Names and connected state would come from the TV (sample)</div>
+      <sc-for list="{{inputs}}" as="r" hint-placeholder-count="4">
+        <button class="nav" onClick="{{r.act}}" style="height: 76px; box-sizing: border-box; padding: 0 22px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); display: flex; justify-content: space-between; align-items: center; text-align: left">
+          <span style="display: flex; align-items: center; gap: 16px">
+            <span style="width: 44px; height: 44px; border-radius: 13px; background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.d}}"></path></svg>
+            </span>
+            <span style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 22px; font-weight: 500">{{r.name}}</span>
+              <span style="font-size: 15px; color: #b4bccb">{{r.sub}}</span>
+            </span>
+          </span>
+          <span style="width: 12px; height: 12px; border-radius: 6px; background: {{r.dot}}"></span>
+        </button>
+      </sc-for>
+    </sc-if>
+
+  </div>
+  </sc-if>
+
+  <!-- APP OPTIONS POPUP, next to the app -->
+  <sc-if value="{{hasPopup}}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="true" onClick="{{pane_close}}" style="position: absolute; z-index: 9; left: 0; top: 0; width: 1600px; height: 900px"></div>
+  <div data-pane="1" onMouseEnter="{{popEnter}}" onMouseLeave="{{popLeave}}" style="position: absolute; z-index: 10; left: {{popX}}px; top: {{popY}}px; width: 290px; box-sizing: border-box; padding: 10px; border-radius: 22px; background: rgba(10, 8, 26, 0.97); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 6px">
+    <div style="padding: 8px 12px 4px; font-size: 16px; color: #b4bccb">{{menuName}}</div>
+    <sc-for list="{{menuItems}}" as="mi" hint-placeholder-count="3">
+      <button class="nav" onClick="{{mi.act}}" style="height: 54px; box-sizing: border-box; padding: 0 12px; border-radius: 14px; border: none; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; gap: 14px; font-size: 20px; text-align: left; color: {{mi.color}}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{mi.stroke}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{mi.d}}"></path></svg>
+        {{mi.label}}
+      </button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- SOUND POPUP, under the speaker icon: music on/off + volume, effects on/off + volume -->
+  <sc-if value="{{hasSound}}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="true" onClick="{{pane_close}}" style="position: absolute; z-index: 9; left: 0; top: 0; width: 1600px; height: 900px"></div>
+  <div data-pane="1" style="position: absolute; z-index: 10; right: 0px; top: 98px; width: 460px; box-sizing: border-box; padding: 12px; border-radius: 22px; background: rgba(10, 8, 26, 0.97); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 6px">
+    <div style="padding: 6px 10px 2px; font-size: 16px; color: #b4bccb">Sound</div>
+    <button class="nav" data-nosfx="1" onClick="{{musToggle}}" style="height: 54px; box-sizing: border-box; padding: 0 14px; border-radius: 14px; border: none; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: space-between; font-size: 20px; text-align: left">
+      <span style="display: flex; align-items: center; gap: 12px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12 M9 18a3 3 0 1 1-6 0a3 3 0 0 1 6 0z M19 16a3 3 0 1 1-6 0a3 3 0 0 1 6 0z"></path></svg>Music</span>
+      <span style="min-width: 64px; text-align: center; padding: 6px 0; border-radius: 18px; font-size: 16px; background: {{musTrackBg}}; color: {{musTrackFg}}">{{musState}}</span>
+    </button>
+    <button class="nav" data-slider="mus" onClick="{{musSlide}}" aria-label="Music volume" style="height: 44px; box-sizing: border-box; padding: 0 14px; border-radius: 14px; border: none; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; gap: 14px">
+      <span data-bar="1" style="flex: 1; height: 10px; border-radius: 5px; background: #343a4a; position: relative; overflow: hidden"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{musVol}}%; background: {{accent}}; border-radius: 5px"></span></span>
+      <span style="width: 52px; text-align: right; font-size: 18px; color: #c3cad9">{{musVol}}%</span>
+    </button>
+    <button class="nav" data-nosfx="1" onClick="{{fxToggle}}" style="height: 54px; box-sizing: border-box; padding: 0 14px; border-radius: 14px; border: none; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: space-between; font-size: 20px; text-align: left; margin-top: 4px">
+      <span style="display: flex; align-items: center; gap: 12px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"></path></svg>Effects</span>
+      <span style="min-width: 64px; text-align: center; padding: 6px 0; border-radius: 18px; font-size: 16px; background: {{fxTrackBg}}; color: {{fxTrackFg}}">{{fxState}}</span>
+    </button>
+    <button class="nav" data-slider="fx" onClick="{{fxSlide}}" aria-label="Effects volume" style="height: 44px; box-sizing: border-box; padding: 0 14px; border-radius: 14px; border: none; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; gap: 14px">
+      <span data-bar="1" style="flex: 1; height: 10px; border-radius: 5px; background: #343a4a; position: relative; overflow: hidden"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{fxVol}}%; background: {{accent}}; border-radius: 5px"></span></span>
+      <span style="width: 52px; text-align: right; font-size: 18px; color: #c3cad9">{{fxVol}}%</span>
+    </button>
+    <div style="padding: 4px 10px 2px; font-size: 14px; color: #8f98aa">OK turns on or off. Left and Right change the volume.</div>
+  </div>
+  </sc-if>
+
+  <!-- NAME POPUP, under the clock -->
+  <sc-if value="{{hasName}}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="true" onClick="{{pane_close}}" style="position: absolute; z-index: 9; left: 0; top: 0; width: 1600px; height: 900px"></div>
+  <div data-pane="1" style="position: absolute; z-index: 10; left: 84px; top: 170px; width: 400px; box-sizing: border-box; padding: 14px; border-radius: 22px; background: rgba(10, 8, 26, 0.97); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 10px">
+    <div style="padding: 2px 4px 0; font-size: 16px; color: #b4bccb">Your name (empty hides it)</div>
+    <input data-nameinput="1" value="{{nameDraft}}" onInput="{{nameInput}}" maxlength="24" placeholder="Type a name" style="height: 52px; box-sizing: border-box; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.08); color: #eef0f7; font-size: 24px; font-family: inherit; outline: none">
+    <div style="display: flex; gap: 10px">
+      <button class="nav" onClick="{{nameSave}}" style="flex: 1; height: 50px; border-radius: 14px; border: none; background: {{accent}}; color: #0d1117; font-size: 20px; font-weight: 600">Save</button>
+      <button class="nav" onClick="{{pane_close}}" style="flex: 1; height: 50px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); font-size: 20px">Cancel</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- TOAST -->
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+  <div style="position: absolute; z-index: 20; left: 72px; bottom: 56px; padding: 14px 26px; border-radius: 16px; background: #ffffff; color: #0d1117; font-size: 20px; font-weight: 500">{{toast}}</div>
+  </sc-if>
+
+  
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#b69cff","options":["#b69cff","#5eead4","#7aa2ff","#ffb86b"]},"weather":{"editor":"enum","default":"partly","options":["clear","partly","cloudy","rain","snow"]},"timeOfDay":{"editor":"enum","default":"live","options":["live","morning","afternoon","evening","night"]}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      screen: 'home', netOk: true, now: Date.now(), tick: 0, toast: '', moving: null,
+      pane: null, menuId: null, menuKind: 'app', detailId: null,
+      name: '', nameDraft: '', musOn: true, musVol: 60, fxOn: true, fxVol: 40,
+      order: ['br', 'ca', 'cm', 'fi', 'ga', 'ma', 'mu', 'ph'], playLook: 'colors', looks: {}, rowsOrder: ['apps', 'picks', 'cw'], rowsOff: [], rowsMode: 'list', rowGrab: null,
+      menuPos: { x: 0, y: 0 },
+      px: 0, catKey: null,
+            src: { newseries: true, movies: true, tech: true, world: false },
+      cw: { v1: true, v2: true, v3: true, v4: false }
+    };
+    this._held = false;
+  }
+  componentDidMount() {
+    this._t = setInterval(() => this.setState({ now: Date.now() }), 15000);
+    this._tk = setInterval(() => { if (!this._pause) this.setState((s) => ({ tick: s.tick + 1 })); }, 5000);
+    this.startSpace();
+    this._au = () => this.audioUnlock();
+    this._sfxClick = (e) => {
+      const b = e.target && e.target.closest ? e.target.closest('button.nav') : null;
+      if (!b || b.hasAttribute('data-nosfx') || b.hasAttribute('data-slider')) return;
+      const ap = b.getAttribute('aria-pressed');
+      this.sfxPlay(ap === 'true' ? 'off' : ap === 'false' ? 'on' : 'select');
+    };
+    this._vis = () => { const c = this._ac; if (!c) return; try { if (document.hidden) c.suspend(); else c.resume(); } catch (e) {} };
+    document.addEventListener('pointerdown', this._au, true);
+    document.addEventListener('keydown', this._au, true);
+    document.addEventListener('click', this._sfxClick, true);
+    document.addEventListener('visibilitychange', this._vis);
+  }
+  skyBuild() {
+    const f0 = document.querySelector('[data-sway="far0"]'), f1 = document.querySelector('[data-sway="far1"]');
+    if (!f0 || !f1) return false;
+    const num = (s) => parseFloat(s) || 0;
+    let sd = 4711; const R = () => { sd = (Math.imul(sd, 1664525) + 1013904223) >>> 0; return sd / 4294967296; };
+    const items = [];
+    [f0, f1].forEach((tile, ti) => Array.prototype.forEach.call(tile.children, (el) => {
+      const st = el.style, w = num(st.width), h = num(st.height);
+      if (!w || w > 2000 || st.maskImage || st.webkitMaskImage) return;
+      const isGal = st.borderRadius === '50%';
+      const m = /rotate\((-?[\d.]+)deg\)/.exec(st.transform || '');
+      items.push({ el, ti, gal: isGal, streak: isGal && /blur\(3px\)/.test(st.filter || ''), x: num(st.left), y: num(st.top), w, h, rot: m ? parseFloat(m[1]) : 0 });
+    }));
+    const mains = items.filter((i) => i.gal && !i.streak);
+    mains.forEach((g) => { g.cx = g.x + g.w / 2; g.cy = g.y + g.h / 2; g.kids = []; });
+    const near = (it) => {
+      let best = null, bd = 1e12; const cx = it.x + it.w / 2, cy = it.y + it.h / 2;
+      mains.forEach((g) => { if (g.ti !== it.ti) return; const d = (g.cx - cx) * (g.cx - cx) + (g.cy - cy) * (g.cy - cy); if (d < bd) { bd = d; best = g; } });
+      return best;
+    };
+    items.forEach((it) => { if (it === undefined || (it.gal && !it.streak)) return; const g = near(it); if (g) g.kids.push(it); });
+    // size, class, colors
+    const FAM = { purple: [[255, 232, 250], [214, 140, 255], [120, 80, 230]], violet: [[240, 225, 255], [170, 140, 255], [90, 60, 200]], red: [[255, 225, 215], [255, 130, 110], [200, 50, 60]], rose: [[255, 215, 235], [255, 110, 170], [190, 40, 110]], blue: [[220, 250, 255], [110, 215, 255], [50, 110, 220]], yellow: [[255, 240, 215], [255, 190, 110], [200, 110, 50]], pink2: [[255, 220, 235], [255, 120, 190], [255, 120, 190]] };
+    const detect = (css) => { const names = Object.keys(FAM); for (let q = 0; q < names.length; q++) { if (new RegExp('rgba\\(\\s*' + FAM[names[q]][1].join(',\\s*') + ',').test(css)) return names[q]; } return null; };
+    mains.forEach((g) => {
+      g.s = 0.62 + R() * 0.55; g.w2 = g.w * g.s; g.h2 = g.h * g.s; g.rot2 = g.rot * 0.7;
+      g.cls = g.w2 < 190 ? 0 : (g.w2 < 290 ? 1 : 2);
+      const bg = g.el.style.background || '';
+      g.src = detect(bg);
+      const r = g.rot2 * Math.PI / 180;
+      g.vE = (g.w2 / 2 * Math.abs(Math.sin(r)) + g.h2 / 2 * Math.abs(Math.cos(r))) * 0.8 + 10;
+    });
+    // lanes: every size class gets its own band of height (random order), so different speeds never meet
+    const cl = [0, 1, 2].map((c) => mains.filter((g) => g.cls === c));
+    const need = cl.map((l) => 2 * Math.max(40, ...l.map((g) => g.vE)));
+    const total = need[0] + need[1] + need[2], avail = 840;
+    const k = total > avail ? avail / total : 1, free = Math.max(0, avail - total);
+    const order = [0, 1, 2].sort(() => R() - 0.5);
+    let y0 = 30;
+    order.forEach((c) => {
+      const lo = y0, hi = y0 + need[c] * k + free / 3;
+      cl[c].forEach((g) => { const span = Math.max(0, hi - lo - 2 * g.vE); g.newCy = lo + g.vE + R() * span + 280; });
+      y0 = hi;
+    });
+    // target colors: purple, red and in-between (rose, violet) mostly, one blue and one amber at most; neighbours in a lane never share a color
+    const baseMix = ['purple', 'red', 'rose', 'violet', 'red', 'purple', 'rose', 'blue', 'red', 'rose', 'purple', 'violet', 'red', 'rose', 'yellow', 'purple'];
+    const pool = mains.map((g, q) => baseMix[q % baseMix.length]);
+    const sorted = mains.slice().sort((a, b) => a.cls - b.cls || a.ti - b.ti || a.cx - b.cx);
+    let prevT = null, prevC = -1;
+    sorted.forEach((g) => {
+      if (g.cls !== prevC) { prevT = null; prevC = g.cls; }
+      const ok = pool.map((t, q) => q).filter((q) => pool[q] !== prevT);
+      const q = (ok.length ? ok : pool.map((t, q2) => q2))[Math.floor(R() * (ok.length || pool.length))];
+      g.tgt = pool.splice(q, 1)[0]; prevT = g.tgt;
+      const S = g.src ? FAM[g.src] : null, T = FAM[g.tgt], m = {};
+      if (g.tgt !== 'blue' && g.tgt !== 'yellow') { FAM.blue.forEach((c, k) => { m[c.join(',')] = FAM.purple[k]; }); FAM.yellow.forEach((c, k) => { m[c.join(',')] = FAM.red[k]; }); }
+      if (S && g.src !== g.tgt) S.forEach((c, k) => { m[c.join(',')] = T[k]; });
+      g.cmap = m;
+    });
+    const recolor = (css, m) => css.replace(/rgba\(\s*(\d+),\s*(\d+),\s*(\d+),/g, (all, r, gg, b) => { const t = m[r + ',' + gg + ',' + b]; return t ? 'rgba(' + t.join(', ') + ',' : all; });
+    // wrappers: per class, four tiles like the original far tiles
+    const parent = f0.parentNode;
+    const wraps = [0, 1, 2].map(() => [0, 1, 2, 3].map(() => {
+      const d = document.createElement('div');
+      d.setAttribute('data-skynew', '1');
+      d.style.cssText = 'position:absolute;left:-500px;top:-280px;width:2600px;height:1500px;will-change:transform';
+      return d;
+    }));
+    const place = (c, ti, node) => { [ti, ti + 2].forEach((j) => { wraps[c][j].appendChild(j === ti ? node : node.cloneNode(true)); }); };
+    mains.forEach((g) => {
+      const dy = g.newCy - g.cy;
+      const put = (it, rot) => {
+        const n = it.el.cloneNode(true);
+        const cx = g.cx + (it.x + it.w / 2 - g.cx) * g.s, cy = g.newCy + (it.y + it.h / 2 - g.cy) * g.s;
+        const w = it.w * g.s, h = it.h * g.s;
+        n.style.width = w.toFixed(1) + 'px'; n.style.height = h.toFixed(1) + 'px';
+        n.style.left = (cx - w / 2).toFixed(1) + 'px'; n.style.top = (cy - h / 2).toFixed(1) + 'px';
+        if (it.gal) n.style.transform = 'rotate(' + rot.toFixed(1) + 'deg)';
+        if (g.cmap) n.style.cssText = recolor(n.style.cssText, g.cmap);
+        place(g.cls, g.ti, n);
+        return { cx, cy, w, h };
+      };
+      g.kids.forEach((it) => put(it, g.rot2));
+      const me = put(g, g.rot2);
+      // stars and glowing knots inside the galaxy (the box is rotated like the galaxy, but not blurred)
+      const box = document.createElement('div');
+      box.style.cssText = 'position:absolute;left:' + (me.cx - me.w / 2).toFixed(1) + 'px;top:' + (me.cy - me.h / 2).toFixed(1) + 'px;width:' + me.w.toFixed(1) + 'px;height:' + me.h.toFixed(1) + 'px;transform:rotate(' + g.rot2.toFixed(1) + 'deg)';
+      const n = 6 + Math.floor(R() * (10 + me.w / 8)), bell = () => (R() + R() + R() - 1.5) / 1.5;
+      for (let q = 0; q < n; q++) {
+        const d = document.createElement('div'), sz = 1.7 + R() * 1.3, warm = R() < 0.3;
+        d.style.cssText = 'position:absolute;width:' + sz.toFixed(1) + 'px;height:' + sz.toFixed(1) + 'px;border-radius:50%;left:' + (me.w / 2 + bell() * me.w * 0.44).toFixed(1) + 'px;top:' + (me.h / 2 + bell() * me.h * 0.45).toFixed(1) + 'px;background:' + (warm ? '#ffe2be' : '#e1ecff') + ';opacity:' + (0.85 + R() * 0.15).toFixed(2);
+        box.appendChild(d);
+      }
+      const nk = Math.floor(R() * 3);
+      for (let q = 0; q < nk; q++) {
+        const d = document.createElement('div'), sz = 9 + R() * 9, col = R() < 0.55 ? '255,140,205' : '190,160,255';
+        d.style.cssText = 'position:absolute;width:' + sz.toFixed(1) + 'px;height:' + sz.toFixed(1) + 'px;border-radius:50%;left:' + (me.w / 2 + bell() * me.w * 0.4 - sz / 2).toFixed(1) + 'px;top:' + (me.h / 2 + bell() * me.h * 0.4 - sz / 2).toFixed(1) + 'px;background:radial-gradient(circle,rgba(' + col + ',0.8),rgba(' + col + ',0) 70%)';
+        box.appendChild(d);
+      }
+      place(g.cls, g.ti, box);
+    });
+    wraps.forEach((a) => a.forEach((d) => parent.appendChild(d)));
+    this._skyWraps = wraps;
+    // hide the originals in all four far tiles (the third and fourth are copies of the first and second)
+    this._skyOrigEls = [];
+    [0, 1, 2, 3].forEach((j) => {
+      const tile = document.querySelector('[data-sway="far' + j + '"]');
+      if (tile) Array.prototype.forEach.call(tile.children, (el) => {
+        const w = num(el.style.width);
+        if (w && w < 2000 && !el.style.maskImage && !el.style.webkitMaskImage && !el.hasAttribute('data-skynew')) this._skyOrigEls.push(el);
+      });
+    });
+    this._skyShown = null;
+    return true;
+  }
+  skyBandBuild() {
+    // a diagonal piece per tile like before (the sky is a 360 degree view, so the band passes by twice per loop), now wandering gently and colored in stripes
+    const W = 3000, H = 700, num = (v) => parseFloat(v) || 0;
+    const tiles = [0, 1, 2, 3].map((j) => document.querySelector('[data-sway="far' + j + '"]'));
+    if (tiles.some((t) => !t)) return false;
+    const make = (seed) => {
+      let sd = seed; const R = () => { sd = (Math.imul(sd, 1664525) + 1013904223) >>> 0; return sd / 4294967296; };
+      const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+      const g = cv.getContext('2d'); if (!g) return null;
+      const T = 6.2832, p1 = R() * T, p2 = R() * T, p3 = R() * T, p4 = R() * T, u = (x, k) => x / W * T * k, a1 = 20 + R() * 12, a2 = 7 + R() * 7;
+      const mid = (x) => H / 2 + a1 * Math.sin(u(x, 1.1) + p1) + a2 * Math.sin(u(x, 2.6) + p2);
+      const half = (x) => 135 + 34 * Math.sin(u(x, 1.5) + p3) + 16 * Math.sin(u(x, 3.8) + p4);
+      const dens = (x) => 0.74 + 0.22 * Math.sin(u(x, 2.3) + p3 + 1) + 0.12 * Math.sin(u(x, 5.7) + p1);
+      const blob = (x, y, rx, ry, c, a) => {
+        g.save(); g.translate(x, y); g.scale(1, ry / rx);
+        const gr = g.createRadialGradient(0, 0, 0, 0, 0, rx);
+        gr.addColorStop(0, 'rgba(' + c.join(',') + ',' + a + ')'); gr.addColorStop(1, 'rgba(' + c.join(',') + ',0)');
+        g.fillStyle = gr; g.beginPath(); g.arc(0, 0, rx, 0, T); g.fill(); g.restore();
+      };
+      // color bands running along the band (violet, magenta-rose, warm peach, blue-violet), each wavering and fading in and out
+      const stops = [[-1, [130, 100, 235], 0.55], [-0.55, [175, 100, 225], 1], [-0.12, [235, 125, 185], 1.1], [0.25, [255, 180, 135], 1.1], [0.62, [160, 115, 235], 0.9], [1, [110, 150, 245], 0.5]];
+      const stripe = (yn) => { for (let q = 0; q < stops.length - 1; q++) { const a = stops[q], b = stops[q + 1]; if (yn <= b[0]) { const f = Math.max(0, (yn - a[0]) / (b[0] - a[0])); return { c: a[1].map((v, k) => Math.round(v + (b[1][k] - v) * f)), k: a[2] + (b[2] - a[2]) * f }; } } return { c: stops[5][1], k: stops[5][2] }; };
+      for (let i = 0; i < 300; i++) {
+        const x = (i + R()) / 300 * W, yn = (R() + R() + R() - 1.5) / 1.5;
+        const fade = 0.5 + 0.5 * Math.max(0, Math.sin(u(x, 3) + yn * 2.2 + p4 + 1.3) * 0.5 + 0.5);
+        const st = stripe(Math.max(-1, Math.min(1, yn + 0.28 * Math.sin(u(x, 1.9) + p2))));
+        blob(x, mid(x) + yn * half(x) * 0.95, 110 + R() * 150, half(x) * (0.26 + R() * 0.2), st.c, 0.05 * st.k * fade);
+      }
+      // warm pale core running through the middle, stronger in one stretch (like the bulge of the real milky way)
+      for (let i = 0; i < 130; i++) {
+        const x = (i + R()) / 130 * W, k = 0.35 + 0.65 * Math.max(0, Math.sin(u(x, 1) + p3) * 0.5 + 0.5);
+        blob(x, mid(x) + (R() + R() - 1) * half(x) * 0.16, 120 + R() * 110, half(x) * (0.1 + R() * 0.1), [255, 226, 192], 0.032 * k);
+      }
+      // a few pink glowing patches near the edges
+      for (let i = 0; i < 9; i++) { const x = 250 + R() * (W - 500), sd2 = R() < 0.5 ? -1 : 1; blob(x, mid(x) + sd2 * half(x) * (0.35 + R() * 0.35), 70 + R() * 80, 24 + R() * 22, [255, 105, 165], 0.07); }
+      // color patches here and there: amber, rose-red, a touch of blue and teal, violet
+      const patches = [[255, 170, 100], [240, 90, 110], [130, 170, 255], [120, 210, 220], [190, 110, 240], [255, 160, 90], [235, 100, 150]];
+      for (let i = 0; i < 6; i++) { const x = 300 + R() * (W - 600); blob(x, mid(x) + (R() - 0.5) * half(x) * 0.7, 160 + R() * 150, 45 + R() * 45, patches[Math.floor(R() * patches.length)], 0.055); }
+      // dust lanes: carve thin dark streaks out of the glow
+      const lane = [(x) => mid(x) - 0.2 * half(x) + 14 * Math.sin(x / 190 + p2), (x) => mid(x) + 0.3 * half(x) + 10 * Math.sin(x / 150 + p4)];
+      g.globalCompositeOperation = 'destination-out';
+      for (let k = 0; k < 2; k++) for (let i = 0; i < 34; i++) { const x = R() * W; blob(x, lane[k](x), 70 + R() * 110, 11 + R() * 10, [0, 0, 0], 0.2 - k * 0.06); }
+      for (let i = 0; i < 38; i++) { const x = 150 + R() * (W - 300); blob(x, mid(x) + (R() - 0.5) * half(x) * 0.8, 35 + R() * 80, 9 + R() * 17, [0, 0, 0], 0.22); }
+      g.globalCompositeOperation = 'source-over';
+      // fine milky grain: lots of very faint tiny stars, tight around the middle
+      for (let i = 0; i < 4500; i++) { const x = R() * W; if (R() > dens(x)) continue; const yn = (R() + R() + R() - 1.5) / 1.5; g.fillStyle = 'rgba(255,240,230,' + (0.1 + R() * 0.17).toFixed(2) + ')'; g.fillRect(x, mid(x) + yn * half(x) * 0.8, 1, 1); }
+      // stars: dense in the middle, patchy along the band, a few small clouds
+      const laneNear = (x, y) => Math.min(Math.abs(y - lane[0](x)), Math.abs(y - lane[1](x))) < 12;
+      const cols = ['255,255,255', '255,217,242', '207,224,255', '255,226,200', '255,255,255'];
+      const dot = (x, y, a) => { g.fillStyle = 'rgba(' + cols[Math.floor(R() * cols.length)] + ',' + a.toFixed(2) + ')'; g.beginPath(); g.arc(x, y, 0.5 + R() * 0.55, 0, T); g.fill(); };
+      for (let i = 0; i < 6500; i++) {
+        const x = R() * W; if (R() > dens(x)) continue;
+        const yn = (R() + R() + R() - 1.5) / 1.5, y = mid(x) + yn * half(x) * 1.2;
+        if (laneNear(x, y) && R() < 0.6) continue;
+        dot(x, y, (0.42 + 0.55 * (1 - Math.abs(yn))) * (0.45 + 0.55 * R()));
+      }
+      for (let c = 0; c < 12; c++) {
+        const cx = 250 + R() * (W - 500), cy = mid(cx) + (R() - 0.5) * half(cx) * 0.8, n = 30 + Math.floor(R() * 40), s = 14 + R() * 22;
+        for (let i = 0; i < n; i++) dot(cx + (R() + R() + R() - 1.5) * s * 1.4, cy + (R() + R() + R() - 1.5) * s * 1.4, 0.3 + 0.55 * R());
+      }
+      // soft ends like the old band: fade the left and right 22 percent
+      g.globalCompositeOperation = 'destination-in';
+      const em = g.createLinearGradient(0, 0, W, 0);
+      em.addColorStop(0, 'rgba(0,0,0,0)'); em.addColorStop(0.22, 'rgba(0,0,0,1)'); em.addColorStop(0.78, 'rgba(0,0,0,1)'); em.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = em; g.fillRect(0, 0, W, H);
+      return cv;
+    };
+    const made = [make(5119), make(7207)];
+    if (!made[0] || !made[1]) return false;
+    const cvs = [], olds = [];
+    tiles.forEach((tile, j) => {
+      const old = Array.prototype.find.call(tile.children, (el) => num(el.style.width) === 3000);
+      if (!old) return;
+      const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+      cv.getContext('2d').drawImage(made[j % 2], 0, 0);
+      const cx = num(old.style.left) + num(old.style.width) / 2, cy = num(old.style.top) + num(old.style.height) / 2;
+      cv.setAttribute('data-skyband', '1');
+      cv.style.cssText = 'position:absolute;pointer-events:none;width:' + W + 'px;height:' + H + 'px;left:' + (cx - W / 2) + 'px;top:' + (cy - H / 2) + 'px;transform:' + (old.style.transform || 'none');
+      tile.insertBefore(cv, old);
+      cvs.push(cv); olds.push(old);
+    });
+    if (!cvs.length) return false;
+    this._skyBands = { cvs, olds };
+    return true;
+  }
+  skyStep(a0f, accF, P) {
+    if (this._skyNew === undefined) this._skyNew = true;
+    if (!this._skyWraps || !this._skyWraps[0][0].isConnected) { if (!this.skyBuild()) return; }
+    if (!this._skyBands || !this._skyBands.cvs[0].isConnected) { this.skyBandBuild(); this._skyShown = null; }
+    const on = !!this._skyNew;
+    if (this._skyShown !== on) {
+      this._skyShown = on;
+      if (this._skyBands) { this._skyBands.cvs.forEach((e) => { e.style.display = on ? '' : 'none'; }); this._skyBands.olds.forEach((e) => { e.style.display = on ? 'none' : ''; }); }
+      this._skyOrigEls.forEach((e) => { e.style.display = on ? 'none' : ''; });
+      this._skyWraps.forEach((a) => a.forEach((d) => { d.style.display = on ? '' : 'none'; }));
+      document.querySelectorAll('[data-skymode]').forEach((b) => { const act = (b.getAttribute('data-skymode') === 'new') === on; b.style.background = act ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.1)'; });
+    }
+    if (!on) return;
+    const FAC = [0.55, 0.85, 1.25];
+    this._skyWraps.forEach((a, c) => {
+      const sf = (a0f + accF * FAC[c]) % (2 * P);
+      a.forEach((d, j) => { d.style.transform = 'translateX(' + (((sf + P * j + 2 * P) % (4 * P)) - 2 * P).toFixed(2) + 'px)'; });
+    });
+  }
+  startSpace() {
+    if (typeof requestAnimationFrame !== 'function') return;
+    try { if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    let near = null, quick = null, fars = [], shoots = [], nextAt = 0, t0 = 0, last = 0;
+    const acc = { n: 0, f: 0, q: 0 };
+    // fine star field: random positions (no lattice, so no rows), clustered by a few soft density blobs, wraps every 2600 px
+    // five star depths, each its own tile so they drift at clearly different speeds (like the launcher)
+    const SG = [{ sp: 0.5, n: 480 }, { sp: 0.78, n: 480 }, { sp: 1.0, n: 480 }, { sp: 1.36, n: 440 }, { sp: 1.74, n: 320 }];
+    const mkStars = (gi) => {
+      try {
+        const W = 2600, H = 900, S = 1.5;
+        const cv = document.createElement('canvas'); cv.width = Math.round(W * S); cv.height = Math.round(H * S);
+        const g = cv.getContext('2d'); if (!g) return null;
+        let sd = 20871987 + gi * 7919; const R = () => { sd = (Math.imul(sd, 1664525) + 1013904223) >>> 0; return sd / 4294967296; };
+        const blobs = []; for (let i = 0; i < 9; i++) blobs.push({ x: R() * W, y: R() * H, rx: 250 + R() * 500, ry: 150 + R() * 300, w: 0.5 + R() });
+        const dens = (x, y) => { let d = 0.4; for (const b of blobs) for (let k = -1; k <= 1; k++) { const dx = (x - b.x + k * W) / b.rx, dy = (y - b.y) / b.ry; d += b.w * Math.exp(-(dx * dx + dy * dy)); } return d; };
+        let dmax = 0; for (let x = 0; x < W; x += 40) for (let y = 0; y < H; y += 40) dmax = Math.max(dmax, dens(x, y));
+        const cols = ['255,255,255', '255,255,255', '207,224,255', '255,233,200', '255,217,242'];
+        let n = 0;
+        while (n < SG[gi].n) {
+          const x = R() * W, y = R() * H;
+          if (R() * dmax > dens(x, y)) continue;
+          const r = 0.45 + Math.pow(R(), 3) * 0.7 + gi * 0.06, a = 0.35 + Math.pow(R(), 2) * 0.6;
+          const c = cols[Math.floor(R() * cols.length)];
+          g.fillStyle = 'rgba(' + c + ',' + a.toFixed(2) + ')';
+          [0, W, -W].forEach((o) => { const xx = x + o; if (xx > -4 && xx < W + 4) { g.beginPath(); g.arc(xx * S, y * S, r * S, 0, 6.2832); g.fill(); } });
+          n++;
+        }
+        return 'url(' + cv.toDataURL('image/png') + ')';
+      } catch (e) { return null; }
+    };
+    const sgUrls = SG.map((_, i) => mkStars(i));
+    let sgEls = [];
+    const sgA0 = SG.map(() => Math.random() * 2600), sgAcc = SG.map(() => 0);
+    const a0n = Math.random() * 2600, a0f = a0n * 2, a0q = Math.random() * 2600;
+    const frame = (now) => {
+      this._raf = requestAnimationFrame(frame);
+      if (!t0) { t0 = now; nextAt = now + 1200; }
+      const dt = last ? now - last : 0; last = now;
+      if (this._skyOff) { t0 += dt; nextAt += dt; shoots.forEach((s) => { if (s.on) { s.on = false; s.el.style.opacity = '0'; } }); return; }
+      if (!near || !near.isConnected) near = document.querySelector('[data-sway="near"]');
+      if (!sgEls.length || !sgEls[0].w || !sgEls[0].w.isConnected) {
+        sgEls = SG.map((_, i) => { const w = document.querySelector('[data-sway="sg' + i + '"]'), d = document.querySelector('[data-stars="sg' + i + '"]'); if (d && sgUrls[i]) d.style.backgroundImage = sgUrls[i]; return { w, d }; });
+      }
+      sgEls.forEach((o, i) => { sgAcc[i] += dt / 1000 * (2600 / 400) * SG[i].sp; if (o.w) o.w.style.transform = 'translateX(' + ((sgA0[i] + sgAcc[i]) % 2600).toFixed(2) + 'px)'; });
+      const t = (now - t0) / 1000, TAU = Math.PI * 2;
+      const P = 2600;
+      acc.n += dt / 1000 * (P / 400); acc.f += dt / 1000 * (2 * P / 1200); acc.q += dt / 1000 * (P / 230);
+      const sf = (a0f + acc.f) % (2 * P), sn = (a0n + acc.n) % P, sq = (a0q + acc.q) % P;
+      if (!quick || !quick.isConnected) quick = document.querySelector('[data-sway="quick"]');
+      if (quick) quick.style.transform = 'translateX(' + sq.toFixed(2) + 'px)';
+      if (near) near.style.transform = 'translateX(' + sn.toFixed(2) + 'px)';
+      if (!fars.length || !fars[0].isConnected) fars = [0, 1, 2, 3].map((j) => document.querySelector('[data-sway="far' + j + '"]'));
+      fars.forEach((el, j) => { if (el) el.style.transform = 'translateX(' + (((sf + P * j + 2 * P) % (4 * P)) - 2 * P).toFixed(2) + 'px)'; });
+      this.skyStep(a0f, acc.f, P);
+      if (!shoots.length || !shoots[0].el.isConnected) {
+        shoots = Array.prototype.slice.call(document.querySelectorAll('[data-shoot]')).map((el) => ({ el, on: false }));
+      }
+      if (now >= nextAt) {
+        const s = shoots.find((x) => !x.on);
+        if (s) {
+          const right = Math.random() < 0.5;
+          const ang = right ? rnd(18, 38) : 180 - rnd(18, 38);
+          s.on = true; s.start = now; s.dur = rnd(1100, 2000); s.ang = ang;
+          s.len = rnd(60, 240); s.dist = rnd(450, 800);
+          s.x = right ? rnd(0, 1000) : rnd(600, 1600); s.y = rnd(20, 520);
+          s.el.style.width = s.len.toFixed(0) + 'px';
+          s.el.style.height = rnd(1, 3).toFixed(1) + 'px';
+        }
+        nextAt = now + rnd(900, 3400);
+      }
+
+      // ---- rare events (satellite, quiet nova) ----
+      const fx = (this._fx = this._fx || { on: {}, next: {} });
+      const MIN = 60000;
+      const el = (k) => document.querySelector('[data-fx="' + k + '"]');
+      if (!this._fxInit) {
+        this._fxInit = true;
+        fx.next.sat = now + rnd(5, 12) * MIN; fx.next.nova = now + rnd(15, 40) * MIN;
+        this._fxStart = (k) => {
+          const f = fx.on[k] = { start: performance.now() };
+          if (k === 'sat') { f.dur = rnd(11000, 16000); const r = Math.random() < 0.5; f.x0 = r ? -20 : 1620; f.x1 = r ? 1620 : -20; f.y0 = rnd(60, 380); f.y1 = f.y0 + rnd(-120, 160); f.fade = Math.random() < 0.5 ? rnd(0.5, 0.8) : 2; }
+          if (k === 'nova') { f.dur = 6500; f.x = rnd(120, 1480); f.y = rnd(40, 560); }
+        };
+        this._fxClick = (e) => {
+          const b = e.target && e.target.closest ? e.target.closest('[data-skyfx]') : null;
+          if (!b) return;
+          const k = b.getAttribute('data-skyfx');
+          if (!fx.on[k]) this._fxStart(k);
+        };
+        document.addEventListener('click', this._fxClick);
+      }
+      ['sat', 'nova'].forEach((k) => {
+        if (!fx.on[k] && now >= fx.next[k]) {
+          this._fxStart(k);
+          fx.next[k] = now + ({ sat: rnd(8, 20), nova: rnd(25, 60) })[k] * MIN;
+        }
+        const f = fx.on[k];
+        if (!f) return;
+        const e1 = el(k); if (!e1) return;
+        const p = (now - f.start) / f.dur;
+        if (p >= 1) { fx.on[k] = null; e1.style.opacity = '0'; return; }
+        const edge = Math.min(1, p / 0.12, (1 - p) / 0.12);
+        if (k === 'sat') {
+          const x = f.x0 + (f.x1 - f.x0) * p, y = f.y0 + (f.y1 - f.y0) * p;
+          e1.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+          const glint = 0.55 + 0.45 * Math.sin((now - f.start) / 1000 * 3.4);
+          const shadow = p > f.fade ? Math.max(0, 1 - (p - f.fade) / 0.05) : 1;
+          e1.style.opacity = (Math.min(1, edge * 4) * glint * shadow).toFixed(3);
+        }
+        if (k === 'nova') {
+          e1.style.transform = 'translate(' + f.x.toFixed(1) + 'px,' + f.y.toFixed(1) + 'px)';
+          const rise = Math.min(1, p / 0.08), decay = Math.exp(-(Math.max(0, p - 0.08)) * 5.2);
+          e1.style.opacity = (rise * decay).toFixed(3);
+          const h = e1.querySelector('[data-fx="novaHalo"]'), c = e1.querySelector('[data-fx="novaCore"]');
+          if (h) h.style.transform = 'scale(' + (0.15 + 1.35 * Math.sqrt(p)).toFixed(3) + ')';
+          if (c) c.style.transform = 'scale(' + (0.6 + 0.8 * decay).toFixed(3) + ')';
+        }
+      });
+      shoots.forEach((s) => {
+        if (!s.on) return;
+        const p = (now - s.start) / s.dur;
+        if (p >= 1) { s.on = false; s.el.style.opacity = '0'; return; }
+        const r = s.ang * Math.PI / 180;
+        const cx = s.x + Math.cos(r) * s.dist * p, cy = s.y + Math.sin(r) * s.dist * p;
+        s.el.style.transform = 'translate(' + (cx - s.len / 2).toFixed(1) + 'px,' + cy.toFixed(1) + 'px) rotate(' + s.ang.toFixed(1) + 'deg)';
+        s.el.style.opacity = (Math.min(1, p * 8) * Math.min(1, (1 - p) * 3)).toFixed(2);
+      });
+    };
+    this._raf = requestAnimationFrame(frame);
+  }
+  componentWillUnmount() { this.audioStop(); if (this._fxClick) document.removeEventListener('click', this._fxClick); if (this._raf && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this._raf); clearInterval(this._t); clearInterval(this._tk); clearTimeout(this._tt); clearTimeout(this._lp); }
+  audioUnlock() {
+    if (this._acTried) {
+      try { if (this._ac && this._ac.state === 'suspended' && !document.hidden) this._ac.resume(); } catch (e) {}
+      return;
+    }
+    this._acTried = true;
+    const A = window.SDA || null;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!A || !AC) return;
+    try {
+      const ac = new AC();
+      this._ac = ac;
+      this._bufs = {};
+      const dec = (b64) => {
+        const bin = atob(b64);
+        const u = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+        return new Promise((res, rej) => ac.decodeAudioData(u.buffer, res, rej));
+      };
+      Object.keys(A.sfx).forEach((k) => { dec(A.sfx[k]).then((b) => { this._bufs[k] = b; }).catch(() => {}); });
+      dec(A.music).then((b) => { this._music = b; this.musicSync(); }).catch(() => {});
+    } catch (e) {}
+  }
+  audioStop() {
+    document.removeEventListener('pointerdown', this._au, true);
+    document.removeEventListener('keydown', this._au, true);
+    document.removeEventListener('click', this._sfxClick, true);
+    document.removeEventListener('visibilitychange', this._vis);
+    clearTimeout(this._stopT);
+    try { if (this._ac) this._ac.close(); } catch (e) {}
+    this._ac = null;
+  }
+  sfxPlay(name, force) {
+    const ac = this._ac, b = this._bufs && this._bufs[name];
+    if (!ac || !b) return;
+    const st = this.state;
+    if (!force && !st.fxOn) return;
+    const v = st.fxVol / 100;
+    if (v <= 0) return;
+    const now = Date.now();
+    if (now - (this._lastSfx || 0) < 35) return;
+    this._lastSfx = now;
+    try {
+      const s = ac.createBufferSource();
+      const g = ac.createGain();
+      s.buffer = b;
+      g.gain.value = v;
+      s.connect(g);
+      g.connect(ac.destination);
+      s.start();
+    } catch (e) {}
+  }
+  musicSync() {
+    const ac = this._ac, buf = this._music;
+    if (!ac || !buf) return;
+    try {
+      const st = this.state;
+      const lvl = st.musVol / 100;
+      const want = st.musOn && lvl > 0;
+      const t = ac.currentTime;
+      if (!this._mg) {
+        this._mg = ac.createGain();
+        this._fg = ac.createGain();
+        this._fg.gain.value = 0;
+        this._fg.connect(this._mg);
+        this._mg.connect(ac.destination);
+      }
+      this._mg.gain.cancelScheduledValues(t);
+      this._mg.gain.setTargetAtTime(lvl, t, 0.05);
+      if (want && !this._src) {
+        const s = ac.createBufferSource();
+        s.buffer = buf;
+        s.loop = true;
+        s.connect(this._fg);
+        s.start();
+        this._src = s;
+        this._out = false;
+        const n = 64, a = new Float32Array(n);
+        for (let i = 0; i < n; i++) { const x = i / (n - 1); a[i] = x * x; }
+        this._fg.gain.cancelScheduledValues(t);
+        this._fg.gain.setValueCurveAtTime(a, t, 4);
+      } else if (want && this._src && this._out) {
+        clearTimeout(this._stopT);
+        this._out = false;
+        this._fg.gain.cancelScheduledValues(t);
+        this._fg.gain.setValueAtTime(this._fg.gain.value, t);
+        this._fg.gain.linearRampToValueAtTime(1, t + 1.5);
+      } else if (!want && this._src && !this._out) {
+        this._out = true;
+        this._fg.gain.cancelScheduledValues(t);
+        this._fg.gain.setValueAtTime(this._fg.gain.value, t);
+        this._fg.gain.linearRampToValueAtTime(0, t + 1.5);
+        this._stopT = setTimeout(() => { try { this._src.stop(); } catch (e) {} this._src = null; this._out = false; }, 1600);
+      }
+    } catch (e) {}
+  }
+  bumpVol(which, delta) {
+    const key = which === 'fx' ? 'fxVol' : 'musVol';
+    const old = this.state[key];
+    const v = Math.max(0, Math.min(100, old + delta));
+    this.setState({ [key]: v });
+    this.sfxPlay(v !== old ? 'move_h' : 'bump');
+    if (key === 'musVol') setTimeout(() => this.musicSync(), 0);
+  }
+  slideTo(e, key) {
+    if (!e || !e.detail) return;   // a keyboard OK press has no pointer position
+    const bar = e.currentTarget && e.currentTarget.querySelector('[data-bar]');
+    if (!bar) return;
+    const r = bar.getBoundingClientRect();
+    this.setState({ [key]: Math.max(0, Math.min(100, Math.round((e.clientX - r.left) / r.width * 10) * 10)) });
+    this.sfxPlay('move_h');
+    if (key === 'musVol') setTimeout(() => this.musicSync(), 0);
+  }
+  saveName() {
+    this.setState({ name: (this.state.nameDraft || '').trim() });
+    this.closePane();
+  }
+  say(msg) {
+    clearTimeout(this._tt);
+    this.setState({ toast: msg });
+    this._tt = setTimeout(() => this.setState({ toast: '' }), 2600);
+  }
+  startMove(id) {
+    this._prev = this.state.order.slice();
+    this.setState({ moving: id });
+    this.say('Move mode: arrows move the app, OK drops it, Esc cancels');
+  }
+  moveBy(id, delta) {
+    this.setState((s) => {
+      const o = s.order.slice();
+      const i = o.indexOf(id);
+      if (i < 0) return null;
+      const j = Math.max(0, Math.min(o.length - 1, i + delta));
+      o.splice(i, 1);
+      o.splice(j, 0, id);
+      return { order: o };
+    });
+  }
+  moveTo(id, targetId) {
+    this.setState((s) => {
+      const o = s.order.slice();
+      const i = o.indexOf(id), j = o.indexOf(targetId);
+      if (i < 0 || j < 0) return null;
+      o.splice(i, 1);
+      o.splice(j, 0, id);
+      return { order: o };
+    });
+  }
+  refocus(root, id) {
+    setTimeout(() => {
+      const el = root.querySelector('button[data-id="' + id + '"]');
+      if (el) el.focus();
+    }, 40);
+  }
+  openPane(name, e, id, kind) {
+    this.sfxPlay('open');
+    const el = e && e.currentTarget;
+    const root = el && el.closest ? el.closest('[data-root]') : null;
+    let sel = null;
+    if (el && el.getAttribute) {
+      sel = el.getAttribute('data-id') ? 'button[data-id="' + el.getAttribute('data-id') + '"]' : (el.getAttribute('data-key') ? 'button[data-key="' + el.getAttribute('data-key') + '"]' : 'button[aria-label="' + el.getAttribute('aria-label') + '"]');
+    }
+    this._root = root;
+    this._ret = sel;
+    if (name === 'name') this.setState({ nameDraft: this.state.name });
+    this._popIn = false;
+    let menuPos = { x: 0, y: 0 };
+    if (name === 'menu' && el && root && el.getBoundingClientRect) {
+      const r = el.getBoundingClientRect(), rb = root.getBoundingClientRect();
+      const sc = rb.width / 1600 || 1;
+      let x = (r.right - rb.left) / sc + 14;
+      if (x + 290 > 1600) x = (r.left - rb.left) / sc - 290 - 14;
+      const y = (r.top - rb.top) / sc;
+      const hgt = kind === 'row' ? 210 : (kind && kind !== 'app' ? 130 : 360);
+      menuPos = { x: Math.round(x), y: Math.round(Math.max(20, Math.min(y, 900 - 20 - hgt))) };
+    }
+    this.setState({ pane: name, menuId: id || null, menuKind: kind || 'app', menuPos, rowsMode: 'list', rowGrab: null });
+    setTimeout(() => {
+      const f = root && root.querySelector('[data-pane] input, [data-pane] button.nav');
+      if (f) f.focus();
+    }, 70);
+  }
+  rowFocus(key) {
+    setTimeout(() => { const r = this._root; const f = r && r.querySelector('[data-pane] button[data-key="' + key + '"]'); if (f) f.focus(); }, 50);
+  }
+  rowMove(id, d) {
+    const o = this.state.rowsOrder.slice(), i = o.indexOf(id), j = i + d;
+    if (i < 0 || j < 0 || j >= o.length) return;
+    o.splice(i, 1); o.splice(j, 0, id);
+    this.setState({ rowsOrder: o });
+    this.rowFocus('row-' + id);
+  }
+  rowToggle(id) {
+    const off = this.state.rowsOff.indexOf(id) >= 0 ? this.state.rowsOff.filter((x) => x !== id) : this.state.rowsOff.concat([id]);
+    this.setState({ rowsOff: off });
+    this.rowFocus('row-' + id);
+  }
+  rowPick(id) {
+    if (this.state.rowGrab) return;
+    this.setState({ rowGrab: id });
+    this.rowFocus('row-' + id);
+  }
+  rowMode(mode, key) {
+    this.sfxPlay('open');
+    this.setState({ rowsMode: mode, rowGrab: null });
+    this.rowFocus(key);
+  }
+  closePane() {
+    this.sfxPlay('close');
+    const root = this._root, sel = this._ret;
+    clearTimeout(this._sp);
+    this.setState({ pane: null, menuId: null, speed: '', rowsMode: 'list', rowGrab: null });
+    setTimeout(() => {
+      if (root && sel) {
+        const el = root.querySelector(sel);
+        if (el) el.focus();
+      }
+    }, 70);
+  }
+  moveFocus(e, scopeEl, dir) {
+    const cur = e.target && e.target.closest ? e.target.closest('button.nav') : null;
+    const all = Array.prototype.slice.call(scopeEl.querySelectorAll('button.nav'));
+    if (!all.length) return;
+    if (!cur) { all[0].focus(); return; }
+    const cr = cur.getBoundingClientRect();
+    const cx = cr.left + cr.width / 2, cy = cr.top + cr.height / 2;
+    let best = null, bestScore = Infinity;
+    all.forEach((el) => {
+      if (el === cur) return;
+      const r = el.getBoundingClientRect();
+      const dx = (r.left + r.width / 2) - cx, dy = (r.top + r.height / 2) - cy;
+      const along = dx * dir[0] + dy * dir[1];
+      if (along <= 4) return;
+      const across = Math.abs(dx * dir[1]) + Math.abs(dy * dir[0]);
+      let gap, cross;
+      if (dir[0] !== 0) {
+        gap = dir[0] > 0 ? r.left - cr.right : cr.left - r.right;
+        cross = Math.max(0, r.top - cr.bottom, cr.top - r.bottom);
+      } else {
+        gap = dir[1] > 0 ? r.top - cr.bottom : cr.top - r.bottom;
+        cross = Math.max(0, r.left - cr.right, cr.left - r.right);
+      }
+      // nearest row or column first, then the one that overlaps most, then the closest center
+      const score = Math.max(0, gap) + cross * 3 + across * 0.2;
+      if (score < bestScore) { bestScore = score; best = el; }
+    });
+    if (best) { best.focus(); this.sfxPlay(dir[0] !== 0 ? 'move_h' : 'move_v'); }
+    else if (!(e && e.repeat)) this.sfxPlay('bump');
+  }
+  renderVals() {
+    const st = this.state;
+    const accent = this.props.accent ?? '#b69cff';
+    const wxKind = this.props.weather ?? 'partly';
+    const tod = this.props.timeOfDay ?? 'live';
+    const d = new Date(st.now);
+    // sunrise and sunset (NOAA approximation) for a sample spot: mid latitude, longitude from the viewer's time zone
+    const tzOff = -d.getTimezoneOffset();
+    const lat = 45, lon = tzOff / 4;
+    const doy = Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000);
+    const gm = 2 * Math.PI / 365 * (doy - 1);
+    const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(gm) - 0.032077 * Math.sin(gm) - 0.014615 * Math.cos(2 * gm) - 0.040849 * Math.sin(2 * gm));
+    const decl = 0.006918 - 0.399912 * Math.cos(gm) + 0.070257 * Math.sin(gm) - 0.006758 * Math.cos(2 * gm) + 0.000907 * Math.sin(2 * gm) - 0.002697 * Math.cos(3 * gm) + 0.00148 * Math.sin(3 * gm);
+    const lar = lat * Math.PI / 180;
+    let cha = Math.cos(90.833 * Math.PI / 180) / (Math.cos(lar) * Math.cos(decl)) - Math.tan(lar) * Math.tan(decl);
+    cha = Math.max(-1, Math.min(1, cha));
+    const haDeg = Math.acos(cha) * 180 / Math.PI;
+    const sunrise = (720 - 4 * (lon + haDeg) - eqt + tzOff) / 60;
+    const sunset = (720 - 4 * (lon - haDeg) - eqt + tzOff) / 60;
+    const fixedHF = { morning: sunrise + 1.5, afternoon: 14, evening: sunset - 0.4, night: sunset + 2.5 }[tod];
+    const hf = fixedHF !== undefined ? fixedHF : d.getHours() + d.getMinutes() / 60;
+    const hour = Math.floor(hf);
+    const mins = String(fixedHF !== undefined ? Math.floor((hf - hour) * 60) : d.getMinutes()).padStart(2, '0');
+    const clock = String(hour).padStart(2, '0') + ':' + mins;
+    const dateText = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    let greeting = 'Good evening';
+    if (hour >= 5 && hour < 12) greeting = 'Good morning';
+    else if (hf >= 12 && hf < Math.min(18, sunset)) greeting = 'Good afternoon';
+    else if (hf >= Math.min(18, sunset) && hour < 22) greeting = 'Good evening';
+    else greeting = 'Good night';
+    const night = hf < sunrise || hf >= sunset;
+    const temps = { clear: '12°C', partly: '9°C', cloudy: '8°C', rain: '6°C', snow: '-3°C' };
+    const feelsAll = { clear: '10°C', partly: '7°C', cloudy: '5°C', rain: '2°C', snow: '-9°C' };
+    const texts = { clear: night ? 'Clear night' : 'Clear sky', partly: 'Partly cloudy', cloudy: 'Cloudy', rain: 'Rain', snow: 'Snow' };
+    // moon phase from the date (approximate), drawn as the lit part of a disc
+    const jd = st.now / 86400000 + 2440587.5;
+    const ph = (((jd - 2451550.1) / 29.530588853) % 1 + 1) % 1;
+    const ang = ph * 2 * Math.PI;
+    const mrx = Math.abs(Math.cos(ang)) * 20;
+    const waxing = ph < 0.5;
+    const crescent = ph < 0.25 || ph > 0.75;
+    const limbSweep = waxing ? 1 : 0;
+    const termSweep = waxing ? (crescent ? 0 : 1) : (crescent ? 1 : 0);
+    const moonPath = 'M0 -20 A20 20 0 0 ' + limbSweep + ' 0 20 A' + mrx.toFixed(2) + ' 20 0 0 ' + termSweep + ' 0 -20 Z';
+    const illum = Math.round((1 - Math.cos(ang)) / 2 * 100);
+    const phaseNames = ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'];
+    const moonName = phaseNames[Math.floor(ph * 8 + 0.5) % 8] + ', ' + illum + '%';
+    // sun turns from yellow to orange to red as it nears the horizon
+    const toHorizon = Math.max(0, Math.min(hf - sunrise, sunset - hf));
+    const stops = [[0, '#ff2e2e'], [0.5, '#ff5a2b'], [1.2, '#ff9a35'], [2.5, '#ffc83d'], [4, '#ffd84d']];
+    const hx = (c) => [1, 3, 5].map((i) => parseInt(c.substr(i, 2), 16));
+    let sunColor = stops[stops.length - 1][1];
+    for (let i = 0; i < stops.length - 1; i++) {
+      if (toHorizon <= stops[i + 1][0]) {
+        const f = (toHorizon - stops[i][0]) / (stops[i + 1][0] - stops[i][0]);
+        const A = hx(stops[i][1]), B = hx(stops[i + 1][1]);
+        sunColor = '#' + A.map((v, k) => Math.round(v + (B[k] - v) * f).toString(16).padStart(2, '0')).join('');
+        break;
+      }
+    }
+    const cloudColor = night ? '#aeb8d0' : (toHorizon < 1.2 ? '#f6d3c6' : '#f4f7fb');
+
+    const svgUrl = (svg) => 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
+    // Sample apps are plain letter tiles. The real launcher shows each app's own icon.
+    const look = (id, bg) => ({ img: 'none', bg, bgs: '56%', fg: '#ffffff' });
+    const go = (s) => () => this.setState({ screen: s });
+    const mk = (name, letter, bg, msg, ik) => ({ name, letter: ik ? '' : letter, fs: '48px', ...look(ik, bg), open: () => this.say(msg || ('Would open ' + name)) });
+
+    // Sample apps. The real dock shows the first eight installed apps by name, with each app's own icon.
+    const defs = {
+      br: ['Browser', 'B', '#3b5fa8'],
+      ca: ['Calendar', 'C', '#a84b3b'],
+      cm: ['Camera', 'C', '#5b4a8c'],
+      fi: ['Files', 'F', '#3d6f78'],
+      ga: ['Games', 'G', '#7a4a86'],
+      ma: ['Maps', 'M', '#3e7a52'],
+      mu: ['Music', 'M', '#a8603b'],
+      ph: ['Photos', 'P', '#8a6a2e'],
+      v1: ['Video app 1', 'V', '#b0463c'],
+      v2: ['Video app 2', 'V', '#2f8a9c'],
+      v3: ['Video app 3', 'V', '#8a5ac2'],
+      v4: ['Video app 4', 'V', '#c47a32']
+    };
+    const dock = st.order.map((id) => {
+      const [name, letter0, bg] = defs[id];
+      const letter = letter0;
+      const isMoving = st.moving === id;
+      return {
+        id, name, letter, fs: '48px', ...look(id, bg),
+        label: isMoving ? 'Moving...' : name,
+        glow: isMoving ? '0 0 0 3px ' + accent + ', 0 0 40px 8px ' + accent : 'none',
+        lift: isMoving ? 'scale(1.12)' : 'none',
+        open: () => {
+          if (this._held) { this._held = false; return; }
+          const m = this.state.moving;
+          if (m) {
+            if (m !== id) this.moveTo(m, id);
+            this.setState({ moving: null });
+            this.say('Placed');
+            return;
+          }
+          this.say('Would open ' + name);
+        },
+        down: (e) => {
+          this._held = false;
+          clearTimeout(this._lp);
+          const el = e && e.currentTarget;
+          this._lp = setTimeout(() => {
+            this._held = true;
+            this.openPane('menu', { currentTarget: el }, id, 'app');
+          }, 600);
+        },
+        up: () => clearTimeout(this._lp)
+      };
+    });
+    dock.push({
+      id: 'all', name: 'All apps', letter: '+', fs: '48px', bgs: '56%', fg: '#ffffff', img: 'none', bg: '#000000', label: 'All apps', glow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.18)', lift: 'none',
+      open: () => { if (!this.state.moving) this.setState({ screen: 'apps' }); },
+      down: () => {}, up: () => {}
+    });
+
+    const libNames = [
+      ['Browser', '#3b5fa8'], ['Calendar', '#a84b3b'], ['Camera', '#5b4a8c'], ['Files', '#3d6f78'],
+      ['Games', '#7a4a86'], ['Maps', '#3e7a52'], ['Music', '#a8603b'], ['Photos', '#8a6a2e'],
+      ['Radio', '#44541f'], ['Settings', '#3f4552'], ['Weather', '#1f5468'], ['Video app 1', '#7a2f2a']
+    ];
+    const library = libNames.map(([n, bg]) => mk(n, n.charAt(0), bg, null, null));
+
+    const hold = () => ({
+      down: (e) => {
+        this._held = false;
+        clearTimeout(this._lp);
+        const el = e && e.currentTarget;
+        const kind = el && el.getAttribute ? el.getAttribute('data-menu') : 'pick';
+        this._lp = setTimeout(() => { this._held = true; this.openPane('menu', { currentTarget: el }, null, kind); }, 600);
+      },
+      up: () => clearTimeout(this._lp)
+    });
+    const cwTag = { v1: '#e0655b', v2: '#3fb4c8', v3: '#a98be0', v4: '#e8964a' };
+    const cwText = {};
+    const cwAll = [
+      ['v1', 'Sample series S2 E4', '31 min left', 30],
+      ['v2', 'Sample movie', '48 min left', 60],
+      ['v3', 'Sample series S1 E7', '14 min left', 72],
+      ['v1', 'Sample series S1 E6', '22 min left', 50],
+      ['v2', 'Sample movie', '1 h 05 left', 20],
+      ['v3', 'Sample series S3 E2', '36 min left', 40],
+      ['v4', 'Sample series S1 E2', '20 min left', 55],
+      ['v4', 'Sample series E07', '12 min left', 45]
+    ];
+    const cwShown = cwAll.filter((x) => st.cw[x[0]]).slice(0, 6);
+    const cwCards = cwShown.map(([k, title, meta, pct], i) => ({
+      tag: defs[k][0], tagColor: cwTag[k], textColor: cwText[k] || cwTag[k], cardBg: 'linear-gradient(180deg, rgba(8,6,22,0.4), rgba(8,6,22,0.95)), linear-gradient(135deg, ' + cwTag[k] + '88, #1a1440)', title, meta, pct, key: 'cw-' + i, ...hold(),
+      open: () => { if (this._held) { this._held = false; return; } this.say('Would resume ' + title + ' in ' + defs[k][0]); }
+    }));
+    const cwSources = ['v1', 'v2', 'v3', 'v4'].map((k) => ({
+      name: defs[k][0], tagColor: cwTag[k], on: st.cw[k],
+      state: st.cw[k] ? 'On' : 'Off',
+      trackBg: st.cw[k] ? accent : '#343a4a',
+      trackFg: st.cw[k] ? '#0d1117' : '#eef0f7',
+      toggle: () => this.setState({ cw: { ...st.cw, [k]: !st.cw[k] } })
+    }));
+    const topIcons = [
+      { label: 'Play Store', d: 'M5 8h14l-1 12H6L5 8z M9 8V6a3 3 0 0 1 6 0v2 M10.5 11.5v5l4-2.5-4-2.5z', act: () => this.say('Would open the app store') },
+      { label: 'Inputs', d: 'M4.5 4h15a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M8 20.5h8M12 16.5v4 M7 10.25h6M10.75 8l2.25 2.25-2.25 2.25M16.5 8v4.5', act: (e) => this.openPane('inputs', e) },
+      { label: 'Wi-Fi', d: 'M2 9a15 15 0 0 1 20 0M5 12.5a10.5 10.5 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0 M12 19.5h.01', act: (e) => this.openPane('network', e) },
+      { label: 'Sound', d: 'M4 9.5v5h3.5l4.5 4v-13l-4.5 4H4z M15.5 9.2a4.2 4.2 0 0 1 0 5.6 M18.2 6.6a8 8 0 0 1 0 10.8', act: (e) => this.openPane('sound', e) },
+      { label: 'Settings', d: 'M4 7h10M18 7h2M4 17h2M10 17h10 M14 7a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M6 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0', act: (e) => this.openPane('settings', e) }
+    ];
+
+    const s = st.src;
+    const tk = st.tick;
+    const feedAll = [
+      { k: 'newseries', tag: 'New series', tagColor: '#e0655b', off: 0, items: [
+        ['Sample series, new episode', 'Video app 1, new today', ''],
+        ['Sample series, season 2', 'Video app 2, new this week', ''],
+        ['Sample movie, now streaming', 'Video app 3, new today', '']] },
+      { k: 'movies', tag: 'Movies', tagColor: '#a98be0', off: 1, items: [
+        ['Sample headline about an upcoming film', 'Sample site, today', ''],
+        ['Sample review of a new release', 'Sample site, yesterday', ''],
+        ['Sample list: what to watch this weekend', 'Sample site, yesterday', '']] },
+      { k: 'tech', tag: 'Tech', tagColor: '#3fb4c8', off: 2, items: [
+        ['Sample headline about a new gadget', 'Sample site, today', ''],
+        ['Sample guide to a software update', 'Sample site, today', '']] },
+      { k: 'world', tag: 'World', tagColor: '#e8964a', off: 1, items: [
+        ['Sample world headline', 'Sample site, today', ''],
+        ['Another sample world headline', 'Sample site, today', '']] }
+    ];
+    const thumbOf = (f, img) => (img ? "url('" + img + "') center / cover no-repeat, " : '') + 'linear-gradient(135deg, ' + f.tagColor + '66, #1a1440)';
+    const feed = feedAll.filter((f) => s[f.k]).map((f) => {
+      const idx = (tk + f.off) % f.items.length;
+      const it = f.items[idx];
+      return {
+        tag: f.tag, tagColor: f.tagColor, title: it[0], meta: it[1],
+        thumb: thumbOf(f, it[2]), label: it[2] ? '' : 'Preview image',
+        dots: f.items.map((_, i) => ({ c: i === idx ? '#ffffff' : 'rgba(255, 255, 255, 0.3)' })),
+        key: 'pick-' + f.k, ...hold(),
+        open: () => { if (this._held) { this._held = false; return; } this.setState({ screen: 'category', catKey: f.k }); }
+      };
+    });
+    const cat = feedAll.find((x) => x.k === st.catKey);
+    const catName = cat ? cat.tag : '';
+    const catItems = cat ? cat.items.map((i) => ({ title: i[0], meta: i[1], thumb: thumbOf(cat, i[2]), open: () => this.say('Would open: ' + i[0]) })) : [];
+    const srcDefs = [
+      { k: 'newseries', name: 'New series', desc: 'New releases that your video apps share with the TV' },
+      { k: 'movies', name: 'Movies (RSS)', desc: 'A feed you added, under your Movies card' },
+      { k: 'tech', name: 'Tech (RSS)', desc: 'A feed you added, under your Tech card' },
+      { k: 'world', name: 'World (RSS)', desc: 'Off. Stardrift starts with no feeds: add your own by web address or from your phone.' }
+    ];
+    const sources = srcDefs.map((x) => ({
+      name: x.name, desc: x.desc,
+      on: s[x.k],
+      state: s[x.k] ? 'On' : 'Off',
+      trackBg: s[x.k] ? accent : '#343a4a',
+      trackFg: s[x.k] ? '#0d1117' : '#eef0f7',
+      toggle: () => this.setState({ src: { ...s, [x.k]: !s[x.k] } })
+    }));
+    // pane contents
+    const act = (msg) => () => { this.closePane(); this.say(msg); };
+    const IC = {
+      tune: 'M4 7h10M18 7h2M4 17h2M10 17h10M16 4v6M8 14v6',
+      closeApps: 'M4 4h16v16H4z M9 9l6 6M15 9l-6 6',
+      trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5',
+      wifi: 'M2 9a15 15 0 0 1 20 0M5 12.5a10.5 10.5 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0M12 19.5h.01',
+      display: 'M3 5h18v11H3z M8 20h8M12 16v4',
+      sound: 'M4 9v6h4l5 4V5L8 9H4z M16 9a4 4 0 0 1 0 6 M18.5 6.5a8 8 0 0 1 0 11',
+      apps: 'M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z',
+      storage: 'M4 6h16v5H4z M4 13h16v5H4z M8 8.5h.01 M8 15.5h.01',
+      rss: 'M5 19h.01 M5 12a7 7 0 0 1 7 7 M5 5a14 14 0 0 1 14 14',
+      hdmi: 'M4 8h16v5l-3 4H7l-3-4z M9 11h6',
+      reorder: 'M7 4v16M3 8l4-4 4 4M17 20V4M13 16l4 4 4-4',
+      info: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 11v5 M12 8h.01',
+      pin: 'M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10z M12 8.5h.01'
+    };
+    const quick = [
+      { name: 'Close background apps', sub: 'Force stops apps', d: IC.closeApps, act: act('Would stop the apps you installed that are running') },
+      { name: 'Clear cache', sub: 'Clears app caches', d: IC.trash, act: act('Would clear the cache of every app and say how much it freed') }
+    ];
+    const shortcuts = [
+      { name: 'Apps', d: IC.apps, act: act('Would open Apps settings') },
+      { name: 'Display', d: IC.display, act: act('Would open Display settings') },
+      { name: 'Sound', d: IC.sound, act: act('Would open Sound settings') },
+      { name: 'Storage', d: IC.storage, act: act('Would open Storage settings') }
+    ];
+    const launcherRows = [
+      { name: 'Home rows', d: 'M4 6h16M4 12h16M4 18h16', act: (e) => this.openPane('rows', e) },
+      { name: 'Hidden apps', d: 'M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z M4 4l16 16', act: act('Would list hidden apps so you can show them again') }
+    ];
+    const extraRows = [
+      { name: 'ADB (USB debugging)', sub: 'Off. Needs a one-time grant, see docs/ADB.md', d: 'M4 17l6-6-6-6 M12 19h8', act: act('Needs a one-time grant, see docs/ADB.md') },
+      { name: 'Update', sub: 'Up to date (fork builds only)', d: 'M12 4v11 M7 10l5 5 5-5 M5 20h14', act: act('Would check your fork\u2019s latest release') }
+    ];
+    const netRows = [
+      { k: 'Connection', v: 'Wi-Fi' },
+      { k: 'Internet', v: 'Connected', ok: true },
+      { k: 'IP address', v: '192.168.1.42 (sample)' },
+      { k: 'Gateway', v: '192.168.1.1 (sample)' },
+      { k: 'DNS', v: '192.168.1.2 (sample)' },
+      { k: 'Signal', v: 'Good' },
+      { k: 'Link speed', v: '433 Mbps (sample)' }
+    ];
+    const inputs = [
+      { name: 'HDMI 1', sub: 'Connected', dot: '#5eead4', d: IC.hdmi, act: act('Would switch to HDMI 1') },
+      { name: 'HDMI 2', sub: 'Connected', dot: '#5eead4', d: IC.hdmi, act: act('Would switch to HDMI 2') },
+      { name: 'HDMI 3', sub: 'No signal', dot: '#6b7280', d: IC.hdmi, act: act('Would switch to HDMI 3') },
+      { name: 'HDMI 4', sub: 'No signal', dot: '#6b7280', d: IC.hdmi, act: act('Would switch to HDMI 4') }
+    ];
+    const menuId = st.menuId;
+    const mk2 = st.menuKind;
+    const menuName = mk2 === 'row' ? (menuId ? ({ apps: 'Apps', picks: 'Picks and New series', cw: 'Continue watching' })[menuId] : '') : mk2 === 'pick' ? 'Picks' : (mk2 === 'cw' ? 'Continue watching' : (menuId && defs[menuId] ? defs[menuId][0] : ''));
+    const rowMenu = (id) => {
+      const o = st.rowsOrder, i = o.indexOf(id), on = st.rowsOff.indexOf(id) < 0;
+      const items = [{ label: on ? 'Hide this row' : 'Show this row', d: on ? 'M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z M4 4l16 16' : 'M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z M12 9.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z', color: '#eef0f7', stroke: accent, act: () => this.rowToggle(id) }];
+      if (i > 0) items.push({ label: 'Move up', d: 'M12 19V5 M6 11l6-6 6 6', color: '#eef0f7', stroke: accent, act: () => this.rowMove(id, -1) });
+      if (i < o.length - 1) items.push({ label: 'Move down', d: 'M12 5v14 M6 13l6 6 6-6', color: '#eef0f7', stroke: accent, act: () => this.rowMove(id, 1) });
+      return items;
+    };
+    const menuItems = mk2 === 'row' ? rowMenu(menuId) : mk2 === 'pick'
+      ? [{ label: 'Edit sources', d: IC.rss, color: '#eef0f7', stroke: accent, act: () => { this.closePane(); this.setState({ screen: 'feeds' }); } }]
+      : (mk2 === 'cw'
+        ? [{ label: 'Choose apps', d: IC.apps, color: '#eef0f7', stroke: accent, act: () => { this.closePane(); this.setState({ screen: 'chooser' }); } }]
+        : [
+                    { label: 'Move', d: IC.reorder, color: '#eef0f7', stroke: accent, act: () => { const id = this.state.menuId; this.closePane(); this.startMove(id); } },
+          { label: 'App info', d: IC.info, color: '#eef0f7', stroke: accent, act: () => { const id = this.state.menuId; this.setState({ pane: null, menuId: null, detailId: id, screen: 'details' }); } },
+          { label: 'Hide', d: 'M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z M4 4l16 16', color: '#eef0f7', stroke: accent, act: () => { const id = this.state.menuId; this.closePane(); this.setState({ order: this.state.order.filter((x) => x !== id) }); this.say('Hidden. Show it again in Settings, Hidden apps'); } },
+          { label: 'Remove from dock', d: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M8 12h8', color: '#eef0f7', stroke: accent, act: () => { const id = this.state.menuId; this.closePane(); this.setState({ order: this.state.order.filter((x) => x !== id) }); this.say('Moved to All apps. Add it back from All apps'); } },
+          { label: 'Uninstall', d: IC.trash, color: '#ffb4a8', stroke: '#ffb4a8', act: () => { this.closePane(); this.say('Android would ask you to confirm the uninstall'); } }
+        ]);
+    const rowNames = { apps: 'Apps', picks: 'Picks and New series', cw: 'Continue watching' };
+    const rowKey = { apps: 'rowA', picks: 'rowP', cw: 'rowC' };
+    const rowStyles = {};
+    let firstShown = true;
+    st.rowsOrder.forEach((id, i) => {
+      const on = st.rowsOff.indexOf(id) < 0;
+      rowStyles[rowKey[id]] = { display: on ? 'flex' : 'none', order: i + 1, mt: on && firstShown ? '40px' : '0px' };
+      if (on) firstShown = false;
+    });
+    const rowOrderMode = st.rowsMode === 'order';
+    const rowList = st.rowsOrder.map((id) => {
+      const on = st.rowsOff.indexOf(id) < 0;
+      const g = st.rowGrab === id;
+      return { id, name: rowNames[id], state: g ? 'Moving' : on ? 'Shown' : 'Hidden', stateColor: g || on ? accent : '#aeb6c7', nameColor: on ? '#eef0f7' : '#aeb6c7',
+        bd: g ? accent : 'rgba(255, 255, 255, 0.18)', bg: g ? 'rgba(182, 156, 255, 0.16)' : 'rgba(255, 255, 255, 0.06)',
+        act: () => (rowOrderMode ? this.rowPick(id) : this.rowToggle(id)) };
+    });
+    const rowHint = rowOrderMode ? 'OK picks a row up. Up and Down move it. OK drops it. Choose Done when it looks right.' : 'OK shows or hides a row. Reorder changes the order.';
+    const rowActLabel = rowOrderMode ? 'Done' : 'Reorder';
+    const rowActIcon = rowOrderMode ? 'M5 12.5l4.5 4.5L19 7.5' : 'M8 19V5 M4 9l4-4 4 4 M16 5v14 M12 15l4 4 4-4';
+    const rowAct = () => (rowOrderMode ? this.rowMode('list', 'act') : this.rowMode('order', 'row-' + st.rowsOrder[0]));
+    const detailName = st.detailId && defs[st.detailId] ? defs[st.detailId][0] : '';
+    let paneTitle = '';
+    if (st.pane === 'settings') paneTitle = 'Settings';
+    else if (st.pane === 'inputs') paneTitle = 'Inputs';
+    else if (st.pane === 'network') paneTitle = 'Network';
+    else if (st.pane === 'rows') paneTitle = st.rowsMode === 'order' ? 'Reorder rows' : 'Home rows';
+    else if (st.pane === 'menu') paneTitle = menuName;
+
+    const onKey = (e) => {
+      const k = e.key;
+      const root = e.currentTarget;
+      const dirs = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      const dir = dirs[k];
+      if ((k === 'Escape' || k === 'Backspace') && !this.state.pane && !this.state.moving && this.state.screen !== 'home' && this.state.screen !== 'saver') this.sfxPlay('back');
+      if (this.state.screen === 'saver') { e.preventDefault(); this.setState({ screen: 'home' }); return; }
+      if (this.state.pane) {
+        if (e.target && e.target.tagName === 'INPUT') {
+          if (k === 'Escape') { e.preventDefault(); this.closePane(); }
+          else if (k === 'Enter') { e.preventDefault(); this.saveName(); }
+          return;
+        }
+        const sl = e.target && e.target.closest ? e.target.closest('[data-slider]') : null;
+        if (sl && (k === 'ArrowLeft' || k === 'ArrowRight')) { e.preventDefault(); this.bumpVol(sl.getAttribute('data-slider'), k === 'ArrowRight' ? 10 : -10); return; }
+        if (this.state.pane === 'rows') {
+          const g = this.state.rowGrab;
+          if (g) {
+            if (k === 'ArrowUp' || k === 'ArrowDown') { e.preventDefault(); this.rowMove(g, k === 'ArrowUp' ? -1 : 1); this.sfxPlay('move_v'); return; }
+            if (k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); return; }
+            if (k === 'Enter' || k === ' ' || k === 'Escape' || k === 'Backspace') { e.preventDefault(); this.setState({ rowGrab: null }); this.rowFocus('row-' + g); return; }
+          } else if (this.state.rowsMode === 'order' && (k === 'Escape' || k === 'Backspace')) { e.preventDefault(); this.rowMode('list', 'act'); return; }
+        }
+        if (k === 'Escape' || k === 'Backspace') { e.preventDefault(); this.closePane(); return; }
+        if (dir) {
+          e.preventDefault();
+          const pane = root.querySelector('[data-pane]');
+          if (pane) this.moveFocus(e, pane, dir);
+        }
+        return;
+      }
+      const tile = e.target && e.target.closest ? e.target.closest('button[data-id]') : null;
+      const mv = this.state.moving;
+      if (mv) {
+        if (k === 'Escape' || k === 'Backspace') {
+          e.preventDefault();
+          this.setState({ order: this._prev || this.state.order, moving: null });
+          this.say('Cancelled');
+          this.refocus(root, mv);
+          return;
+        }
+        if (k === 'Enter' || k === ' ') {
+          e.preventDefault();
+          this.setState({ moving: null });
+          this.say('Placed');
+          return;
+        }
+        if (k === 'ArrowLeft' || k === 'ArrowRight') {
+          e.preventDefault();
+          this.moveBy(mv, k === 'ArrowLeft' ? -1 : 1);
+          this.sfxPlay('move_h');
+          this.refocus(root, mv);
+          return;
+        }
+        if (k.indexOf('Arrow') === 0) e.preventDefault();
+        return;
+      }
+      if ((k === 'm' || k === 'M') && tile && tile.getAttribute('data-id') !== 'all') {
+        e.preventDefault();
+        this.openPane('menu', { currentTarget: tile }, tile.getAttribute('data-id'), 'app');
+        return;
+      }
+      const card = e.target && e.target.closest ? e.target.closest('button[data-menu]') : null;
+      if ((k === 'm' || k === 'M') && card) {
+        e.preventDefault();
+        this.openPane('menu', { currentTarget: card }, null, card.getAttribute('data-menu'));
+        return;
+      }
+      if (k === 'Escape' || k === 'Backspace') {
+        if (this.state.screen !== 'home') { e.preventDefault(); this.setState({ screen: 'home' }); }
+        return;
+      }
+      if (!dir) return;
+      e.preventDefault();
+      this.moveFocus(e, root, dir);
+    };
+
+    return {
+      accent, clock, dateText, greeting, onKey,
+      nameSuffix: st.name ? ', ' + st.name : '', nameOpen: (e) => this.openPane('name', e),
+      hasName: st.pane === 'name', hasSound: st.pane === 'sound',
+      paneRight: 0,
+      nameDraft: st.nameDraft, nameInput: (e) => this.setState({ nameDraft: e.target.value }), nameSave: () => this.saveName(),
+      musState: st.musOn ? 'On' : 'Off', musTrackBg: st.musOn ? accent : '#343a4a', musTrackFg: st.musOn ? '#0d1117' : '#eef0f7',
+      fxState: st.fxOn ? 'On' : 'Off', fxTrackBg: st.fxOn ? accent : '#343a4a', fxTrackFg: st.fxOn ? '#0d1117' : '#eef0f7',
+      musVol: st.musVol, fxVol: st.fxVol,
+      musToggle: () => { const on = !st.musOn; this.setState({ musOn: on }); this.sfxPlay(on ? 'on' : 'off'); setTimeout(() => this.musicSync(), 0); },
+      fxToggle: () => { const on = !st.fxOn; if (!on) this.sfxPlay('off'); this.setState({ fxOn: on }); if (on) setTimeout(() => this.sfxPlay('on', true), 0); },
+      musSlide: (e) => this.slideTo(e, 'musVol'), fxSlide: (e) => this.slideTo(e, 'fxVol'),
+      pxFar: Math.round(st.px * 0.008), pxNear: Math.round(st.px * 0.02),
+      sunColor, cloudColor, moonPath, moonName, moonLit: '#f6f2e2', moonDark: '#2b3160', showMoon: night,
+      onMove: (e) => {
+        const rb = e.currentTarget.getBoundingClientRect();
+        const sc = rb.width / 1600 || 1;
+        const px = 800 - (e.clientX - rb.left) / sc;
+        if (Math.abs(px - this.state.px) > 25) this.setState({ px });
+      },
+      popEnter: () => { this._popIn = true; },
+      popLeave: () => { if (this._popIn) { this._popIn = false; this.closePane(); } },
+      onFocus: (e) => {
+        const t = e.target;
+        this._pause = !!(t && t.getAttribute && t.getAttribute('data-card'));
+        const root = e.currentTarget;
+        if (t && t.getBoundingClientRect && root && root.getBoundingClientRect) {
+          const r = t.getBoundingClientRect(), rb = root.getBoundingClientRect();
+          const scale = rb.width / 1600 || 1;
+          const cx = (r.left + r.width / 2 - rb.left) / scale;
+          this.setState({ px: 800 - cx });
+        }
+      },
+      onBlur: () => { this._pause = false; },
+      isCategory: st.screen === 'category', catName, catItems,
+      temp: temps[wxKind] || '8°C', feels: feelsAll[wxKind] || '5°C', wxText: texts[wxKind] || 'Cloudy',
+      wxSun: wxKind === 'clear' && !night,
+      wxMoon: wxKind === 'clear' && night,
+      wxPartly: wxKind === 'partly' && !night,
+      wxPartlyNight: wxKind === 'partly' && night,
+      wxCloud: wxKind === 'cloudy',
+      wxRain: wxKind === 'rain',
+      wxSnow: wxKind === 'snow',
+      saverFlag: st.screen === 'saver' ? '1' : '0', isSaver: st.screen === 'saver', online: st.netOk, offline: !st.netOk, icWifi: IC.wifi,
+      saverOn: () => { this.setState({ screen: 'saver', netOk: true }); setTimeout(() => { const o = document.querySelector('[data-saver]'); if (o) o.focus(); }, 30); },
+      saverOff: () => { this.setState({ screen: 'saver', netOk: false }); setTimeout(() => { const o = document.querySelector('[data-saver]'); if (o) o.focus(); }, 30); },
+      saverExit: () => this.setState({ screen: 'home' }),
+      isHome: st.screen === 'home', isApps: st.screen === 'apps', isFeeds: st.screen === 'feeds',
+      isDetails: st.screen === 'details',
+      go_home: go('home'), go_feeds: go('feeds'),
+      topIcons, cwCards, cwSources, cwEmpty: cwCards.length === 0,
+      go_cw: go('chooser'),
+      isChooser: st.screen === 'chooser',
+      hasPane: st.pane === 'settings' || st.pane === 'inputs' || st.pane === 'network' || st.pane === 'rows', paneRows: st.pane === 'rows', rowList, rowHint, rowAct, rowActLabel, rowActIcon, rowA: rowStyles.rowA, rowP: rowStyles.rowP, rowC: rowStyles.rowC,
+      hasPopup: st.pane === 'menu', popX: st.menuPos.x, popY: st.menuPos.y, menuName,
+      icAll: IC.tune, icReorder: IC.reorder, icInfo: IC.info, icTrash: IC.trash,
+      allTvAct: act('Would open full Android settings'), phoneAct: () => this.say('Would show an address and a PIN. Open it on your phone and paste feed addresses'), webAct: () => this.say('Would ask for a feed address and a category'),
+      paneSettings: st.pane === 'settings', paneInputs: st.pane === 'inputs', paneNetwork: st.pane === 'network', netRows, netSettingsAct: act('Would open Android network settings'), speedAct: () => { clearTimeout(this._sp); this.setState({ speed: 'Testing... (sample)' }); this._sp = setTimeout(() => this.setState({ speed: 'Download: 312 Mbps (sample)\nLatency: 14 ms (sample)' }), 2000); }, speedText: st.speed || '',
+      paneTitle,
+      pane_close: () => this.closePane(),
+      quick, shortcuts, launcherRows, extraRows, inputs,
+      menuItems,
+      detailName,
+      d_open: () => this.say('Would open ' + detailName),
+      d_cache: () => this.say('Android clears the cache for ' + detailName),
+      d_data: () => this.say('Android asks to confirm clearing data'),
+      d_stop: () => this.say('Android force-stops ' + detailName),
+      d_uninstall: () => this.say('Android asks to confirm the uninstall'),
+      dock, library, feed, sources, noFeeds: feed.length === 0, addFeed: () => this.setState({ screen: 'feeds' }),
+      hasToast: !!st.toast, toast: st.toast,
+      hint: st.moving ? 'Move mode: arrows move the app, OK drops it, Esc cancels' : 'Arrows move focus, Enter selects. Hold an app (or press M) for options. Esc goes back'
+    };
+  }
+}
+</script>
+</body>
+</html>

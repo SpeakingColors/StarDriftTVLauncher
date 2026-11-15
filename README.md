@@ -15,7 +15,7 @@ A slowly drifting night sky, your apps, your news, your shows. Nothing else.
 
 ![Stardrift home screen](docs/home.png)
 
-*Design mockup with sample content. The real launcher is built to match it.*
+*Design mockup with sample content. The real launcher is built to match it.* You can also try it in a browser: [interactive mockup](docs/mockup/) (sample content only; see its README for how to open it).
 
 ## What it is
 

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stardrift TV Launcher, interactive mockup</title>
+<style>
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+#f { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; border: 0; transform-origin: 0 0; }
+</style>
+</head>
+<body>
+<iframe id="f" src="Main.dc.html" title="Stardrift TV Launcher, interactive mockup (sample content)"></iframe>
+<script>
+(function () {
+  var f = document.getElementById('f');
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    f.style.transform = 'scale(' + s + ')';
+    f.style.left = ((window.innerWidth - 1600 * s) / 2) + 'px';
+    f.style.top = ((window.innerHeight - 900 * s) / 2) + 'px';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+  f.addEventListener('load', function () { try { f.contentWindow.focus(); } catch (e) {} });
+  window.addEventListener('click', function () { try { f.contentWindow.focus(); } catch (e) {} });
+})();
+</script>
+</body>
+</html>
