@@ -13,9 +13,9 @@ A slowly drifting night sky, your apps, your news, your shows. Nothing else.
   <img alt="Android 8.0+" src="https://img.shields.io/badge/android-8.0%2B-green">
 </p>
 
-![Stardrift home screen](docs/home.png)
+<p align="center"><img src="docs/screenshot.png" alt="Stardrift home screen" width="900"><br><sub>Screenshot of the interactive mockup (sample content). The real launcher is built to match it.</sub></p>
 
-*Design mockup with sample content. The real launcher is built to match it.* You can also try it in a browser: [interactive mockup](docs/mockup/) (sample content only; see its README for how to open it).
+**Manual:** [PDF, opens in the browser](https://github.com/SpeakingColors/StarDriftTVLauncher/blob/main/docs/StarDriftTVLauncher-manual.pdf) · [Manual with screenshots](docs/MANUAL.md) · [Interactive mockup](docs/mockup/)
 
 ## What it is
 

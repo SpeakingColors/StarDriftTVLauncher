@@ -2,6 +2,8 @@
 
 How the launcher works and how to use it. Everything is done with the TV remote: arrows move, **OK** opens, **Back** goes back. "Press and hold" means hold OK on the item.
 
+The pictures are screenshots of the [interactive mockup](mockup/index.html), which uses sample content. Your TV shows your own apps and feeds.
+
 ## Contents
 
 - [Making it your home screen](#making-it-your-home-screen)
@@ -29,6 +31,10 @@ To go back to the original Home screen, uninstall Stardrift (see [Updating and r
 
 ## The home screen
 
+![The home screen: greeting, clock, weather, top icons, dock, news cards, Continue watching](manual/home.jpg)
+*The home screen: greeting, clock, weather, top icons, dock, news cards, Continue watching*
+
+
 From top to bottom:
 
 1. **Greeting, clock, date** and the **weather** block, with the **top icons** on the right
@@ -40,12 +46,23 @@ The background is a night sky that drifts slowly; it is only decoration and cost
 
 ## Name and weather
 
+![Press OK on the clock to type a name](manual/name.jpg)
+*Press OK on the clock to type a name*
+
+
 - **Clock:** press OK on the clock to type a name for the greeting ("Good morning, Name"). Leave it empty for just "Good morning".
 - **Weather:** the first time it says *Choose your city*, *Press OK here*. Type a city name and press Search on the keyboard, then pick it from the list. The city is chosen by name; nothing looks up your location. Press OK on the weather block later to change the city.
 
 The weather comes from [Open-Meteo](https://open-meteo.com/). If it says *Weather unavailable*, check the network (see [Privacy and network](#privacy-and-network)).
 
 ## Apps (the dock)
+
+![Press and hold an app for its menu](manual/app-menu.jpg)
+*Press and hold an app for its menu*
+
+![All apps](manual/all-apps.jpg)
+*All apps*
+
 
 The dock shows the apps you want, in your order. The last tile, **+**, opens **All apps**.
 
@@ -63,6 +80,10 @@ The dock has no app names under the tiles, on purpose.
 
 ## Home rows: show, hide, order
 
+![Settings, Home rows](manual/home-rows.jpg)
+*Settings, Home rows*
+
+
 The three rows (Apps, Picks and New series, Continue watching) can each be shown or hidden, and put in any order. Open **Settings**, then **Home rows**. The home screen behind the list updates as you go.
 
 - **Show or hide:** press OK on a row. It switches between *Shown* and *Hidden*. A hidden row takes no space and the others move up. It comes back from the same list.
@@ -71,6 +92,19 @@ The three rows (Apps, Picks and New series, Continue watching) can each be shown
 The greeting, clock, date and weather stay at the top.
 
 ## Picks and New series
+
+![Press and hold a card for Refresh and Edit sources](manual/card-menu.jpg)
+*Press and hold a card for Refresh and Edit sources*
+
+![Edit sources: switch feeds on or off, add from your phone or by web address](manual/edit-sources.jpg)
+*Edit sources: switch feeds on or off, add from your phone or by web address*
+
+![OK on a card opens the full list for that category](manual/category.jpg)
+*OK on a card opens the full list for that category*
+
+![The first start has no feeds: press OK on the card to add one](manual/no-feeds.jpg)
+*The first start has no feeds: press OK on the card to add one*
+
 
 The row under the dock has one card per category. **Stardrift starts with no feeds**: you choose what shows here. Until you add something, the row shows a card that says so; press OK on it to add your first feed. A card only shows when at least one source in it is switched on. Each card steps through its latest headlines by itself (the dots show how many), with a preview image when the feed has one.
 
@@ -100,6 +134,13 @@ If your network filters DNS, also allow the feed's host and the host of its imag
 
 ## Continue watching
 
+![Press and hold the row for Refresh or Choose apps](manual/cw-menu.jpg)
+*Press and hold the row for Refresh or Choose apps*
+
+![Choose apps: only the apps you switch on show in the row](manual/choose-apps.jpg)
+*Choose apps: only the apps you switch on show in the row*
+
+
 This row shows what you were in the middle of.
 
 - It reads the Google TV *Continue watching* rows that your streaming apps share. The first time, the TV asks for permission to read them; accept it, otherwise the row can only show recently opened apps.
@@ -107,6 +148,16 @@ This row shows what you were in the middle of.
 - **Press and hold** the row: **Refresh** or **Choose apps**. Only the apps you switch on in Choose apps show in the row.
 
 ## Top icons
+
+![Inputs](manual/inputs.jpg)
+*Inputs*
+
+![Network](manual/network.jpg)
+*Network*
+
+![Settings](manual/settings.jpg)
+*Settings*
+
 
 The round icons at the top right open popups on the right side of the screen:
 
@@ -124,8 +175,14 @@ The round icons at the top right open popups on the right side of the screen:
 - **Quick actions**: **Close background apps** (stops the apps you installed that are running; apps that came with the TV are left alone) and **Clear cache** (clears the cache of every app; it says how much it freed). Both use the TV's own debugging service, so they need the one-time permission in [ADB.md](ADB.md#optional-switches-in-settings); the first time the TV asks **Allow USB debugging?**: tick *Always allow*. Without that they fall back to a weaker method and tell you so
 - **Shortcuts**: Apps, Display, Sound, Storage (straight to those Android pages)
 - **Launcher**: **Home rows** (show, hide and reorder the rows) and **Hidden apps** (to show an app again)
+- **ADB (USB debugging)** and, on TVs that have their own Quick Settings bar, **Quick Settings key**: switches that need the one-time permission in [ADB.md](ADB.md#optional-switches-in-settings)
+- **Update**: only in builds made by GitHub Actions in your own fork, see [BUILD.md](BUILD.md#update-from-the-tv-update-button)
 
 ## Sound
+
+![Music and Effects, each with its own volume](manual/sound.jpg)
+*Music and Effects, each with its own volume*
+
 
 The speaker icon opens two switches, each with its own volume:
 
@@ -135,6 +192,10 @@ The speaker icon opens two switches, each with its own volume:
 On a switch, **OK** turns it on or off and **Left and Right** change the volume.
 
 ## Screensaver
+
+![The Stardrift screensaver: the same sky, a 24 hour clock, the date and a Wi-Fi icon](manual/screensaver.jpg)
+*The Stardrift screensaver: the same sky, a 24 hour clock, the date and a Wi-Fi icon*
+
 
 Stardrift includes its own screensaver, **Stardrift**: the same sky, a 24 hour clock, the date and a Wi-Fi icon, all drifting slowly. It plays the ambient song when Music is on.
 
