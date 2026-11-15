@@ -1,5 +1,7 @@
 <h1 align="center">Stardrift TV Launcher</h1>
 
+<p align="center"><a href="https://ko-fi.com/studio87"><img src="https://raw.githubusercontent.com/SpeakingColors/.github/main/assets/kofi-banner.svg" alt="Support Studio 87 on Ko-fi" width="440"></a></p>
+
 <p align="center">
 A calm, ad free home screen for Google TV.<br>
 A slowly drifting night sky, your apps, your news, your shows. Nothing else.
