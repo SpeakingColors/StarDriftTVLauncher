@@ -418,7 +418,7 @@ button.nav:hover{transform:scale(1.03)}
   <div style="font-size: 20px; color: #c3cad9">Sample items. The real list scrolls through everything new from your sources.</div>
   <div style="display: flex; flex-direction: column; gap: 14px; width: 900px">
     <sc-for list="{{catItems}}" as="c" hint-placeholder-count="3">
-      <button class="nav" onClick="{{c.open}}" style="min-height: 100px; box-sizing: border-box; padding: 12px 28px 12px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; flex-direction: row; align-items: center; text-align: left; gap: 20px">
+      <button class="nav" data-key="{{c.key}}" onClick="{{c.open}}" style="min-height: 100px; box-sizing: border-box; padding: 12px 28px 12px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(14, 12, 30, 0.74); display: flex; flex-direction: row; align-items: center; text-align: left; gap: 20px">
         <span style="flex: 0 0 150px; height: 76px; border-radius: 10px; background: {{c.thumb}}"></span>
         <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
           <span style="font-size: 24px; font-weight: 500">{{c.title}}</span>
@@ -626,6 +626,21 @@ button.nav:hover{transform:scale(1.03)}
       <button class="nav" onClick="{{nameSave}}" style="flex: 1; height: 50px; border-radius: 14px; border: none; background: {{accent}}; color: #0d1117; font-size: 20px; font-weight: 600">Save</button>
       <button class="nav" onClick="{{pane_close}}" style="flex: 1; height: 50px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); font-size: 20px">Cancel</button>
     </div>
+  </div>
+  </sc-if>
+
+  <!-- READER POPUP (news item): text only -->
+  <sc-if value="{{hasReader}}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="true" onClick="{{pane_close}}" style="position: absolute; z-index: 9; left: 0; top: 0; width: 1600px; height: 900px; background: rgba(0, 0, 0, 0.45)"></div>
+  <div data-pane="1" style="position: absolute; z-index: 10; left: 300px; top: 70px; width: 1000px; box-sizing: border-box; padding: 18px 0 14px; border-radius: 22px; background: rgba(10, 8, 26, 0.97); border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column">
+    <div style="padding: 6px 22px 4px; font-size: 28px; font-weight: 500; line-height: 1.25; color: #eef0f7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{reader.title}}</div>
+    <div style="padding: 0 22px 8px; font-size: 18px; color: #8f98aa">{{reader.meta}}</div>
+    <div data-reader-scroll="1" tabindex="0" onClick="{{readerPage}}" style="height: 540px; overflow-y: auto; box-sizing: border-box; padding: 12px 22px 20px; font-size: 22px; line-height: 1.25; color: #c3cad9; outline: none; cursor: pointer">
+      <sc-for list="{{readerParas}}" as="p" hint-placeholder-count="4">
+        <p style="margin: 0 0 22px">{{p.t}}</p>
+      </sc-for>
+    </div>
+    <div style="padding: 10px 22px 4px; font-size: 15px; color: #8f98aa">Up and Down scroll, OK for next page, Back to close</div>
   </div>
   </sc-if>
 
@@ -1241,6 +1256,16 @@ class Component extends DCLogic {
       }
     }, 70);
   }
+  openReader(e, title, meta) {
+    this.setState({ reader: { title, meta } });
+    this.openPane('reader', e);
+    setTimeout(() => { const r = this._root && this._root.querySelector('[data-reader-scroll]'); if (r) r.focus(); }, 90);
+  }
+  readerPage() {
+    const r = this._root && this._root.querySelector('[data-reader-scroll]');
+    if (r && r.scrollTop + r.clientHeight < r.scrollHeight - 2) { r.scrollBy({ top: r.clientHeight * 0.9, behavior: 'smooth' }); this.sfxPlay('select'); }
+    else this.closePane();
+  }
   moveFocus(e, scopeEl, dir) {
     const cur = e.target && e.target.closest ? e.target.closest('button.nav') : null;
     const all = Array.prototype.slice.call(scopeEl.querySelectorAll('button.nav'));
@@ -1473,7 +1498,7 @@ class Component extends DCLogic {
     });
     const cat = feedAll.find((x) => x.k === st.catKey);
     const catName = cat ? cat.tag : '';
-    const catItems = cat ? cat.items.map((i) => ({ title: i[0], meta: i[1], thumb: thumbOf(cat, i[2]), open: () => this.say('Would open: ' + i[0]) })) : [];
+    const catItems = cat ? cat.items.map((i, n) => ({ title: i[0], meta: i[1], thumb: thumbOf(cat, i[2]), key: 'cat-' + n, open: (e) => (cat.k === 'newseries' ? this.say('Would open the video app') : this.openReader(e, i[0], i[1])) })) : [];
     const srcDefs = [
       { k: 'newseries', name: 'New series', desc: 'New releases that your video apps share with the TV' },
       { k: 'movies', name: 'Movies (RSS)', desc: 'A feed you added, under your Movies card' },
@@ -1601,6 +1626,12 @@ class Component extends DCLogic {
           else if (k === 'Enter') { e.preventDefault(); this.saveName(); }
           return;
         }
+        if (this.state.pane === 'reader') {
+          const sc = root.querySelector('[data-reader-scroll]');
+          if (k === 'ArrowUp' || k === 'ArrowDown') { e.preventDefault(); if (sc) sc.scrollBy({ top: k === 'ArrowUp' ? -90 : 90 }); return; }
+          if (k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); return; }
+          if (k === 'Enter' || k === ' ') { e.preventDefault(); this.readerPage(); return; }
+        }
         const sl = e.target && e.target.closest ? e.target.closest('[data-slider]') : null;
         if (sl && (k === 'ArrowLeft' || k === 'ArrowRight')) { e.preventDefault(); this.bumpVol(sl.getAttribute('data-slider'), k === 'ArrowRight' ? 10 : -10); return; }
         if (this.state.pane === 'rows') {
@@ -1668,6 +1699,17 @@ class Component extends DCLogic {
     return {
       accent, clock, dateText, greeting, onKey,
       nameSuffix: st.name ? ', ' + st.name : '', nameOpen: (e) => this.openPane('name', e),
+      hasReader: st.pane === 'reader', reader: st.reader || { title: '', meta: '' }, readerPage: () => this.readerPage(),
+      readerParas: [
+        'This is sample text for the reader popup. A feed can share the full article text, or only a title; when it shares only the title, the popup says so.',
+        'The text is plain: no pictures, no links to tap, nothing that loads in the background. Press Up and Down to scroll through it.',
+        'Press OK to go to the next page. At the end of the text, OK closes the popup. Back closes it at any time and returns to the item you opened.',
+        'The address of the article is added at the very end, so you can open it on your phone or computer if you want the full page.',
+        'More sample text follows, so that the popup has something to scroll through. Real articles are usually a few paragraphs long.',
+        'Another sample paragraph. The reader never loads anything from the article page: it shows only the text the feed itself provides.',
+        'A last sample paragraph before the address.',
+        'https://example.com/sample-article'
+      ].map((t) => ({ t })),
       hasName: st.pane === 'name', hasSound: st.pane === 'sound',
       paneRight: 0,
       nameDraft: st.nameDraft, nameInput: (e) => this.setState({ nameDraft: e.target.value }), nameSave: () => this.saveName(),

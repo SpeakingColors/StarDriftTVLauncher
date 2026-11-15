@@ -102,6 +102,9 @@ The greeting, clock, date and weather stay at the top.
 ![OK on a card opens the full list for that category](manual/category.jpg)
 *OK on a card opens the full list for that category*
 
+![An item opens in the reader popup: text only](manual/reader.jpg)
+*An item opens in the reader popup: text only. Up and Down scroll, OK for the next page, Back to close*
+
 ![The first start has no feeds: press OK on the card to add one](manual/no-feeds.jpg)
 *The first start has no feeds: press OK on the card to add one*
 
