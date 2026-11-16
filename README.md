@@ -21,7 +21,7 @@ A slowly drifting night sky, your apps, your news, your shows. Nothing else.
 
 Stardrift replaces the Google TV home screen with something quieter. The background is a black sky that drifts left to right (one full turn in 20 minutes), with galaxies, coloured stars, a rare satellite and a quiet nova. On top of it you get a greeting, the clock, the weather, your app dock, a row of news picks and a Continue watching row.
 
-No ads, no suggestions, no sponsored items, no tracking. Only what you pick shows on Home.
+No ads, no suggestions, no sponsored items. Only what you pick shows on Home.
 
 Made for Google TV and Android TV devices.
 
