@@ -649,7 +649,8 @@ class MainActivity : Activity() {
         if (overlay != null) closeOverlay(false)
         overlayReturn = currentFocus
         val layer = FrameLayout(this)
-        layer.setBackgroundColor(0xE6000000.toInt())
+        // All apps lets the sky show through (the sky already runs behind every overlay, so this costs nothing extra)
+        layer.setBackgroundColor(if (kind == "apps") 0x66000000 else 0xE6000000.toInt())
         layer.isClickable = true
         val head = text(32f, Ui.TEXT)
         head.text = title
@@ -659,6 +660,8 @@ class MainActivity : Activity() {
         Ui.place(body, 60f, 74f, 1500f, bodyH + 16f)
         root.addView(layer, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         content.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+        // All apps is see-through, so the Home screen must not show behind it: hide it (the sky stays)
+        if (kind == "apps") content.visibility = View.INVISIBLE
         overlay = layer
         overlayKind = kind
         Sfx.play(Sfx.OPEN)
@@ -685,6 +688,7 @@ class MainActivity : Activity() {
         overlay = null
         overlayKind = ""
         content.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
+        content.visibility = View.VISIBLE
         if (wasSources && sourcesChanged && restoreFocus) { sourcesChanged = false; buildPicks(); refreshFeeds() }
         if (restoreFocus) {
             Sfx.play(Sfx.CLOSE)
