@@ -1,0 +1,31 @@
+name: Compile check
+
+# Compiles an unsigned debug build on every push and pull request, so a broken change shows up right away.
+# Nothing is uploaded or released: this only says pass or fail. The real APK comes from build.yml (needs your own key).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Compile debug build
+        run: gradle --no-daemon assembleDebug

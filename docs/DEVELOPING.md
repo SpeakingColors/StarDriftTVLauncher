@@ -203,6 +203,20 @@ else postInvalidateOnAnimation()                                   // sky is not
 
 `SpaceView.tickTiles()` invalidates every tile that drew in the last 250 ms and forgets the others (`animTiles` is a `WeakHashMap`, so closed screens do not leak). The screen is then composed 30 times a second, whether or not tiles are animating.
 
+**Restart when Home comes back.** While Home is hidden (All apps open, an app in front, the screensaver) the tile does not draw, so the sky forgets it. When Home shows again, Android can reuse the tile's last picture without calling `onDraw`, and the animation stays frozen until focus touches the tile. Redraw once when the tile becomes visible:
+
+```kotlin
+override fun onVisibilityAggregated(isVisible: Boolean) {
+    super.onVisibilityAggregated(isVisible)
+    if (isVisible) invalidate()
+}
+
+override fun onWindowVisibilityChanged(visibility: Int) {
+    super.onWindowVisibilityChanged(visibility)
+    if (visibility == VISIBLE) invalidate()
+}
+```
+
 **Keep the animation cheap.**
 - Make `Paint`, `Path` and `RectF` objects once (in the constructor), never inside `draw`.
 - Draw simple shapes; avoid decoding bitmaps in `draw`. Decode once and keep the bitmap.
