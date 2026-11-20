@@ -37,8 +37,8 @@ All code is in `app/src/main/java/dev/tvlauncher/home/`. There are no XML layout
 | `MainActivity.kt` | The home screen and almost all UI: header, clock, weather box, dock, rows, Settings / Network / Inputs / Sound popups, quick actions. By far the biggest file (about 2200 lines). |
 | `Ui.kt` | Shared look and helpers. **Design units are 1600 x 900**; `Ui.s` is pixels per unit, `Ui.px(u)` converts. Also the focus ring and glow (`drawFocus`). |
 | `SpaceView.kt` | The animated sky (home and screensaver). Frame pacing, baked bitmaps, shooting stars, comet, satellite, nova. |
-| `SkyNew.kt`, `SkyData.kt`, `assets/sky_new.json`, `assets/sky_band_*.webp` | Sky layout data (galaxies, nebulae, star boxes) and the milky way pictures. `SkyData.kt` is generated from the mockup: do not edit by hand. |
-| `docs/mockup/` | The interactive mockup (sample content, plain web page). The sky data above is generated from it. See its README. |
+| `SkyNew.kt`, `SkyData.kt`, `assets/sky_new.json`, `assets/sky_band_*.webp` | Sky layout data (galaxies, nebulae, star boxes) and the milky way pictures. The galaxy layout lives in `assets/sky_new.json`; the mockup draws its sky from a copy of the same data, so change both together. `SkyData.kt` was generated from an older mockup: do not edit by hand. |
+| `docs/mockup/` | The interactive mockup (sample content, plain web page). Its galaxy sky uses the same data as `assets/sky_new.json`. See its README. |
 | `StardriftDream.kt` | The screensaver (`DreamService`): same sky, 24 hour clock, date, Wi-Fi icon. |
 | `Apps.kt`, `AppTile.kt`, `IconArt.kt`, `IconStyle.kt` | Installed apps, the pinned order, hidden apps, tiles and the icon looks (Original, Black, White). |
 | `HomeRows.kt`, `PickCard.kt`, `ContinueCard.kt`, `WatchNext.kt` | The rows under the header: which show and in what order, the Picks cards, Continue watching (reads Google TV rows, may come back empty). |
