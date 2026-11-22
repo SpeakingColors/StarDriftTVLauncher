@@ -91,6 +91,7 @@ class MainActivity : Activity() {
     }
     // Right after boot the network or the TV provider may not be ready: feeds and Continue watching try again with growing waits.
     private var feedRetries = 0
+    private var feedAt = 0L   // when the feeds last loaded without errors
     @Volatile private var feedBusy = false
     private val feedRetryRun = Runnable { refreshFeeds() }
     private var contRetries = 0
@@ -938,7 +939,10 @@ class MainActivity : Activity() {
         if (updBusy) return
         if (!updateAvailable()) {
             sub.text = "Checking..."
-            checkUpdate(true) { ok -> sub.text = if (ok) updateSub() else "Check failed" }
+            checkUpdate(true) { ok ->
+                if (ok && updateAvailable()) onUpdateClick(sub)   // found one: download right away, no second press
+                else sub.text = if (ok) updateSub() else "Check failed"
+            }
             return
         }
         if (!packageManager.canRequestPackageInstalls()) {
@@ -1512,6 +1516,7 @@ class MainActivity : Activity() {
                 ui.removeCallbacks(feedRetryRun)
                 if (missing && feedRetries < 8) { ui.postDelayed(feedRetryRun, backoff(feedRetries)); feedRetries++ }
                 else if (!missing) feedRetries = 0
+                if (!missing) feedAt = System.currentTimeMillis()
             }
         }.start()
     }
@@ -1885,7 +1890,10 @@ class MainActivity : Activity() {
         Thread {
             val rows = WatchNext.read(this)
             ui.post {
-                cwRows = rows; showContinue()
+                // rebuild the row only when something changed, so coming back to Home does not flash the cards
+                val sig = cwSig(rows)
+                cwRows = rows
+                if (sig != cwShownSig) { cwShownSig = sig; showContinue() }
                 ui.removeCallbacks(contRetryRun)
                 val granted = checkSelfPermission(WatchNext.PERMISSION) == android.content.pm.PackageManager.PERMISSION_GRANTED
                 if (rows.isNullOrEmpty()) {
@@ -1894,6 +1902,10 @@ class MainActivity : Activity() {
             }
         }.start()
     }
+
+    private var cwShownSig: String? = null
+    private fun cwSig(rows: List<CwItem>?): String =
+        rows?.joinToString("\n") { it.pkg + "|" + it.title + "|" + it.episode + "|" + it.positionMs + "|" + it.durationMs + "|" + it.imageUri } ?: "null"
 
     private fun labelFor(pkg: String): String =
         CwApps.known[pkg] ?: repo.all.firstOrNull { it.pkg == pkg }?.label ?: pkg
@@ -2133,7 +2145,11 @@ class MainActivity : Activity() {
         rebuildDock((currentFocus as? AppTile)?.app?.pkg ?: "first")
         ui.removeCallbacks(tick); ui.post(tick)
         ui.removeCallbacks(weatherTick); ui.post(weatherTick)
-        ui.removeCallbacks(feedTick); ui.post(feedTick)
+        // Coming back to Home (another input, an app) does not reload the feeds every time: only when they are 30 min old or more,
+        // otherwise the hourly refresh simply continues. Feeds that failed to load still retry right away.
+        ui.removeCallbacks(feedTick)
+        val feedAge = System.currentTimeMillis() - feedAt
+        if (feedAge >= 30 * 60_000L) ui.post(feedTick) else ui.postDelayed(feedTick, 60 * 60_000L - feedAge)
         cwRetries = 0; feedRetries = 0; contRetries = 0
         watchNetwork()
         ui.removeCallbacks(cwTick); ui.post(cwTick)

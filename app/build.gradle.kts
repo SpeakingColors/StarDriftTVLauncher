@@ -11,8 +11,8 @@ android {
         applicationId = "dev.tvlauncher.home"
         minSdk = 26
         targetSdk = 34
-        versionCode = 70
-        versionName = "0.9.47"
+        versionCode = 71
+        versionName = "0.9.48"
         // The repository of your fork, given by GitHub Actions (empty on other machines: the Update button stays hidden)
         buildConfigField("String", "UPDATE_REPO", "\"" + (System.getenv("GITHUB_REPOSITORY") ?: "") + "\"")
     }
