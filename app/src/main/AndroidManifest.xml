@@ -19,6 +19,16 @@
     <uses-permission android:name="android.permission.READ_TV_LISTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Bluetooth popup: paired list and pairing. Android 12+ asks for "Nearby devices"; older versions need location only to scan. -->
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
 
     <queries>
         <intent>
@@ -85,6 +95,20 @@
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/quick_key_service" />
+        </service>
+
+        <!-- Idle controllers helper: off until "Idle controllers" is set in the Bluetooth popup (needs the WRITE_SECURE_SETTINGS grant). -->
+        <service
+            android:name=".PadIdleService"
+            android:exported="false"
+            android:label="Stardrift idle controllers"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/pad_idle_service" />
         </service>
         <receiver android:name=".UpdateReceiver" android:exported="false" />
     </application>

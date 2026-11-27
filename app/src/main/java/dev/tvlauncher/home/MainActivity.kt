@@ -278,6 +278,7 @@ class MainActivity : Activity() {
             IconSpec(0, "Play Store") { openPackage("com.android.vending") },
             IconSpec(1, "Inputs") { openInputsPane() },
             IconSpec(2, "Network") { openNetworkPane() },
+            IconSpec(5, "Bluetooth") { openBluetoothPane() },
             IconSpec(4, "Sound") { openSoundPane() },
             IconSpec(3, "Settings") { openSettingsPane() }
         )
@@ -677,6 +678,7 @@ class MainActivity : Activity() {
         rowsCol = null
         val wasSources = overlayKind == "sources" || overlayKind == "newseries"
         if (overlayKind == "network") speedCancel?.set(true)
+        if (overlayKind == "bluetooth") btStop()
         if (overlayKind == "name") {
             try { (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(root.windowToken, 0) } catch (e: Throwable) { }
         }
@@ -843,14 +845,19 @@ class MainActivity : Activity() {
         val (all, _) = paneRow(col, "All TV settings", null, true, R.drawable.ic_tune) { closeOverlay(false); startSafe(Intent(Settings.ACTION_SETTINGS)) }
 
         paneLabel(col, "Quick actions")
-        val (closeTile, cacheTile) = quickPair(col,
-            "Close background apps", "Force stops apps", R.drawable.ic_close_apps, { closeBackgroundApps() },
-            "Clear cache", "Clears app caches", R.drawable.ic_trash, { clearCache() })
+        val (closeTile, cacheTile) = pairRow(col,
+            "Close apps", R.drawable.ic_close_apps, { closeBackgroundApps() },
+            "Clear cache", R.drawable.ic_trash, { clearCache() })
         // Down from "All TV settings" lands on Close background apps (the one directly underneath), not on Clear cache.
         if (all.id == View.NO_ID) all.id = View.generateViewId()
         all.nextFocusDownId = closeTile.id
         closeTile.nextFocusUpId = all.id
         cacheTile.nextFocusUpId = all.id
+
+        // Power off is a full shutdown (not standby). Both go through the TV's ADB, like the two above.
+        pairRow(col,
+            "Power off", R.drawable.ic_power, { powerAsk(false) },
+            "Restart", R.drawable.ic_restart, { powerAsk(true) })
 
         paneLabel(col, "Shortcuts")
         val (shA, shB) = pairRow(col,
@@ -1136,6 +1143,284 @@ class MainActivity : Activity() {
         val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(60f))
         lp.bottomMargin = Ui.pxi(10f)
         col.addView(row, lp)
+    }
+
+    // ---------- Bluetooth popup (see Bt.kt for what Android allows an app to do) ----------
+
+    private var btReceiver: android.content.BroadcastReceiver? = null
+    private val btSubs = HashMap<String, TextView>()
+    private var btFoundCol: LinearLayout? = null
+    private val btFound = HashSet<String>()
+    private var btScanSub: TextView? = null
+    private var btScanAfterAsk = false
+
+    private fun btNote(col: LinearLayout, s: String) {
+        val note = text(16f, 0xFFB4BCCB.toInt())
+        note.text = s
+        col.addView(note)
+        (note.layoutParams as LinearLayout.LayoutParams).apply { bottomMargin = Ui.pxi(14f); leftMargin = Ui.pxi(8f); rightMargin = Ui.pxi(8f) }
+    }
+
+    /** The second line of a paneRow (name above, sub below). */
+    private fun subOf(row: LinearLayout): TextView? = (row.getChildAt(0) as? LinearLayout)?.getChildAt(1) as? TextView
+
+    private fun btSubText(d: android.bluetooth.BluetoothDevice, conn: Set<String>): String =
+        (if (d.address in conn) "Connected" else "Paired") + "  \u00B7  " + Bt.kind(d)
+
+    @Suppress("MissingPermission")
+    private fun openBluetoothPane() {
+        btStop()
+        val col = LinearLayout(this)
+        col.orientation = LinearLayout.VERTICAL
+        btSubs.clear(); btFound.clear(); btFoundCol = null; btScanSub = null
+        val a = Bt.adapter(this)
+        var first: View? = null
+        if (a == null) {
+            infoRow(col, "Bluetooth", "Not on this TV")
+        } else if (!Bt.canList(this)) {
+            btNote(col, "Stardrift needs the Nearby devices permission to show your Bluetooth devices. Android asks once.")
+            first = paneRow(col, "Allow Nearby devices", null, true) { btAsk(Bt.listPerms(), false) }.first
+        } else if (!a.isEnabled) {
+            infoRow(col, "Bluetooth", "Off")
+            first = paneRow(col, "Turn Bluetooth on", "Through the TV's ADB, like Close background apps", true) { btPower(true) }.first
+        } else {
+            paneLabel(col, "Paired devices")
+            val conn = Bt.connected()
+            val list = Bt.paired(this)
+            if (list.isEmpty()) btNote(col, "No paired devices yet.")
+            for (d in list) {
+                val (row, _) = paneRow(col, Bt.name(d), btSubText(d, conn), false) { btDeviceMenu(d) }
+                if (first == null) first = row
+                subOf(row)?.let { btSubs[d.address] = it }
+            }
+            paneLabel(col, "Add a device")
+            val (scanRow, _) = paneRow(col, "Pair a new device", "Put the device in pairing mode first", true) { btScan() }
+            if (first == null) first = scanRow
+            btScanSub = subOf(scanRow)
+            val found = LinearLayout(this)
+            found.orientation = LinearLayout.VERTICAL
+            col.addView(found)
+            btFoundCol = found
+            paneLabel(col, "Bluetooth")
+            // one line: icon, name, and the time on the right; press to cycle Off, 15, 30, 60, 120 min (PadIdleService watches)
+            var idleVal: TextView? = null
+            val (_, pill) = paneRow(col, "Idle controllers", null, false, R.drawable.ic_gamepad) {
+                val steps = intArrayOf(0, 15, 30, 60, 120)
+                val cur = prefs.getInt("pad_idle_min", 0)
+                val next = steps[(steps.indexOf(cur).coerceAtLeast(0) + 1) % steps.size]
+                if (!setAccessibility(PadIdleService::class.java, next > 0)) { toast("Needs the one-time grant (docs/ADB.md)"); return@paneRow }
+                prefs.edit().putInt("pad_idle_min", next).apply()
+                idleVal?.text = padIdleText()
+            }
+            pill.text = padIdleText()
+            pill.visibility = View.VISIBLE
+            idleVal = pill
+            paneRow(col, "Turn Bluetooth off", null, false, R.drawable.ic_bluetooth) { btPowerOffAsk() }
+        }
+        val (setRow, _) = paneRow(col, "Bluetooth settings", "The TV's own page", false) { openBtSettings() }
+        if (first == null) first = setRow
+        showPane("bluetooth", "Bluetooth", col, first)
+        if (a != null && Bt.canList(this)) {
+            Bt.bind(this) { btRefreshSubs() }
+            btListen()
+        }
+    }
+
+    @Suppress("MissingPermission")
+    private fun btRefreshSubs() {
+        if (overlayKind != "bluetooth") return
+        val a = Bt.adapter(this) ?: return
+        val conn = Bt.connected()
+        for ((addr, tv) in btSubs) try { tv.text = btSubText(a.getRemoteDevice(addr), conn) } catch (e: Throwable) { }
+    }
+
+    private fun btAsk(perms: Array<String>, scanAfter: Boolean) {
+        if (perms.isEmpty()) return
+        btScanAfterAsk = scanAfter
+        try { requestPermissions(perms, 8) } catch (e: Throwable) { toast("Cannot ask for the permission") }
+    }
+
+    @Suppress("MissingPermission")
+    private fun btScan() {
+        val a = Bt.adapter(this) ?: return
+        if (!Bt.canScan(this)) { btAsk(Bt.scanPerms(), true); return }
+        try {
+            if (a.isDiscovering) a.cancelDiscovery()
+            btFound.clear()
+            btFoundCol?.removeAllViews()
+            val ok = a.startDiscovery()
+            btScanSub?.text = if (ok) "Searching, about 12 seconds..." else "Could not search"
+        } catch (e: Throwable) { btScanSub?.text = "Could not search" }
+    }
+
+    @Suppress("MissingPermission")
+    private fun btAddFound(d: android.bluetooth.BluetoothDevice) {
+        val col = btFoundCol ?: return
+        val name = try { d.name } catch (e: Throwable) { null }
+        if (name.isNullOrBlank()) return   // nameless beacons only add clutter
+        if (d.bondState != android.bluetooth.BluetoothDevice.BOND_NONE) return
+        if (!btFound.add(d.address)) return
+        if (btFound.size == 1) paneLabel(col, "Found nearby")
+        var sub: TextView? = null
+        val (row, _) = paneRow(col, name, Bt.kind(d), false) { btPair(d, sub) }
+        sub = subOf(row)
+    }
+
+    @Suppress("MissingPermission")
+    private fun btPair(d: android.bluetooth.BluetoothDevice, sub: TextView?) {
+        try {
+            Bt.adapter(this)?.cancelDiscovery()
+            val ok = d.createBond()
+            sub?.text = if (ok) "Pairing, confirm on screen if asked..." else "Could not start pairing"
+        } catch (e: Throwable) { sub?.text = "Could not start pairing" }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun btListen() {
+        if (btReceiver != null) return
+        val r = object : android.content.BroadcastReceiver() {
+            override fun onReceive(ctx: Context, i: Intent) {
+                val d = i.getParcelableExtra<android.bluetooth.BluetoothDevice>(android.bluetooth.BluetoothDevice.EXTRA_DEVICE)
+                when (i.action) {
+                    android.bluetooth.BluetoothDevice.ACTION_ACL_CONNECTED, android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
+                        // profiles settle a moment after the link changes
+                        ui.postDelayed({ btRefreshSubs() }, 600L); ui.postDelayed({ btRefreshSubs() }, 2500L)
+                    }
+                    android.bluetooth.BluetoothDevice.ACTION_FOUND -> if (d != null) btAddFound(d)
+                    android.bluetooth.BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> btScanSub?.text = "Search again"
+                    android.bluetooth.BluetoothDevice.ACTION_BOND_STATE_CHANGED -> {
+                        val st = i.getIntExtra(android.bluetooth.BluetoothDevice.EXTRA_BOND_STATE, -1)
+                        val prev = i.getIntExtra(android.bluetooth.BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, -1)
+                        if (st == android.bluetooth.BluetoothDevice.BOND_BONDED) {
+                            toast("Paired")
+                            ui.postDelayed({ if (overlayKind == "bluetooth") openBluetoothPane() }, 800L)
+                        } else if (st == android.bluetooth.BluetoothDevice.BOND_NONE && prev == android.bluetooth.BluetoothDevice.BOND_BONDING) {
+                            toast("Pairing did not finish")
+                        }
+                    }
+                    android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED ->
+                        ui.postDelayed({ if (overlayKind == "bluetooth") openBluetoothPane() }, 500L)
+                }
+            }
+        }
+        val f = android.content.IntentFilter()
+        f.addAction(android.bluetooth.BluetoothDevice.ACTION_ACL_CONNECTED)
+        f.addAction(android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED)
+        f.addAction(android.bluetooth.BluetoothDevice.ACTION_FOUND)
+        f.addAction(android.bluetooth.BluetoothDevice.ACTION_BOND_STATE_CHANGED)
+        f.addAction(android.bluetooth.BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+        f.addAction(android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED)
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(r, f, Context.RECEIVER_EXPORTED) else registerReceiver(r, f)
+            btReceiver = r
+        } catch (e: Throwable) { }
+    }
+
+    @Suppress("MissingPermission")
+    private fun btStop() {
+        btReceiver?.let { try { unregisterReceiver(it) } catch (e: Throwable) { } }
+        btReceiver = null
+        try { if (Bt.canScan(this)) Bt.adapter(this)?.cancelDiscovery() } catch (e: Throwable) { }
+        btFoundCol = null
+    }
+
+    /**
+     * Connect, disconnect, forget and Bluetooth on/off are system-only for apps, so they run in the TV's own ADB shell
+     * (TvShell, same as Close background apps). Connect, disconnect and forget start BtShell from this APK with
+     * app_process, which runs as the shell user; on/off uses the system's own "cmd bluetooth_manager" command.
+     */
+    private fun btAdb(command: String, done: (String) -> Unit) {
+        Thread {
+            val out = try {
+                TvShell(this).session({ ui.post { toast("Allow USB debugging on the TV screen (tick Always allow)") } }) { c ->
+                    c.shell(command, 30000)
+                }
+            } catch (e: TvShell.Failure) {
+                "ERR " + (e.message ?: "ADB not available")
+            } catch (e: Throwable) {
+                "ERR " + e.javaClass.simpleName
+            }
+            android.util.Log.i("StardriftAdb", "bt: $command -> " + out.take(600))
+            ui.post { done(out) }
+        }.start()
+    }
+
+    @Suppress("MissingPermission")
+    private fun btDeviceMenu(d: android.bluetooth.BluetoothDevice) {
+        val name = Bt.name(d)
+        val on = d.address in Bt.connected()
+        val items = ArrayList<Pair<String, () -> Unit>>()
+        if (on) items.add("Disconnect" to { btDeviceCmd("disconnect", d.address, name) })
+        else items.add("Connect" to { btDeviceCmd("connect", d.address, name) })
+        items.add("Forget" to { btForgetAsk(d.address, name) })
+        items.add("Bluetooth settings" to { openBtSettings() })
+        showMenu(this, name, items)
+    }
+
+    private fun btForgetAsk(addr: String, name: String) {
+        showMenu(this, "Forget $name? It must be paired again to use it.", listOf<Pair<String, () -> Unit>>(
+            "Forget" to { btDeviceCmd("forget", addr, name) },
+            "Cancel" to { }
+        ))
+    }
+
+    private fun btDeviceCmd(cmd: String, addr: String, name: String) {
+        val verb = when (cmd) { "connect" -> "Connecting"; "disconnect" -> "Disconnecting"; else -> "Forgetting" }
+        toast("$verb $name...")
+        val line = "CLASSPATH=" + applicationInfo.sourceDir + " app_process /system/bin dev.tvlauncher.home.BtShell $cmd $addr"
+        btAdb(line) { out ->
+            val res = out.lines().map { it.trim() }.lastOrNull { it.startsWith("OK") || it.startsWith("ERR") } ?: ("ERR " + out.trim().take(120))
+            val v = res.removePrefix("OK").trim()
+            val ok = res.startsWith("OK") && (v == "0" || v == "true")
+            toast(when {
+                ok && cmd == "forget" -> "$name forgotten"
+                ok -> "$verb $name: sent"
+                res.startsWith("OK") -> "Did not work (code $v)"
+                else -> "Did not work: " + res.removePrefix("ERR").trim().take(140)
+            })
+            ui.postDelayed({ if (overlayKind == "bluetooth") openBluetoothPane() }, if (cmd == "forget") 600L else 2500L)
+        }
+    }
+
+    private fun padIdleText(): String {
+        val m = prefs.getInt("pad_idle_min", 0)
+        return if (m <= 0) "Off" else "$m min"
+    }
+
+    private fun powerAsk(restart: Boolean) {
+        showMenu(this, if (restart) "Restart?" else "Power off?", listOf<Pair<String, () -> Unit>>(
+            (if (restart) "Restart" else "Power off") to {
+                closeOverlay(false)
+                toast(if (restart) "Restarting..." else "Powering off...")
+                // full shutdown and restart through the system's power service ("reboot" as a fallback)
+                btAdb(if (restart) "svc power reboot 2>&1 || reboot 2>&1" else "svc power shutdown 2>&1 || reboot -p 2>&1") { out ->
+                    if (out.startsWith("ERR")) toast("Did not work: " + out.removePrefix("ERR").trim().take(140))
+                }
+            },
+            "Cancel" to { }
+        ))
+    }
+
+    private fun btPowerOffAsk() {
+        showMenu(this, "Turn Bluetooth off? Bluetooth remotes and controllers stop working until it is on again.", listOf<Pair<String, () -> Unit>>(
+            "Turn off" to { btPower(false) },
+            "Cancel" to { }
+        ))
+    }
+
+    private fun btPower(on: Boolean) {
+        val w = if (on) "enable" else "disable"
+        toast(if (on) "Turning Bluetooth on..." else "Turning Bluetooth off...")
+        // cmd bluetooth_manager: Android 13 and newer; svc bluetooth: older versions
+        btAdb("cmd bluetooth_manager $w 2>&1 || svc bluetooth $w 2>&1") { out ->
+            if (out.startsWith("ERR")) toast("Did not work: " + out.removePrefix("ERR").trim().take(140))
+            // the pane reopens by itself when the state changes (ACTION_STATE_CHANGED)
+        }
+    }
+
+    private fun openBtSettings() {
+        closeOverlay(false)
+        startSafe(Intent(Settings.ACTION_BLUETOOTH_SETTINGS), Intent(Settings.ACTION_SETTINGS))
     }
 
     @Suppress("DEPRECATION")
@@ -1550,8 +1835,15 @@ class MainActivity : Activity() {
     /** News items open in the reader popup; items that carry an app link (New series) open that app. */
     private fun openItem(item: FeedItem) {
         if (item.link.startsWith("intent:") || item.category == "crapp") { openLink(item.link); return }
+        // videos open straight in YouTube
+        val host = try { android.net.Uri.parse(item.link).host?.lowercase() ?: "" } catch (e: Throwable) { "" }
+        if (host == "youtu.be" || host.endsWith("youtube.com")) {
+            val v = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(item.link))
+            startSafe(Intent(v).setPackage("com.google.android.youtube.tv"), v)
+            return
+        }
         val meta = item.source + (if (item.time > 0) ", " + Feeds.ago(item.time) else "")
-        showReader(this, item.title, meta, item.body, item.link)
+        showReader(this, item.title, meta, item.body, item.link, item.imageUrl)
     }
 
     private fun openLink(link: String) {
@@ -1883,6 +2175,13 @@ class MainActivity : Activity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 8) {
+            val scan = btScanAfterAsk
+            btScanAfterAsk = false
+            if (overlayKind == "bluetooth") openBluetoothPane()
+            if (scan && Bt.canScan(this)) btScan()
+            return
+        }
         refreshContinue()
     }
 
@@ -2125,6 +2424,17 @@ class MainActivity : Activity() {
         true
     } catch (e: Throwable) { false }
 
+    /** Turns one of Stardrift's accessibility helpers on or off. Needs WRITE_SECURE_SETTINGS. */
+    private fun setAccessibility(cls: Class<*>, on: Boolean): Boolean = try {
+        val me = ComponentName(this, cls).flattenToString()
+        val list = (Settings.Secure.getString(contentResolver, "enabled_accessibility_services") ?: "")
+            .split(':').filter { it.isNotEmpty() && it != me }.toMutableList()
+        if (on) list.add(me)
+        Settings.Secure.putString(contentResolver, "enabled_accessibility_services", list.joinToString(":"))
+        if (on) Settings.Secure.putInt(contentResolver, "accessibility_enabled", 1)
+        true
+    } catch (e: Throwable) { false }
+
     private fun startSafe(i: Intent, fallback: Intent? = null) {
         try {
             startActivity(i)
@@ -2237,7 +2547,6 @@ private class IconSpec(val kind: Int, val label: String, val action: () -> Unit)
 /** Round top button with a simple line icon on a 24 grid. */
 private class IconButton(context: Context, private val kind: Int) : View(context) {
     private val bg = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
     private val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE; strokeCap = Paint.Cap.ROUND; strokeJoin = Paint.Join.ROUND; color = Ui.TEXT
     }
@@ -2257,13 +2566,8 @@ private class IconButton(context: Context, private val kind: Int) : View(context
         val w = width.toFloat()
         bg.color = Ui.CARD
         c.drawCircle(w / 2, w / 2, w / 2 - 1f, bg)
-        if (isFocused) {
-            Ui.drawFocus(c, 0f, 0f, w, w, w / 2)
-        } else {
-            ring.color = Ui.STROKE
-            ring.strokeWidth = Ui.px(1.2f)
-            c.drawCircle(w / 2, w / 2, w / 2 - ring.strokeWidth / 2, ring)
-        }
+        // only the dark circle and the icon; the outline shows only as the focus ring
+        if (isFocused) Ui.drawFocus(c, 0f, 0f, w, w, w / 2)
         if (badge) {
             dot.color = Ui.CARD; c.drawCircle(w * 0.80f, w * 0.20f, Ui.px(8.5f), dot)
             dot.color = Ui.ACCENT; c.drawCircle(w * 0.80f, w * 0.20f, Ui.px(6f), dot)
@@ -2294,6 +2598,12 @@ private class IconButton(context: Context, private val kind: Int) : View(context
                 c.drawRoundRect(RectF(3f, 5f, 21f, 17f), 2f, 2f, p)
                 c.drawLine(9f, 20.5f, 15f, 20.5f, p)
                 c.drawLine(8f, 11f, 16f, 11f, p); c.drawLine(13f, 8f, 16f, 11f, p); c.drawLine(13f, 14f, 16f, 11f, p)
+            }
+            5 -> {
+                // Bluetooth rune, same shape as the common line icon sets
+                val path = android.graphics.Path()
+                path.moveTo(7f, 7f); path.lineTo(17f, 17f); path.lineTo(12f, 22f); path.lineTo(12f, 2f); path.lineTo(17f, 7f); path.lineTo(7f, 17f)
+                c.drawPath(path, p)
             }
             2 -> {
                 for (rad in floatArrayOf(4f, 8f, 12f)) {

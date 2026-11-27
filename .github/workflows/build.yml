@@ -67,10 +67,14 @@ jobs:
           mkdir -p out
           cp app/build/outputs/apk/release/app-release.apk out/tvlauncher.apk
 
+      # Copy of the APK on the run page; the release below is what the TVs use, so a full artifact storage
+      # must not stop it. Old copies are kept 3 days.
       - uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: tvlauncher-apk
           path: out/tvlauncher.apk
+          retention-days: 3
 
       - name: Update the "latest" release
         env:
@@ -79,8 +83,12 @@ jobs:
           # the version goes into the release text, so the Update button on the TV can read it
           VC=$(grep -oP 'versionCode = \K[0-9]+' app/build.gradle.kts)
           VN=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts)
-          gh release delete latest --yes --cleanup-tag || true
-          gh release create latest out/tvlauncher.apk \
-            --prerelease \
-            --title "Latest build" \
-            --notes "Build from commit ${GITHUB_SHA::7}. {\"code\":$VC,\"name\":\"$VN\"}"
+          NOTES="Build from commit ${GITHUB_SHA::7}. {\"code\":$VC,\"name\":\"$VN\"}"
+          # Replace the file and the text in place: deleting and re-creating the release left the TVs a window
+          # (seen for minutes) where the release could not be found, so the Update button said "Check failed".
+          if gh release view latest >/dev/null 2>&1; then
+            gh release upload latest out/tvlauncher.apk --clobber
+            gh release edit latest --title "Latest build" --notes "$NOTES"
+          else
+            gh release create latest out/tvlauncher.apk --prerelease --title "Latest build" --notes "$NOTES"
+          fi

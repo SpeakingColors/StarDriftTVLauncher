@@ -32,10 +32,12 @@ Made for Google TV and Android TV devices.
 - Home rows: show, hide and reorder Apps, Picks and Continue watching from Settings
 - Picks row: headlines from RSS feeds you choose, with preview images. It starts empty: add feeds on the TV or from your phone ([how to find a feed](docs/MANUAL.md#finding-an-rss-feed), also with your AI assistant)
 - New series row and Continue watching row (reads the Google TV rows when your apps share them, otherwise your recently opened apps)
-- Settings, Network (with a speed test), Inputs and Sound popups under the top icons
+- Settings, Network (with a speed test), Bluetooth, Inputs and Sound popups under the top icons
+- Bluetooth popup: paired devices, pairing, connect, disconnect, forget, on and off, and idle controllers that disconnect by themselves (see [docs/MANUAL.md](docs/MANUAL.md#bluetooth))
+- Reader for feed items: full article with pictures and a QR code to read it on your phone
 - Ambient home music and soft interface sounds, each with its own switch and volume
 - Stardrift screensaver: same sky, 24 hour clock, date, Wi-Fi icon
-- Quick actions: close background apps and clear cache (through the TV's own debugging service, see [docs/ADB.md](docs/ADB.md))
+- Quick actions: close apps, clear cache, power off and restart (through the TV's own debugging service, see [docs/ADB.md](docs/ADB.md))
 - ADB (USB debugging) switch in Settings (needs a one-time permission, see [docs/ADB.md](docs/ADB.md))
 - Update button in Settings (builds made by GitHub Actions in your own fork update from your fork's releases, see [docs/BUILD.md](docs/BUILD.md#update-from-the-tv-update-button))
 

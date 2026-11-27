@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Stardrift</string>
     <string name="quick_key_desc">Opens the TV\'s Quick Settings bar when its remote key is pressed, in any app. It only looks at which window is on screen and never reads or records key presses.</string>
+    <string name="pad_idle_desc">Disconnects game controllers left idle, after the time set in Stardrift\'s Bluetooth popup. It only notes when a game controller button was last pressed; it keeps nothing and passes every key on.</string>
 </resources>

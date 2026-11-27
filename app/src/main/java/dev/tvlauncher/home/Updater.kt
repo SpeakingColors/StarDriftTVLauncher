@@ -35,14 +35,34 @@ object Updater {
         return c
     }
 
+    /** The "latest" release: by its tag, or from the release list when the tag lookup fails (it can for a while after a publish). */
+    private fun readRelease(): JSONObject? {
+        val base = "https://api.github.com/repos/" + BuildConfig.UPDATE_REPO
+        val c = open("$base/releases/tags/latest", "application/vnd.github+json")
+        val code = c.responseCode
+        if (code == 200) {
+            val j = JSONObject(c.inputStream.use { it.readBytes() }.toString(Charsets.UTF_8))
+            c.disconnect()
+            return j
+        }
+        c.disconnect()
+        android.util.Log.w("StardriftUpd", "release by tag: HTTP $code, trying the list")
+        val l = open("$base/releases?per_page=10", "application/vnd.github+json")
+        if (l.responseCode != 200) { android.util.Log.w("StardriftUpd", "release list: HTTP " + l.responseCode); l.disconnect(); return null }
+        val arr = org.json.JSONArray(l.inputStream.use { it.readBytes() }.toString(Charsets.UTF_8))
+        l.disconnect()
+        for (i in 0 until arr.length()) {
+            val r = arr.getJSONObject(i)
+            if (r.optString("tag_name") == "latest") return r
+        }
+        return null
+    }
+
     /** Never on the main thread. Null when the release cannot be read. */
     fun fetchLatest(): Info? {
         if (!enabled()) return null
         return try {
-            val c = open("https://api.github.com/repos/" + BuildConfig.UPDATE_REPO + "/releases/tags/latest", "application/vnd.github+json")
-            if (c.responseCode != 200) { c.disconnect(); return null }
-            val j = JSONObject(c.inputStream.use { it.readBytes() }.toString(Charsets.UTF_8))
-            c.disconnect()
+            val j = readRelease() ?: return null
             val body = j.optString("body", "")
             val code = Regex("\"code\"\\s*:\\s*(\\d+)").find(body)?.groupValues?.get(1)?.toInt() ?: return null
             val name = Regex("\"name\"\\s*:\\s*\"([^\"]+)\"").find(body)?.groupValues?.get(1) ?: code.toString()

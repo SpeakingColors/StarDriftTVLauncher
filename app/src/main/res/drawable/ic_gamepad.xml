@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp" android:viewportWidth="22.4" android:viewportHeight="22.4">
+    <!-- drawn about 7% larger than the other icons: viewport cropped to 22.4 and shifted to stay centred -->
+    <group android:translateX="-0.8" android:translateY="-0.8">
+        <path android:strokeColor="#FFFFFF" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="M6,7.5 L18,7.5 A4,4 0 0,1 22,11.5 L22,14.5 A3,3 0 0,1 16.6,16.3 L15,14 L9,14 L7.4,16.3 A3,3 0 0,1 2,14.5 L2,11.5 A4,4 0 0,1 6,7.5 Z M7,9.5 L7,12.5 M5.5,11 L8.5,11 M15.5,10 L15.51,10 M17.5,12 L17.51,12" />
+    </group>
+</vector>

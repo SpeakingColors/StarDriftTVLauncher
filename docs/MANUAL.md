@@ -14,6 +14,7 @@ The pictures are screenshots of the [interactive mockup](mockup/index.html), whi
 - [Picks and New series](#picks-and-new-series)
 - [Continue watching](#continue-watching)
 - [Top icons](#top-icons)
+- [Bluetooth](#bluetooth)
 - [Sound](#sound)
 - [Screensaver](#screensaver)
 - [Adding feeds from your phone](#adding-feeds-from-your-phone)
@@ -102,8 +103,8 @@ The greeting, clock, date and weather stay at the top.
 ![OK on a card opens the full list for that category](manual/category.jpg)
 *OK on a card opens the full list for that category*
 
-![An item opens in the reader popup: text only](manual/reader.jpg)
-*An item opens in the reader popup: text only. Up and Down scroll, OK for the next page, Back to close*
+![An item opens in the reader popup](manual/reader.jpg)
+*An item opens in the reader popup. Up and Down scroll, OK for the next page, Back to close*
 
 ![The first start has no feeds: press OK on the card to add one](manual/no-feeds.jpg)
 *The first start has no feeds: press OK on the card to add one*
@@ -111,7 +112,7 @@ The greeting, clock, date and weather stay at the top.
 
 The row under the dock has one card per category. **Stardrift starts with no feeds**: you choose what shows here. Until you add something, the row shows a card that says so; press OK on it to add your first feed. A card only shows when at least one source in it is switched on. Each card steps through its latest headlines by itself (the dots show how many), with a preview image when the feed has one.
 
-- **OK** on a card opens the full list for that category. **OK** on an item opens a reader popup with the article text from the feed (when a feed only shares a title, the popup says so). Up and Down scroll, OK for the next page, Back to close.
+- **OK** on a card opens the full list for that category. **OK** on an item opens the reader: the feed's summary at once, then the **full article with its pictures**, read from the article's page (some sites cannot be read this way; the summary then stays). At the end, a **QR code** opens the article on your phone. Up and Down scroll, OK for the next page, Back to close. Items that link to **YouTube** open in the YouTube app instead.
 - **Press and hold** a card for **Refresh** and **Edit sources**.
 - **Edit sources** lists the feeds. OK switches a feed on or off. A feed you added yourself can be removed with press and hold. You can add a feed by web address, or from your phone (see below).
 - **Your own cards:** in **Edit sources**, **Add a card** makes a card with a name you choose (for example *Movies*). Up to four cards fit on Home. When you add a feed by web address or from your phone, you pick which card it goes under, or name a new one.
@@ -169,17 +170,30 @@ The round icons at the top right open popups on the right side of the screen:
 | Play Store | Opens the Google Play Store |
 | Inputs | Lists the inputs your TV shares with apps (HDMI and others) so you can switch. If your TV shares none, it says so: use the INPUT button on the remote |
 | Network | Connection status, signal, IP address, gateway, link speed, and a **download speed test** (about 12 seconds). The network name is never shown |
+| Bluetooth | [Bluetooth](#bluetooth): paired devices, pairing, connect, disconnect, forget, on and off, idle controllers |
 | Speaker | [Sound](#sound): music and effects |
 | Settings | Quick actions, shortcuts and launcher settings (below) |
 
 **Settings** contains:
 
 - **All TV settings**: opens Android's own settings
-- **Quick actions**: **Close background apps** (stops the apps you installed that are running; apps that came with the TV are left alone) and **Clear cache** (clears the cache of every app; it says how much it freed). Both use the TV's own debugging service, so they need the one-time permission in [ADB.md](ADB.md#optional-switches-in-settings); the first time the TV asks **Allow USB debugging?**: tick *Always allow*. Without that they fall back to a weaker method and tell you so
+- **Quick actions**: **Close apps** (stops the apps you installed that are running; apps that came with the TV are left alone) and **Clear cache** (clears the cache of every app; it says how much it freed). Both use the TV's own debugging service, so they need the one-time permission in [ADB.md](ADB.md#optional-switches-in-settings); the first time the TV asks **Allow USB debugging?**: tick *Always allow*. Without that they fall back to a weaker method and tell you so
+- **Power off** (a full shutdown, not standby) and **Restart**: each asks first, then runs through the TV's debugging service like the quick actions. After a full shutdown, some devices only wake with their power button or by unplugging them
 - **Shortcuts**: Apps, Display, Sound, Storage (straight to those Android pages)
 - **Launcher**: **Home rows** (show, hide and reorder the rows) and **Hidden apps** (to show an app again)
 - **ADB (USB debugging)** and, on TVs that have their own Quick Settings bar, **Quick Settings key**: switches that need the one-time permission in [ADB.md](ADB.md#optional-switches-in-settings)
 - **Update**: only in builds made by GitHub Actions in your own fork, see [BUILD.md](BUILD.md#update-from-the-tv-update-button)
+
+## Bluetooth
+
+The Bluetooth icon (between Network and Sound) opens a popup. The first time, the TV asks for **Nearby devices**: allow it, or the list stays empty.
+
+- **Paired devices**, each marked **Connected** or **Paired**. Press one for **Connect** or **Disconnect**, **Forget**, and the TV's own Bluetooth page.
+- **Pair a new device**: put the device in pairing mode first, then pick it from **Found nearby**. Confirm on screen if the TV asks.
+- **Idle controllers**: disconnects game controllers after 15, 30, 60 or 120 minutes without a button press (most controllers then turn themselves off). Off by default. Only button presses count; stick moves are not seen. It switches on a small helper that only notes when a controller button was last pressed.
+- **Turn Bluetooth off** (and on): asks first, because Bluetooth remotes and controllers stop working while it is off.
+
+Android does not let apps connect, disconnect, forget or switch Bluetooth, so these run through the TV's own debugging service, like the quick actions in Settings: they need the one-time permission in [ADB.md](ADB.md#optional-switches-in-settings), and the first time the TV asks **Allow USB debugging?** (tick *Always allow*). Listing and pairing work without it.
 
 ## Sound
 
@@ -218,7 +232,7 @@ The page only runs while that screen is open on the TV. Close the screen and it 
 ## Privacy and network
 
 - No accounts, no ads, no analytics.
-- The launcher contacts only the weather service ([Open-Meteo](https://open-meteo.com/)) and the feeds and images you switched on.
+- The launcher contacts only the weather service ([Open-Meteo](https://open-meteo.com/)), the feeds and images you switched on, and the page of an article when you open it in the reader. The QR code is made on the TV.
 - The home network page for adding feeds is protected by a PIN and only open while its screen is shown.
 
 If your network filters DNS (an ad blocker, for example), allow the hosts listed in the [README](../README.md#network-dns-filters). Symptoms of a blocked host: *Weather unavailable* (weather host), *Nothing to show yet. Check the internet connection.* (feeds), or pictures that stay empty.

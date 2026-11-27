@@ -212,27 +212,81 @@ fun showTextInput(context: Context, title: String, hint: String, allowEmpty: Boo
     input.requestFocus()
 }
 
-/** Reader popup for a news item: text only. Up and Down scroll, OK pages down (closes at the end), Back closes. */
-fun showReader(context: Context, title: String, meta: String, body: String, link: String) {
+/**
+ * Reader popup for a news item. Shows the feed's summary at once, then the full article (text and pictures, see Article)
+ * when the page can be read. A QR code at the top opens the article on a phone. Up and Down scroll, OK pages down
+ * (closes at the end), Back closes.
+ */
+fun showReader(context: Context, title: String, meta: String, body: String, link: String, imageUrl: String?) {
+    val main = android.os.Handler(android.os.Looper.getMainLooper())
     val col = LinearLayout(context)
     col.orientation = LinearLayout.VERTICAL
+
+    // header: title and source (the QR code to the phone sits at the end of the article, so the header stays short)
+    val top = LinearLayout(context)
+    top.orientation = LinearLayout.HORIZONTAL
+    val tl = LinearLayout(context)
+    tl.orientation = LinearLayout.VERTICAL
     val head = TextView(context)
-    head.text = title; head.setTextColor(Ui.TEXT); head.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(28f))
+    head.text = title; head.setTextColor(Ui.TEXT); head.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(26f))
     head.typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
-    head.maxLines = 3
-    head.setPadding(Ui.pxi(22f), Ui.pxi(6f), Ui.pxi(22f), Ui.pxi(4f))
-    col.addView(head)
+    head.maxLines = 2
+    head.setPadding(Ui.pxi(22f), Ui.pxi(0f), Ui.pxi(22f), Ui.pxi(2f))
+    tl.addView(head)
     val m = TextView(context)
-    m.text = meta; m.setTextColor(Ui.TEXT3); m.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(18f))
-    m.setPadding(Ui.pxi(22f), 0, Ui.pxi(22f), Ui.pxi(8f))
-    col.addView(m)
-    val t = TextView(context)
-    t.text = (if (body.isBlank()) "This feed only shares the title." else body) + "\n\n" + link
-    t.setTextColor(Ui.TEXT2); t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(22f))
-    t.setLineSpacing(0f, 1.25f)
-    t.setPadding(Ui.pxi(22f), Ui.pxi(12f), Ui.pxi(22f), Ui.pxi(20f))
+    m.text = meta; m.setTextColor(Ui.TEXT3); m.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(17f))
+    m.setPadding(Ui.pxi(22f), 0, Ui.pxi(22f), Ui.pxi(4f))
+    tl.addView(m)
+    top.addView(tl, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+    col.addView(top)
+    val qr = qrBitmap(link, Ui.pxi(150f))
+
+    val content = LinearLayout(context)
+    content.orientation = LinearLayout.VERTICAL
+    content.setPadding(Ui.pxi(22f), Ui.pxi(4f), Ui.pxi(22f), Ui.pxi(20f))
+    fun para(s: String, size: Float, color: Int, medium: Boolean, gapTop: Float) {
+        val t = TextView(context)
+        t.text = s
+        t.setTextColor(color); t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(size))
+        t.setLineSpacing(0f, 1.25f)
+        if (medium) t.typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+        content.addView(t, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).also { it.topMargin = Ui.pxi(gapTop) })
+    }
+    fun picture(url: String) {
+        val iv = android.widget.ImageView(context)
+        iv.adjustViewBounds = true
+        iv.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+        iv.maxHeight = Ui.pxi(400f)
+        iv.visibility = View.GONE
+        content.addView(iv, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).also { it.topMargin = Ui.pxi(if (content.childCount == 0) 4f else 16f) })
+        Images.load(url, 1000) { b -> if (b != null && b.width >= 200) { iv.setImageBitmap(b); iv.visibility = View.VISIBLE } }
+    }
+    if (imageUrl != null) picture(imageUrl)
+    para(if (body.isBlank()) "This feed only shares the title." else body, 22f, Ui.TEXT2, false, 12f)
+    val status = TextView(context)
+    status.text = "Loading the full article..."
+    status.setTextColor(Ui.TEXT3); status.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(17f))
+    content.addView(status, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).also { it.topMargin = Ui.pxi(14f) })
+    // QR code to open the article on a phone, at the very end of the article
+    fun qrAtEnd() {
+        if (qr == null) return
+        val qc = LinearLayout(context)
+        qc.orientation = LinearLayout.VERTICAL
+        qc.gravity = Gravity.CENTER_HORIZONTAL
+        val iv = android.widget.ImageView(context)
+        iv.setImageBitmap(qr)
+        qc.addView(iv, LinearLayout.LayoutParams(Ui.pxi(150f), Ui.pxi(150f)))
+        val cap = TextView(context)
+        cap.text = "On your phone"
+        cap.setTextColor(Ui.TEXT3); cap.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(14f))
+        cap.gravity = Gravity.CENTER
+        qc.addView(cap)
+        content.addView(qc, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).also { it.topMargin = Ui.pxi(26f) })
+    }
+    qrAtEnd()
+
     val scroll = ScrollView(context)
-    scroll.addView(t)
+    scroll.addView(content)
     scroll.isFocusable = true
     scroll.isVerticalScrollBarEnabled = true
     scroll.isScrollbarFadingEnabled = false
@@ -240,13 +294,49 @@ fun showReader(context: Context, title: String, meta: String, body: String, link
     scroll.setOnClickListener {
         if (scroll.canScrollVertically(1)) scroll.pageScroll(View.FOCUS_DOWN) else dialog.dismiss()
     }
-    col.addView(scroll, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(540f)))
+    col.addView(scroll, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.pxi(650f)))
     val hint = TextView(context)
     hint.text = "Up and Down scroll, OK for next page, Back to close"
     hint.setTextColor(Ui.TEXT3); hint.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, Ui.px(15f))
-    hint.setPadding(Ui.pxi(22f), Ui.pxi(10f), Ui.pxi(22f), Ui.pxi(4f))
+    hint.setPadding(Ui.pxi(22f), Ui.pxi(6f), Ui.pxi(22f), Ui.pxi(0f))
     col.addView(hint)
     dialog = panelDialog(context, 1000f, col)
     dialog.show()
     scroll.requestFocus()
+
+    if (!link.startsWith("http")) { status.visibility = View.GONE; return }
+    Thread {
+        val blocks = Article.fetch(link)
+        main.post {
+            if (!dialog.isShowing) return@post
+            if (blocks == null) { status.text = "The full article could not be read here: scan the code below to open it on your phone."; return@post }
+            // full article: replaces the summary, keeps the lead picture when the page has none of its own
+            val keepLead = imageUrl != null && blocks.none { it.kind == Article.IMAGE }
+            val lead = if (keepLead) content.getChildAt(0) else null
+            content.removeAllViews()
+            if (lead != null) content.addView(lead)
+            var first = true
+            for (b in blocks) {
+                when (b.kind) {
+                    Article.HEADING -> para(b.text, 25f, Ui.TEXT, true, if (first) 6f else 22f)
+                    Article.PARA -> para(b.text, 22f, Ui.TEXT2, false, if (first) 6f else 14f)
+                    Article.ITEM -> para("\u2022  " + b.text, 22f, Ui.TEXT2, false, 8f)
+                    Article.IMAGE -> picture(b.text)
+                }
+                first = false
+            }
+            qrAtEnd()
+        }
+    }.start()
 }
+
+/** QR code for a link, white on black modules as phones expect (dark modules on a light square). */
+private fun qrBitmap(text: String, size: Int): android.graphics.Bitmap? = try {
+    if (!text.startsWith("http")) null else {
+        val hints = mapOf(com.google.zxing.EncodeHintType.MARGIN to 1)
+        val mtx = com.google.zxing.qrcode.QRCodeWriter().encode(text, com.google.zxing.BarcodeFormat.QR_CODE, size, size, hints)
+        val px = IntArray(mtx.width * mtx.height)
+        for (y in 0 until mtx.height) for (x in 0 until mtx.width) px[y * mtx.width + x] = if (mtx.get(x, y)) Color.BLACK else Color.WHITE
+        android.graphics.Bitmap.createBitmap(px, mtx.width, mtx.height, android.graphics.Bitmap.Config.ARGB_8888)
+    }
+} catch (e: Throwable) { null }
